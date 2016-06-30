@@ -2,3 +2,4 @@ FULL NAME   PITT USERNAME   GITHUB USERNAME
 -------------------------------------------
 Joe Meszar  jwm54@pitt.edu    outkst
 Kyle Monto  kwm19@pitt.edu    kwm19
+Orenda Orr  oso1@pitt.edu     r-enn
