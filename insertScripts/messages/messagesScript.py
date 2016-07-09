@@ -23,6 +23,7 @@ with open('textMessage.txt') as f:
             else:
                 textInsert.write("INSERT INTO MESSAGES VALUES({},{}, \'{}\', \'{}\', NULL, {}, current_timestamp);\n".format(g_id, sender_id, c.split(' ', 1)[0].upper(), c, group_id))
                 group_id = randint(1,10)
+                sender_id = randint(1,100)
 
             g_id += 1
 textInsert.close()
