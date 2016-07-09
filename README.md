@@ -18,44 +18,45 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash)  
 
 #### Milestone 1: The FaceSpace Database Schema & Example Data (Due: July 11 @ 11:59PM)
-1. [ ] Database Schema Overview:
-  * [ ] Choose appropriate data types to make up the attributes of each relation.
-  * [ ] Define all structural and semantic integrity constraints.
-  * [ ] All assumptions must be stated using comments within the database creation script.
-  * [ ] Messages will be constrained to be less than 100 characters.
-2. [ ] Proposed Database Schema (*In Progress...*)   
-  * [ ] **Users**
-    * [ ] **ID** *number(10)* **PK**
-    * [ ] **FName** *varchar2(100)* **NOT NULL**
-    * [ ] **LName** *varchar2(100)* **NOT NULL**
-    * [ ] **Email** *varchar2(80)* **NOT NULL**
-    * [ ] **DOB** *date*          
-    * [ ] **LastLogin** *timestamp*
-  * [ ] **Friendships**
-    * [ ] **UserID** *number(10)* **FK Users(ID)**
-    * [ ] **FriendID** *number(10)* **FK Users(ID)**
-    * [ ] **Approved** *number(1)*
-    * [ ] **DateApproved** *timestamp*
-  * [ ] **Groups**
-    * [ ] **ID** *number(10)* **PK**
-    * [ ] **Name** *varchar2(100)* **NOT NULL**
-    * [ ] **Description** *varchar2(500)*
-    * [ ] **Limit** *number(10)*   
-    * [ ] **DateCreated** *timestamp*
-  * [ ] **GroupMembers**
-    * [ ] **GroupID** *number(10)* **FK Groups(ID)**
-    * [ ] **UserID** *number(10)*  **FK Users(ID)**
-    * [ ] **DateJoined** *timestamp*
-  * [ ] **Messages**
-    * [ ] **ID** *number(20)* **PK**
-    * [ ] **SenderID** *number(10)* **FK Users(ID)**
-    * [ ] **Subject** *varchar2(30)*    **NOT NULL**
-    * [ ] **Body** *varchar2(100)*      **NOT NULL**
-    * [ ] **RecipientID** *number(10)*  **FK on Users(ID)**
-    * [ ] **GroupID** *number(10)* **FK on Groups(ID)**
-    * [ ] **DateCreated** *timestamp*
-3. [ ] EXAMPLE DATA
-  * [ ] 100+ Users
-  * [ ] 200+ Friendships
-  * [ ] 10+ Groups
-  * [ ] 300+ Messages
+
+1. [ ] Database Schema Overview:  
+  * [ ] Choose appropriate data types to make up the attributes of each relation.  
+  * [ ] Define all structural and semantic integrity constraints.  
+  * [ ] All assumptions must be stated using comments within the database creation script.  
+  * [ ] Messages will be constrained to be less than 100 characters.  
+2. [ ] Proposed Database Schema (*In Progress...*)  
+  * [ ] **Users**  
+    * [ ] **ID** *number(10)* **PK**  
+    * [ ] **FName** *varchar2(50)* **NOT NULL**  
+    * [ ] **LName** *varchar2(50)* **NOT NULL**  
+    * [ ] **Email** *varchar2(80)* **NOT NULL**  
+    * [ ] **DOB** *date* **NOT NULL**  
+    * [ ] **LastLogin** *timestamp*  
+    * [ ] **DateCreated** *timestamp **NOT NULL**  
+  * [ ] **Friendships**  
+    * [ ] **UserID** *number(10)* **FK Users(ID)** **NOT NULL**  
+    * [ ] **FriendID** *number(10)* **FK Users(ID)** **NOT NULL**  
+    * [ ] **Approved** *number(1)*  
+    * [ ] **DateApproved** *timestamp*  
+  * [ ] **Groups**  
+    * [ ] **ID** *number(10)* **PK**  
+    * [ ] **Name** *varchar2(100)* **NOT NULL**  
+    * [ ] **Description** *varchar2(100)*  
+    * [ ] **Limit** *number(10)*  
+    * [ ] **DateCreated** *timestamp* **NOT NULL**  
+  * [ ] **GroupMembers**  
+    * [ ] **GroupID** *number(10)* **FK Groups(ID)** **NOT NULL**  
+    * [ ] **UserID** *number(10)* **FK Users(ID)** **NOT NULL**  
+    * [ ] **DateJoined** *timestamp* **NOT NULL**  
+  * [ ] **Messages**  
+    * [ ] **ID** *number(20)* **PK**  
+    * [ ] **SenderID** *number(10)* **FK Users(ID)** **NOT NULL**  
+    * [ ] **Subject** *varchar2(30)*    **NOT NULL**  
+    * [ ] **Body** *varchar2(100)*      **NOT NULL**  
+    * [ ] **RecipientID** *number(10)*  **FK on Users(ID)**  
+    * [ ] **DateCreated** *timestamp* **NOT NULL**  
+3. [X] EXAMPLE DATA  
+  * [X] 100+ Users  
+  * [X] 200+ Friendships  
+  * [X] 10+ Groups  
+  * [X] 300+ Messages  
