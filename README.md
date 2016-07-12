@@ -60,8 +60,8 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] 200+ Friendships  
   * [X] 10+ Groups  
   * [X] 300+ Messages  
-4. [ ] Create a commit labeled "Milestone 1 submission" and push it to the repository.  
-5. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
+4. [X] Create a commit labeled "Milestone 1 submission" and push it to the repository.  
+5. [X] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
   * [X] The email title should be "[CS1555] Project milestone 1 submission"  
   * [X] Insert a link to the repository.  
-  * [ ] Insert the GitHub commit ID (40-character string / SHA-1 hash)  
+  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash)  
