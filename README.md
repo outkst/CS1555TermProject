@@ -19,12 +19,12 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 
 #### Milestone 1: The FaceSpace Database Schema & Example Data (Due: July 11 @ 11:59PM)
 
-1. [ ] Database Schema Overview:  
+1. [X] Database Schema Overview:  
   * [X] Choose appropriate data types to make up the attributes of each relation.  
-  * [ ] Define all structural and semantic integrity constraints.  
-  * [ ] All assumptions must be stated using comments within the database creation script.  
+  * [X] Define all structural and semantic integrity constraints.  
+  * [X] All assumptions must be stated using comments within the database creation script.  
   * [X] Messages will be constrained to be less than 100 characters.  
-2. [ ] Proposed Database Schema (*In Progress...*)  
+2. [X] Proposed Database Schema (*In Progress...*)  
   * [X] **Users**  
     * [X] **ID** *number(10)* **PK**  
     * [X] **FName** *varchar2(50)* **NOT NULL**  
@@ -60,7 +60,8 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] 200+ Friendships  
   * [X] 10+ Groups  
   * [X] 300+ Messages  
+4. [ ] Create a commit labeled "Milestone 1 submission" and push it to the repository.  
 5. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
-  * [ ] The email title should be "[CS1555] Project milestone 1 submission"  
-  * [ ] Insert a link to the repository.  
+  * [X] The email title should be "[CS1555] Project milestone 1 submission"  
+  * [X] Insert a link to the repository.  
   * [ ] Insert the GitHub commit ID (40-character string / SHA-1 hash)  
