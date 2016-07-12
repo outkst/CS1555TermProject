@@ -15,8 +15,11 @@ CREATE TABLE USERS
 	DOB DATE NOT NULL,
 	LASTLOGIN TIMESTAMP (3),
 	DATECREATED TIMESTAMP (3) DEFAULT SYSTIMESTAMP NOT NULL,
-	CONSTRAINT USERS_PK PRIMARY KEY (ID)	--structural constraint for unique users - assuming users need to be unique
+	-- Structural constraint for unique users
+	-- Assumption: Users table needs unique identifier
+	CONSTRAINT USERS_PK PRIMARY KEY (ID)
 );
+
 
 CREATE TABLE GROUPS
 (
@@ -25,9 +28,16 @@ CREATE TABLE GROUPS
 	DESCRIPTION VARCHAR2(100 BYTE),
 	LIMIT NUMBER(10,0),
 	DATECREATED TIMESTAMP (3) DEFAULT SYSTIMESTAMP NOT NULL,
-	CONSTRAINT GROUPS_PK PRIMARY KEY (ID),	--structural constraint for unique groups - assuming groups need to be unique
-	CONSTRAINT GROUP_LIMIT CHECK (LIMIT > 0) --Semantic constraint to ensure that the value of the group limit is > 0  -assuming limit must be greater than 0
+	-- Structural constraint for unique groups
+	-- Assumption: Groups table needs a unique identifier
+	CONSTRAINT GROUPS_PK PRIMARY KEY (ID),
+	-- Semantic constraint to ensure that the value of the group limit is > 0
+	-- Assumption: Group Limit attribute must be greater than 0
+	CONSTRAINT GROUPS_LIMIT CHECK (LIMIT > 0),
+	-- Assumption: Groups cannot have the same Name attribute.
+	CONSTRAINT GROUPS_UNIQUE_NAME UNIQUE (NAME)
 );
+
 
 CREATE TABLE FRIENDSHIPS
 (
@@ -35,37 +45,39 @@ CREATE TABLE FRIENDSHIPS
 	FRIENDID NUMBER(10,0) NOT NULL,
 	APPROVED NUMBER(1,0) DEFAULT 0 NOT NULL,
 	DATEAPPROVED TIMESTAMP (3),
-	--Assumption: User id must reference a user's id from the User table
+	-- Assumption: Friendships will be unique and can only occur once,
+	-- Under this set up a friendship that is established will contain 2 rows in the
+	-- Database.
+	-- Example: Userid 1 wants to friend Userid 2. Therefore, the friendship is pending and represented as 1 row
+	-- Userid 2 then wants to friend Userid 1. Then, two rows will exist to establish friendship.
+	-- PK(USERID=1,FRIENDID=2) and PK(USERID=2,FRIENDID=1).
+	-- Composite primary key to keep track of pending friendships
+	-- Will lead to easy query to gather friendships for a particular user
+	-- And check to ensure that a new friendship cannot be created multiple times
+	CONSTRAINT FRIENDSHIPS_PK PRIMARY KEY(USERID, FRIENDID),
+	-- Assumption: UserID attribute must reference a user's id from the User table
 	CONSTRAINT FRIENDSHIPS_FK1 FOREIGN KEY (USERID) REFERENCES USERS (ID),
-	--Assumption: Friend id must reference a user's id from the User table
-	CONSTRAINT FRIENDSHIPS_FK2 FOREIGN KEY (FRIENDID) REFERENCES USERS (ID)
+	-- Assumption: FriendID attribute must reference a user's id from the User table
+	CONSTRAINT FRIENDSHIPS_FK2 FOREIGN KEY (FRIENDID) REFERENCES USERS (ID),
+	-- Assumption: Approved attribute is to be used as a boolean, so only allow Zero and One.
+	CONSTRAINT FRIENDSHIPS_APPROVED_BOOLEAN CHECK (APPROVED IN (0, 1))
 );
 
---Assumption: Friendships will be unique and can only occur once,
---under this set up a friendship that is established will contain 2 rows in the
---database.
---Example: Userid 1 wants to friend Userid 2. Therefore, the friendship is pending and represented as 1 row
---Userid 2 then wants to friend Userid 1. Then, two rows will exist to establish friendship.
---PK(USERID=1,FRIENDID=2) and PK(USERID=2,FRIENDID=1).
---Composite primary key to keep track of pending friendships
---Will lead to easy query to gather friendships for a particular user
---and check to ensure that a new friendship cannot be created multiple times
-ALTER TABLE FRIENDSHIPS ADD CONSTRAINT FRIENDSHIPS_PK PRIMARY KEY(USERID, FRIENDID);
 
 CREATE TABLE GROUPMEMBERS
 (
 	GROUPID NUMBER(10,0) NOT NULL,
 	USERID NUMBER(10,0) NOT NULL,
 	DATEJOINED TIMESTAMP (3) DEFAULT SYSTIMESTAMP NOT NULL,
-	--Assumption: The group id must reference the groupId found in GROUPS
+	-- Assumption: A user can only belong to a group once.
+	-- Composite primary key to make sure that a user cannot join the same group twice
+	CONSTRAINT GROUPMEMBERS_PK PRIMARY KEY(GROUPID, USERID),
+	-- Assumption: The GroupID must reference the GroupId found in GROUPS table
 	CONSTRAINT GROUPMEMBERS_FK1 FOREIGN KEY (GROUPID) REFERENCES GROUPS (ID),
-	--Assumption: The user id must reference the userId found in USERS
+	-- Assumption: The UserID must reference the UserId found in USERS table
 	CONSTRAINT GROUPMEMBERS_FK2 FOREIGN KEY (USERID) REFERENCES USERS (ID)
 );
 
---Assumption: A user can only belong to a group once.
---Composite primary key to make sure that a user cannot join the same group twice
-ALTER TABLE GROUPMEMBERS ADD CONSTRAINT GROUPMEMBERS_PK PRIMARY KEY(GROUPID, USERID);
 
 CREATE TABLE MESSAGES
 (
@@ -75,16 +87,17 @@ CREATE TABLE MESSAGES
 	BODY VARCHAR2(100 BYTE) NOT NULL,
 	RECIPIENTID NUMBER(10,0),
 	DATECREATED TIMESTAMP (3) DEFAULT SYSTIMESTAMP NOT NULL,
-	--Assumption: messages must be unique
+	-- Assumption: Messages table needs a unique identifier
 	CONSTRAINT MESSAGES_PK PRIMARY KEY (ID),
-	--Assumption: message SENDERID must reference a user's id
+	-- Assumption: SenderID attribute must reference a user's id from USERS table
 	CONSTRAINT MESSAGES_FK1 FOREIGN KEY (SENDERID) REFERENCES USERS (ID),
-	--Assumption: message RECIPIENTID must reference a user's id
+	-- Assumption: RecipientID attribute must reference a user's id from USERS table
 	CONSTRAINT MESSAGES_FK2 FOREIGN KEY (RECIPIENTID) REFERENCES USERS (ID)
 );
 
---Assumption: The group limit cannot be exceeded
---Trigger to ensure that the limit on the number of users for a group cannot be exceeded
+
+-- Assumption: The group limit cannot be exceeded
+-- Trigger to ensure that the limit on the number of users for a group cannot be exceeded
 CREATE OR REPLACE TRIGGER GROUP_LIMIT_CHECK
 BEFORE INSERT ON GROUPMEMBERS
 FOR EACH ROW
@@ -92,44 +105,45 @@ DECLARE
 	CURRENT_TOTAL INTEGER;
 	GROUP_LIMIT INTEGER;
 BEGIN
-	--get the total number of people currently in the group
+	-- Get the total number of people currently in the group
 	SELECT COUNT(*) INTO CURRENT_TOTAL
 	FROM GROUPMEMBERS
 	WHERE GROUPID = :NEW.GROUPID;
-	--get the limit of the group
+	-- Get the limit of the group
 	SELECT LIMIT INTO GROUP_LIMIT
 	FROM GROUPS
 	WHERE ID = :NEW.GROUPID;
-	--raise_application_error from -20000 to -20999 are custom user defined error codes
-	--this exception with cause this row to not be inserted
-	--check if the total members plus the member to be added will exceed the limit
+	-- Raise_application_error from -20000 to -20999 are custom user defined error codes
+	-- This exception with cause this row to not be inserted
+	-- Check if the total members plus the member to be added will exceed the limit
 	IF(CURRENT_TOTAL+1 > GROUP_LIMIT) THEN
 		raise_application_error( -20000, 'Exceeds group limit');
 	END IF;
 END;
 /
 
---Trigger to manage the insertion of a friendship into the table
+
+-- Trigger to manage the insertion of a friendship into the table
 CREATE OR REPLACE TRIGGER FRIENDSHIP_CHECK
 BEFORE INSERT ON FRIENDSHIPS
 FOR EACH ROW
 DECLARE
 	CURRENT_STATUS INTEGER;
 BEGIN
-	--check to see if there is a pending friendship, and insert count into the current_status variable
+	-- Check to see if there is a pending friendship, and insert count into the current_status variable
 	SELECT COUNT(*) INTO CURRENT_STATUS
 	FROM FRIENDSHIPS
 	WHERE USERID = :NEW.FRIENDID AND FRIENDID = :NEW.USERID;
-	--if the current status is greater than 0, representing an existing pending friendship
-	--then change the approved status of the current insert to 1 and add a timestamp,
-	--also update the other party's APPROVED and DATEAPPROVED attributes
+	-- If the current status is greater than 0, representing an existing pending friendship
+	-- Then change the approved status of the current insert to 1 and add a timestamp,
+	-- Also update the other party's APPROVED and DATEAPPROVED attributes
 	IF(CURRENT_STATUS > 0) THEN
 		:NEW.APPROVED := 1;
 		:NEW.DATEAPPROVED := CURRENT_TIMESTAMP;
 		UPDATE FRIENDSHIPS
 		SET APPROVED = 1, DATEAPPROVED = CURRENT_TIMESTAMP
 		WHERE USERID = :NEW.FRIENDID AND FRIENDID = :NEW.USERID;
-	ELSE		--otherwise set the approved to 0 and date approved to NULL
+	ELSE		-- Otherwise set the approved to 0 and date approved to NULL
 		:NEW.APPROVED := 0;
 		:NEW.DATEAPPROVED := NULL;
 	END IF;
@@ -137,7 +151,7 @@ END;
 /
 
 
---Populate the USERS table
+-- Populate the USERS table
 INSERT INTO USERS(ID, FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (1, 'Jason', 'Tomei', 'jtomei@cs1555.com', TO_DATE('08-MAY-95','DD-MON-YY'), NULL, TIMESTAMP '2016-06-01 09:39:56.147');
 INSERT INTO USERS(ID, FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (2, 'Garrett', 'Norrell', 'gnorrell@cs1555.com', TO_DATE('16-APR-95','DD-MON-YY'), NULL, TIMESTAMP '2016-06-02 03:45:23.872');
 INSERT INTO USERS(ID, FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (3, 'Jamie', 'Mewborn', 'jmewborn@cs1555.com', TO_DATE('15-JUN-95','DD-MON-YY'), NULL, TIMESTAMP '2016-06-02 09:18:57.366');
@@ -240,7 +254,7 @@ INSERT INTO USERS(ID, FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (
 INSERT INTO USERS(ID, FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (100, 'Katerine', 'Vanhooser', 'kvanhooser@cs1555.com', TO_DATE('09-JUN-95','DD-MON-YY'), NULL, TIMESTAMP '2016-07-06 14:09:59.173');
 
 
---Poplate the GROUPS table
+-- Populate the GROUPS table
 INSERT INTO GROUPS (ID, NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (1, 'Civil and Environmental Engineering', NULL, 4993, TIMESTAMP '2016-06-01 16:24:54.318');
 INSERT INTO GROUPS (ID, NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (2, 'Mechanical Engineering', NULL, 423, TIMESTAMP '2016-06-02 00:51:16.566');
 INSERT INTO GROUPS (ID, NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (3, 'Materials Science and Engineering', NULL, 7853, TIMESTAMP '2016-06-02 17:18:19.313');
@@ -284,8 +298,9 @@ INSERT INTO GROUPS (ID, NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (40, 'Spec
 INSERT INTO GROUPS (ID, NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (41, 'Engineering School-Wide Electives', NULL, 2414, TIMESTAMP '2016-06-17 00:33:20.753');
 INSERT INTO GROUPS (ID, NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (42, 'Women''s and Gender Studies', NULL, 9174, TIMESTAMP '2016-06-17 01:10:44.503');
 
---Poplate the friendships table
---Only includes first 2 attributes because trigger will handle the rest
+
+-- Populate the friendships table
+-- Only includes first 2 attributes because trigger FRIENDSHIP_CHECK will handle the rest!
 INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (7, 9);
 INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (9, 10);
 INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (3, 2);
@@ -908,7 +923,8 @@ INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (91, 97);
 INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (94, 93);
 INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (94, 92);
 
---Populate the GROUPMEMBERS table
+
+-- Populate the GROUPMEMBERS table
 INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (33, 99, TIMESTAMP '2016-07-04 17:58:22.594');
 INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (9, 58, TIMESTAMP '2016-07-06 11:11:35.512');
 INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (42, 90, TIMESTAMP '2016-07-06 06:56:22.235');
@@ -1010,7 +1026,8 @@ INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (38, 61, TIMESTAMP
 INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (27, 63, TIMESTAMP '2016-07-01 15:35:02.904');
 INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (25, 14, TIMESTAMP '2016-07-04 17:14:02.703');
 
---Populate the MESSAGES table
+
+-- Populate the MESSAGES table
 INSERT INTO MESSAGES (ID, SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (1, 66, 'Called Him', 'I called him George.', 43, TIMESTAMP '2016-07-07 23:06:01.416');
 INSERT INTO MESSAGES (ID, SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (2, 79, 'Found The', 'They found the box empty.', 95, TIMESTAMP '2016-07-02 04:35:23.284');
 INSERT INTO MESSAGES (ID, SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (3, 9, 'Guards Hear', 'Those guards hear the girl crying.', 9, TIMESTAMP '2016-07-05 15:59:28.316');
@@ -1512,10 +1529,13 @@ INSERT INTO MESSAGES (ID, SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VAL
 INSERT INTO MESSAGES (ID, SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (499, 13, 'Elected Bill', 'I elected Bill captain of our team.', 37, TIMESTAMP '2016-07-05 14:02:13.743');
 INSERT INTO MESSAGES (ID, SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (500, 90, 'Keep The', 'I keep the milk cold.', 8, TIMESTAMP '2016-07-03 01:12:42.163');
 
+
+-- Show the counts from all the tables
 SELECT COUNT(*) USERS_COUNT FROM USERS;
 SELECT COUNT(*) GROUPS_COUNT FROM GROUPS;
-SELECT COUNT(*)/2 ESTABLISHED_FRIENDSHIPS FROM FRIENDSHIPS WHERE APPROVED = 1;
-SELECT COUNT(*) PENDING_FRIENDSHIPS FROM FRIENDSHIPS WHERE APPROVED = 0;
+SELECT COUNT(*) FRIENDSHIPS_COUNT FROM FRIENDSHIPS;
+SELECT COUNT(*)/2 FRIENDSHIPS_ESTABLISHED FROM FRIENDSHIPS WHERE APPROVED = 1;
+SELECT COUNT(*) FRIENDSHIPS_PENDING FROM FRIENDSHIPS WHERE APPROVED = 0;
 SELECT COUNT(*) GROUPMEMBERS_COUNT FROM GROUPMEMBERS;
 SELECT COUNT(*) MESSAGES_COUNT FROM MESSAGES;
 
