@@ -11,11 +11,11 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 1. [X] Add *nfarnan* to the contributors for the repository.  
 2. [X] Add *weg21* to the contributors for the repository.  
 3. [X] Add all team members (name, pitt username, github username) to **_team_members.txt_**.  
-4. [X] Create a commit labeled "Milestone 0 submission" and push it to the repository.  
+4. [X] Create a commit labeled "**Milestone 0 submission**" and push it to the repository.  
 5. [X] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
-  * [X] The email title should be "[CS1555] Project milestone 0 submission"  
+  * [X] The email title should be "**[CS1555] Project milestone 0 submission**".  
   * [X] Insert a link to the repository.  
-  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash)  
+  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
 
 #### Milestone 1: The FaceSpace Database Schema & Example Data (Due: July 11 @ 11:59PM)
 
@@ -24,7 +24,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] Define all structural and semantic integrity constraints.  
   * [X] All assumptions must be stated using comments within the database creation script.  
   * [X] Messages will be constrained to be less than 100 characters.  
-2. [X] Proposed Database Schema (*In Progress...*)  
+2. [X] Database Schema  
   * [X] **Users**  
     * [X] **ID** *number(10)* **PK**  
     * [X] **FName** *varchar2(50)* **NOT NULL**  
@@ -60,8 +60,56 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] 200+ Friendships  
   * [X] 10+ Groups  
   * [X] 300+ Messages  
-4. [X] Create a commit labeled "Milestone 1 submission" and push it to the repository.  
+4. [X] Create a commit labeled "**Milestone 1 submission**" and push it to the repository.  
 5. [X] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
-  * [X] The email title should be "[CS1555] Project milestone 1 submission"  
+  * [X] The email title should be "**[CS1555] Project milestone 1 submission**".  
   * [X] Insert a link to the repository.  
-  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash)  
+  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
+
+#### Milestone 2: A JDBC Application To Manage FaceSpace (Due: July 24 @ 11:59PM)
+
+1. [ ] Create a '**FaceSpace**' Java application:  
+  * [ ] Must interface the Pitt Oracle server (*unixs.cis.pitt.edu*).  
+  * [ ] Must use the Java Database Connectivity (JDBC) API.  
+  * [ ] All Tasks must check for, and properly react, to any errors reported by the DBMS.  
+  * [ ] All Tasks must provide appropriate *SUCCESS* or *FAILURE* feedback to the user.  
+  * [ ] Transactions must be defined appropriately:  
+    * [ ] Design all SQL transactions only when necessary.  
+    * [ ] Use concurrency control mechanisms supported by Oracle to ensure inconsistent states do not occur:  
+      * Isolation Level  
+      * Locking Modes  
+    * [ ] Assume multiple requests can be made at the same time, on behalf of multiple users.  
+  * [ ] Implement the following functions:  
+    * [ ] **_createUser_**
+      * Given a **name**, **email address**, and **date of birth**, add a new user to the system.  
+    * [ ] **_initiateFriendship_**
+      * Create a pending friendship from one user to another.  
+    * [ ] **_establishFriendship_**
+      * Create a bilateral friendship between two users.  
+    * [ ] **_displayFriends_**
+      * Given a **user**, look up all of that user's establish and pending friendships. Print out this information in a nicely formatted way.  
+    * [ ] **_createGroup_**
+      * Given a **name**, **description**, and **membership limit**, add a new group to the system.  
+    * [ ] **_addToGroup_**
+      * Given a **user** and a **group**, add the user to the group so long as that would not violate the group's membership limit.  
+    * [ ] **_sendMessageToUser_**
+      * Given a message **subject**, **body**, **recipient**, and **sender**, create a new message.  
+    * [ ] **_sendMessageToGroup_**
+      * This should operate similarly to **sendMessageToUser** only it should send the message to *every* member currently in the specified group.  
+    * [ ] **_displayMessages_**
+      * Given a **user**, look up all of the messages sent to that user (either directly or via a group that they belong to). The program should print out the user's messages in a nicely formatted way.  
+    * [ ] **_displayNewMessages_**
+      * Operates similarly to **displayMessages**, but only displays messages sent since the user's last login.  
+    * [ ] **_searchForUser_**
+      * This provides a simple search function for the system. Given a string on which to match any user in the system, any item in this string must be matched against any significant field of a user's profile. That is if the user searches for "**xyz abc**", the results should be the set of all profiles that match "**xyz**" UNION the set of all profiles that matches "**abc**". The names of all matching users should be printed out in a nicely formatted way.  
+    * [ ] **_threeDegrees_**
+      * This task explores the user's social network. Given two users (**userA** and **userB**), find a path, if one exists, between the **userA** and the **userB** with at most 3 hop between them. A hop is defined as a friendship between any two users. The path should be printed out in a nicely formatted way.  
+    * [ ] **_topMessages_**
+      * Display the top **K** who have sent or received the highest number of messages during for the past **X** months. **X** and **K** should be input parameters to this function.  
+    * [ ] **_dropUser_**
+      * Remove a user and all of their information from the system. When a user is removed, the system should then delete the user from the groups he or she was a member of using a trigger. Note that messages require special handling because they are owned by both the sender and the receiver. Therefore, a message is deleted only when both the sender and all receivers are deleted. Attention should be paid handling integrity constraints.  
+2. [ ] Create a commit labeled "**Milestone 2 submission**" and push it to the repository.  
+3. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
+  * [ ] The email title should be "**[CS1555] Project milestone 2 submission**".  
+  * [ ] Insert a link to the repository.  
+  * [ ] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
