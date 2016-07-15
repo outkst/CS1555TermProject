@@ -6,7 +6,7 @@
 
 A full list of this project's requirements can be viewed in **_1555_term_project.pdf_**
 
-#### Milestone 0: Assemble Teams (Due: July 6 @ 11:59PM)
+### Milestone 0: Assemble Teams (Due: July 6 @ 11:59PM)
 
 1. [X] Add *nfarnan* to the contributors for the repository.  
 2. [X] Add *weg21* to the contributors for the repository.  
@@ -17,7 +17,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] Insert a link to the repository.  
   * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
 
-#### Milestone 1: The FaceSpace Database Schema & Example Data (Due: July 11 @ 11:59PM)
+### Milestone 1: The '*FaceSpace*' Database Schema & Example Data (Due: July 11 @ 11:59PM)
 
 1. [X] Database Schema Overview:  
   * [X] Choose appropriate data types to make up the attributes of each relation.  
@@ -66,7 +66,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] Insert a link to the repository.  
   * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
 
-#### Milestone 2: A JDBC Application To Manage FaceSpace (Due: July 24 @ 11:59PM)
+### Milestone 2: A JDBC Application To Manage '*FaceSpace*' (Due: July 24 @ 11:59PM)
 
 1. [ ] Create a '**FaceSpace**' Java application:  
   * [ ] Must interface the Pitt Oracle server (*unixs.cis.pitt.edu*).  
