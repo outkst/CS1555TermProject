@@ -224,8 +224,9 @@ public class DatabaseConnection {
             } else {
                 friendID = resultSet.getInt(1);
             }
-
-            System.out.println("ID of user: " + userID + " ID of friend: " + friendID);
+            
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", userID, friendID));
 
             //Insert statement for establishing pending friendship
             query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
