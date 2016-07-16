@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facespace;
 
 import java.sql.*;  //import the file containing definitions for the parts
@@ -12,97 +7,96 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author kylemonto
+ * @author Kyle Monto (kwm19@pitt.edu) | Joe Meszar (jwm54@pitt.edu)
  */
 public class DatabaseConnection {
 
     private static Connection connection; //used to hold the jdbc connection to the DB
     private Statement statement; //used to create an instance of the connection
     private PreparedStatement prepStatement; //used to create a prepared statement, that will be later reused
-    private ResultSet resultSet; //used to hold the result of your query (if one
-    // exists)
+    private ResultSet resultSet; //used to hold the result of your query (if one exists)
     private String query;  //this will hold the query we are using
 
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "";
-        String password = "";
+        String username;
+        String password;
 
+        // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
+        
+        // get the username and password
         System.out.println("Please enter DB username: ");
         username = keyIn.next().toLowerCase();
         System.out.println("Please enter DB password: ");
         password = keyIn.next();
+        
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
-            //This is the location of the database.  This is the database in oracle
-            //provided to the class
+            //This is the location of the database. This is the database in oracle provided to our school class
             String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
 
             //create a connection to DB on class3.cs.pitt.edu
             connection = DriverManager.getConnection(url, username, password);
 
         } catch (Exception Ex) {
-            System.out.println("Error connecting to database.  Machine Error: "
-                    + Ex.toString());
+            System.out.println("Error connecting to database.  Machine Error: " + Ex.toString());
+            
         } finally {
             /*
              * NOTE: the connection should be created once and used through out the whole project;
-             * Is very expensive to open a connection therefore you should not close it after every operation on database
+             * Is very expensive to open a connection therefore you should not close it after 
+             * every operation on database
              */
             //Moved the connection to its only method and is inside of a finally block 
             //in the main program
-//		connection.close();
+            connection.close();
         }
-
     }
 
+    /**
+     * Adds a new user to the database system.
+     */
     public void createUser() {
         try {
             //initialize input variables
-            String firstName = "";
-            String lastName = "";
-            String email = "";
-            String dateOfBirth = "";
+            String firstName = null;
+            String lastName = null;
+            String email = null;
+            String dateOfBirth = null;
 
-            //get the firstName
+            // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
-            System.out.println("Please enter a first name: ");
-            firstName = keyIn.next().trim();
-            while (firstName.equalsIgnoreCase("") || firstName == null || !Pattern.matches("[a-zA-Z]+", firstName)) {
+            
+            // get the firstName and normalize (uppercase with no leading/trailing spaces)
+            do {
                 System.out.println("Please enter a first name:");
-                firstName = keyIn.next().trim();
-            }
-            firstName = firstName.substring(0, 1).toUpperCase() + firstName.substring(1).toLowerCase();
+                firstName = keyIn.next().trim().toUpperCase();
+            } while (firstName == null || firstName.equalsIgnoreCase(""));
 
-            //get the lastName
-            System.out.println("Please enter a last name: ");
-            lastName = keyIn.next().trim();
-            while (lastName.equalsIgnoreCase("") || lastName == null || !Pattern.matches("[a-zA-Z]+", lastName)) {
+            // get the lastName and normalize (uppercase with no leading/trailing spaces)
+            do {
                 System.out.println("Please enter a last name:");
-                lastName = keyIn.next().trim();
-            }
-            lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1).toLowerCase();
+                lastName = keyIn.next().trim().toUpperCase();
+            } while (lastName == null || lastName.equalsIgnoreCase(""));
 
-            //get the Email
-            System.out.println("Please enter an email: ");
-            email = keyIn.next().trim();
-            while (email.equalsIgnoreCase("") || email == null || !Pattern.matches("\\w+@\\w+\\.\\w+", email)) {
-                System.out.println("Invalid email please re-enter: ");
-                email = keyIn.next().trim();
-            }
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter a valid email address: ");
+                email = keyIn.next().trim().toLowerCase();
+            } while (email == null || email.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", email));
 
-            //get the DOB
-            System.out.println("Please enter a date of birth DD-MON-YY: ");
-            dateOfBirth = keyIn.next().trim().toUpperCase();
-            while (dateOfBirth.equalsIgnoreCase("") || dateOfBirth == null || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{2}", dateOfBirth)) {
-                System.out.println("Invalid dateOfBirth please re-enter (DD-MON-YY): ");
+            // get the date of birth (DOB) and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Enter a valid date of birth (DD-MON-YY): ");
                 dateOfBirth = keyIn.next().trim().toUpperCase();
-            }
-            System.out.println("First Name: " + firstName + " LastName: " + lastName + " email: " + email + " DOB" + dateOfBirth);
+            } while (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("^(((0?[1-9]|1[012])-(0?[1-9]|1\\d|2[0-8])|(0?[13456789]|1[012])-(29|30)|(0?[13578]|1[02])-31)-(19|[2-9]\\d)\\d{2}|0?2-29-((19|[2-9]\\d)(0[48]|[2468][048]|[13579][26])|(([2468][048]|[3579][26])00)))$", dateOfBirth));
+            
+            // show the user input
+            System.out.println(String.format("First Name: {%s} LastName: {%s} Email: {s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
 
             //Insert query statement
             query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YY'), NULL, current_timestamp)";
@@ -110,7 +104,7 @@ public class DatabaseConnection {
             //Create the prepared statement
             prepStatement = connection.prepareStatement(query);
 
-            //Set parameters of of insert statement
+            //Set parameters of the insert statement
             prepStatement.setString(1, firstName);
             prepStatement.setString(2, lastName);
             prepStatement.setString(3, email);
@@ -119,12 +113,12 @@ public class DatabaseConnection {
             //execute the insert
             prepStatement.executeUpdate();
 
-            query = "Select * FROM USERS";
-
+            // get the new list of users
             statement = connection.createStatement(); //create an instance
-
+            query = "Select * FROM USERS";
             resultSet = statement.executeQuery(query);
-
+            
+            // display the new list of users
             System.out.println("\nAfter the insert, data is...\n");
             int counter = 1;
             while (resultSet.next()) {
@@ -158,36 +152,36 @@ public class DatabaseConnection {
         }
     }
 
+    /***
+     * Creates a pending friendship from one user to another inside the database.
+     */
     public void initiateFriendship() {
         try {
-            //initialize input variables
-            String firstNameUser = "";
-            String lastNameUser = "";
+            //initialize input variables for User and Friend info
             int userID = 0;
-            String firstNameFriend = "";
-            String lastNameFriend = "";
+            String firstNameUser = null;
+            String lastNameUser = null;
+            
             int friendID = 0;
+            String firstNameFriend = null;
+            String lastNameFriend = null;
 
-            //get the firstName of User
+            // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
-            System.out.println("Please enter the first name of the first user: ");
-            firstNameUser = keyIn.next().trim();
-            while (firstNameUser.equalsIgnoreCase("") || firstNameUser == null || !Pattern.matches("[a-zA-Z]+", firstNameUser)) {
-                System.out.println("Please enter a first name:");
-                firstNameUser = keyIn.next().trim();
-            }
-            firstNameUser = firstNameUser.substring(0, 1).toUpperCase() + firstNameUser.substring(1).toLowerCase();
+            
+            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter the user's first name: ");
+                firstNameUser = keyIn.next().trim().toUpperCase();
+            } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
-            //get the lastName of User
-            System.out.println("Please enter a last name: ");
-            lastNameUser = keyIn.next().trim();
-            while (lastNameUser.equalsIgnoreCase("") || lastNameUser == null || !Pattern.matches("[a-zA-Z]+", lastNameUser)) {
-                System.out.println("Please enter a last name:");
-                lastNameUser = keyIn.next().trim();
+            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
+            while (lastNameUser.equalsIgnoreCase("") || lastNameUser == null) {
+                System.out.println("Please enter the user's last name: ");
+                lastNameUser = keyIn.next().trim().toUpperCase();
             }
-            lastNameUser = lastNameUser.substring(0, 1).toUpperCase() + lastNameUser.substring(1).toLowerCase();
 
-            //query to make sure user exists and get there ID
+            //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE FNAME = ? AND LNAME = ?";
 
             prepStatement = connection.prepareStatement(query);
@@ -204,23 +198,17 @@ public class DatabaseConnection {
                 userID = resultSet.getInt(1);
             }
 
-            //get the firstName of Friend
-            System.out.println("Please enter the first name of the second user: ");
-            firstNameFriend = keyIn.next().trim();
-            while (firstNameFriend.equalsIgnoreCase("") || firstNameFriend == null || !Pattern.matches("[a-zA-Z]+", firstNameFriend)) {
-                System.out.println("Please enter a first name:");
-                firstNameFriend = keyIn.next().trim();
-            }
-            firstNameFriend = firstNameFriend.substring(0, 1).toUpperCase() + firstNameFriend.substring(1).toLowerCase();
+            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter friend's first name: ");
+                firstNameFriend = keyIn.next().trim().toUpperCase();
+            } while (firstNameFriend == null || firstNameFriend.equalsIgnoreCase(""));
 
-            //get the lastName of Friend
-            System.out.println("Please enter a last name: ");
-            lastNameFriend = keyIn.next().trim();
-            while (lastNameFriend.equalsIgnoreCase("") || lastNameFriend == null || !Pattern.matches("[a-zA-Z]+", lastNameFriend)) {
-                System.out.println("Please enter a last name:");
-                lastNameFriend = keyIn.next().trim();
-            }
-            lastNameFriend = lastNameFriend.substring(0, 1).toUpperCase() + lastNameFriend.substring(1).toLowerCase();
+            // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter friend's last name: ");
+                lastNameFriend = keyIn.next().trim().toUpperCase();
+            } while (lastNameFriend == null || lastNameFriend.equalsIgnoreCase(""));
 
             //query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
@@ -279,12 +267,16 @@ public class DatabaseConnection {
             resultSet.close();
         } catch (SQLException e) {
             int errorCode = e.getErrorCode();
-            if (errorCode == 20001) {
-                System.out.println("Friendship already pending");
-            } else if (errorCode == 20002) {
-                System.out.println("Friendship already established");
-            } else {
-                e.printStackTrace();
+            switch (errorCode) {
+                case 20001:
+                    System.out.println("Friendship already pending");
+                    break;
+                case 20002:
+                    System.out.println("Friendship already established");
+                    break;
+                default:
+                    e.printStackTrace();
+                    break;
             }
         } catch (Exception e) {
 
@@ -317,5 +309,4 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
-
 }
