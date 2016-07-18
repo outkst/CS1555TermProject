@@ -6,7 +6,7 @@ import java.util.Scanner;
 /**
  *
  * @author Kyle Monto (kwm19@pitt.edu) | Joe Meszar (jwm54@pitt.edu)
- * 
+ *
  * @see <a href="https://github.com/outkst/CS1555TermProject">https://github.com/outkst/CS1555TermProject</a>
  */
 public class FaceSpace {
@@ -94,7 +94,7 @@ public class FaceSpace {
                 }
             }
         } catch (SQLException sQLException) {
-            
+
         } finally {
             System.out.println("closing connection");
              db.closeConnection();
