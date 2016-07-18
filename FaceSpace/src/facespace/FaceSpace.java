@@ -42,11 +42,11 @@ public class FaceSpace {
                         break;
                     case "C":
                         System.out.println("establishFriendship");
-//                establishFriendship();
+                        db.establishFriendship();
                         break;
                     case "D":
                         System.out.println("displayFriends");
-//                displayFriends();
+                        db.displayFriends();
                         break;
                     case "E":
                         System.out.println("createGroup");
