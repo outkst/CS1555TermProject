@@ -7,7 +7,8 @@ import java.util.Scanner;
  *
  * @author Kyle Monto (kwm19@pitt.edu) | Joe Meszar (jwm54@pitt.edu)
  *
- * @see <a href="https://github.com/outkst/CS1555TermProject">https://github.com/outkst/CS1555TermProject</a>
+ * @see
+ * <a href="https://github.com/outkst/CS1555TermProject">https://github.com/outkst/CS1555TermProject</a>
  */
 public class FaceSpace {
 
@@ -57,28 +58,28 @@ public class FaceSpace {
                         db.addToGroup();
                         break;
                     case "G":
-                        System.out.println("establishFriendship");
-//                sendMessageToUser();
+                        System.out.println("sendMessageToUser");
+                        db.sendMessageToUser();
                         break;
                     case "H":
                         System.out.println("sendMessageToGroup");
-//                sendMessageToGroup();
+                        db.sendMessageToGroup();
                         break;
                     case "I":
                         System.out.println("displayMessages");
-//                displayMessages();
+                        db.displayMessages();
                         break;
                     case "J":
                         System.out.println("displayNewMessages");
-//                displayNewMessages();
+                        db.displayNewMessages();
                         break;
                     case "K":
                         System.out.println("searchForUser");
-//                searchForUser();
+                        db.searchForUser();
                         break;
                     case "L":
                         System.out.println("threeDegrees");
-//                threeDegrees();
+                        db.threeDegrees();
                         break;
                     case "M":
                         System.out.println("topMessagers");
@@ -97,7 +98,7 @@ public class FaceSpace {
 
         } finally {
             System.out.println("closing connection");
-             db.closeConnection();
+            db.closeConnection();
         }
     }
 }
