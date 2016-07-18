@@ -21,17 +21,17 @@ public class DatabaseConnection {
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "kwm19";
-        String password = "3841077";
+        String username = "";
+        String password = "";
 
         // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
 
         // get the username and password
-//        System.out.println("Please enter DB username: ");
-//        username = keyIn.next().toLowerCase();
-//        System.out.println("Please enter DB password: ");
-//        password = keyIn.next();
+        System.out.println("Please enter DB username: ");
+        username = keyIn.next().toLowerCase();
+        System.out.println("Please enter DB password: ");
+        password = keyIn.next();
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
