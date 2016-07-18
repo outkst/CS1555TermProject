@@ -383,6 +383,7 @@ public class DatabaseConnection {
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", userID, friendID));
 
+            //Select the current status of a friendship between the 2 users
             query = "SELECT * FROM FRIENDSHIPS WHERE USERID = ? AND FRIENDID = ?";
 
             prepStatement = connection.prepareStatement(query);
@@ -394,14 +395,16 @@ public class DatabaseConnection {
 
             //normally insert userid, friendid, then friendid, userid
             boolean oppositeDirection = false;
-
+            //if resultSet has a next then there is a friendship present
             if (resultSet.next()) {
-                if (resultSet.getInt(2) == 0) {
+                //if the result is 0 then its pending
+                int status = resultSet.getInt(3);
+                if (status == 0) {
                     System.out.println("Friendship is pending");
                     //carry out from the opposite direction
                     oppositeDirection = true;
 
-                } else if (resultSet.getInt(2) == 1) {
+                } else if (status == 1) { //otherwise its already established
                     System.out.println("Friendship is already established");
                     //quit operation
                     return;
@@ -545,7 +548,6 @@ public class DatabaseConnection {
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d}", userID));
 
-
             //query to display friends
             query = "SELECT U.FNAME AS FIRSTNAME,\n"
                     + "U.LNAME AS LASTNAME,\n"
@@ -576,6 +578,339 @@ public class DatabaseConnection {
             e.printStackTrace();
         } catch (Exception e) {
 
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+            }
+        }
+    }
+
+    /**
+     * Adds a new group to the database system.
+     */
+    public void createGroup() {
+        try {
+            //initialize input variables
+            String groupName = null;
+            String description = null;
+            String limitS = null;
+            int limitI = 0;
+
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the firstName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter a group name:");
+                groupName = keyIn.nextLine().trim().toUpperCase();
+            } while (groupName == null || groupName.equalsIgnoreCase(""));
+
+            // get the lastName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter a description for the group:");
+                description = keyIn.nextLine().trim();
+            } while (description == null || description.equalsIgnoreCase(""));
+
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter a membership limit: ");
+                limitS = keyIn.next().trim();
+
+            } while (limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS));
+
+            limitI = Integer.parseInt(limitS);
+            if (limitI <= 0) {
+                System.out.println("Group membership limit must be greater than 0");
+                return;
+            }
+
+            // show the user input
+            System.out.println(String.format("Group Name: {%s} description: {%s} limit: {%s}", groupName, description, limitS));
+
+            //Insert query statement
+            query = "INSERT INTO GROUPS (NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (?, ?, ?, current_timestamp)";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+
+            //Set parameters of the insert statement
+            prepStatement.setString(1, groupName);
+            prepStatement.setString(2, description);
+            prepStatement.setInt(3, limitI);
+
+            //execute the insert
+            prepStatement.executeUpdate();
+
+            // get the new list of users
+            statement = connection.createStatement(); //create an instance
+            query = "Select * FROM groups";
+            resultSet = statement.executeQuery(query);
+
+            // display the new list of users
+            System.out.println("\nAfter the insert, data is...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+            }
+        }
+    }
+
+    /**
+     * Adds a new user to a group in the database system.
+     */
+    public void addToGroup() {
+        try {
+            //initialize input variables
+            String firstName = null;
+            String lastName = null;
+            String groupName = null;
+            int userID = 0;
+            int groupID = 0;
+
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the firstName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter a first name:");
+                firstName = keyIn.next().trim().toUpperCase();
+            } while (firstName == null || firstName.equalsIgnoreCase(""));
+
+            // get the lastName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter a last name:");
+                lastName = keyIn.next().trim().toUpperCase();
+            } while (lastName == null || lastName.equalsIgnoreCase(""));
+
+            //make sure user exists
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+
+            prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setString(1, firstName);
+            prepStatement.setString(2, lastName);
+
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // get the groupName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter a group name:");
+                groupName = keyIn.nextLine().trim().toUpperCase();
+            } while (groupName == null || groupName.equalsIgnoreCase(""));
+
+            //make sure group exists
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM GROUPS WHERE UPPER(NAME) = ?";
+
+            prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setString(1, groupName);
+
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No Group Found");
+            } else {
+                groupID = resultSet.getInt(1);
+            }
+
+            // show the user input
+            System.out.println(String.format("User ID: {%d} Group ID: {%d}", userID, groupID));
+
+            //Insert query statement
+            query = "INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (?, ?, current_timestamp)";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+
+            //Set parameters of the insert statement
+            prepStatement.setInt(1, groupID);
+            prepStatement.setInt(2, userID);
+
+            //execute the insert into groupmembers
+            prepStatement.executeUpdate();
+
+            query = "SELECT * FROM GROUPMEMBERS WHERE GROUPID = ? AND USERID = ?";
+            prepStatement = connection.prepareStatement(query); //create an instance
+
+            prepStatement.setInt(1, groupID);
+            prepStatement.setInt(2, userID);
+
+            //execute query to display result set
+            resultSet = prepStatement.executeQuery();
+
+            // display the new list of users
+            System.out.println("\nAfter the insert, data is...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3));
+                counter++;
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            int errorCode = e.getErrorCode();
+            switch (errorCode) {
+                case 20000:
+                    System.out.println("Group Membership limit is already met");
+                    break;
+                default:
+                    e.printStackTrace();
+                    break;
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else if (e.getMessage().equals("No Group Found")) {
+                System.out.println("The group name you entered does not exist");
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+            }
+        }
+    }
+
+    //method to log in the user by updating their last login to the current time stamp
+    public void logInUser() {
+        try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+            String firstName = null;
+            String lastName = null;
+
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter the user's first name: ");
+                firstName = keyIn.next().trim().toUpperCase();
+            } while (firstName == null || firstName.equalsIgnoreCase(""));
+
+            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter the user's last name: ");
+                lastName = keyIn.next().trim().toUpperCase();
+            } while (lastName.equalsIgnoreCase("") || lastName == null);
+
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+
+            prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setString(1, firstName);
+            prepStatement.setString(2, lastName);
+
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d}", userID));
+
+            //Insert statement for establishing pending friendship
+            query = "UPDATE USERS \n"
+                    + "SET LASTLOGIN = CURRENT_TIMESTAMP\n"
+                    + "WHERE ID = ?";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+
+            //Set parameters of of insert statement
+            prepStatement.setInt(1, userID);
+            //execute the UPDATE to log in the user
+            prepStatement.executeUpdate();
+
+            //just a query to show that the row was inserted
+            query = "select id, fname, lname, lastlogin\n"
+                    + "from users\n"
+                    + "where id = ?";
+            prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setInt(1, userID);
+
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nAfter the update, data is...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4));
+                counter++;
+            }
+            resultSet.close();
+        } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {

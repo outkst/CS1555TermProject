@@ -22,7 +22,7 @@ public class FaceSpace {
             String input = "";
             while (!input.equals("Q")) {
                 System.out.println("What would you like to do? (Enter q to exit)\n"
-                        + "A - Create a User \t\t\t H - Send Group a Message \n"
+                        + "A - Create a User \t\t\t H - Send Group a Message \t\t\t O - Log in User \n"
                         + "B - Initiate a friendship \t\t I - Display Messages for User \n"
                         + "C - Establish a friendship \t\t J - Display New Messages for User\n"
                         + "D - Display User's friends \t\t K - Search for User\n"
@@ -50,11 +50,11 @@ public class FaceSpace {
                         break;
                     case "E":
                         System.out.println("createGroup");
-//                createGroup();
+                        db.createGroup();
                         break;
                     case "F":
                         System.out.println("addToGroup");
-//                addToGroup();
+                        db.addToGroup();
                         break;
                     case "G":
                         System.out.println("establishFriendship");
@@ -88,6 +88,9 @@ public class FaceSpace {
                         System.out.println("dropUser");
 //                dropUser();
                         break;
+                    case "O":
+                        System.out.println("logInUser");
+                        db.logInUser();
                 }
             }
         } catch (SQLException sQLException) {
