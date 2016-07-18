@@ -91,15 +91,15 @@ public class DatabaseConnection {
 
             // get the date of birth (DOB) and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.println("Enter a valid date of birth (DD-MON-YY): ");
+                System.out.println("Enter a valid date of birth (DD-MON-YYYY): ");
                 dateOfBirth = keyIn.next().trim().toUpperCase();
-            } while (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{2}", dateOfBirth));
+            } while (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{4}", dateOfBirth));
 
             // show the user input
             System.out.println(String.format("First Name: {%s} LastName: {%s} Email: {%s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
 
             //Insert query statement
-            query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YY'), NULL, current_timestamp)";
+            query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YYYY'), NULL, current_timestamp)";
 
             //Create the prepared statement
             prepStatement = connection.prepareStatement(query);
@@ -181,7 +181,7 @@ public class DatabaseConnection {
             do {
                 System.out.println("Please enter the user's last name: ");
                 lastNameUser = keyIn.next().trim().toUpperCase();
-            } while (lastNameUser.equalsIgnoreCase("") || lastNameUser == null);
+            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
