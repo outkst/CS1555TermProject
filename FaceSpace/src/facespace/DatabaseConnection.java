@@ -154,8 +154,7 @@ public class DatabaseConnection {
 
     /**
      * *
-     * Creates a pending friendship from one user to another inside the
-     * database.
+     * Creates a pending friendship from one user to another inside the database.
      */
     public void initiateFriendship() {
         try {
@@ -307,8 +306,7 @@ public class DatabaseConnection {
 
     /**
      * *
-     * Creates an established friendship from one user to another inside the
-     * database.
+     * Creates an established friendship from one user to another inside the database.
      */
     public void establishFriendship() {
         try {
@@ -334,7 +332,7 @@ public class DatabaseConnection {
             do {
                 System.out.println("Please enter the user's last name: ");
                 lastNameUser = keyIn.next().trim().toUpperCase();
-            } while (lastNameUser.equalsIgnoreCase("") || lastNameUser == null);
+            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
@@ -526,7 +524,7 @@ public class DatabaseConnection {
             do {
                 System.out.println("Please enter the user's last name: ");
                 lastNameUser = keyIn.next().trim().toUpperCase();
-            } while (lastNameUser.equalsIgnoreCase("") || lastNameUser == null);
+            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
@@ -854,7 +852,7 @@ public class DatabaseConnection {
             do {
                 System.out.println("Please enter the user's last name: ");
                 lastName = keyIn.next().trim().toUpperCase();
-            } while (lastName.equalsIgnoreCase("") || lastName == null);
+            } while (lastName == null || lastName.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
@@ -1272,7 +1270,7 @@ public class DatabaseConnection {
             do {
                 System.out.println("Please enter the user's last name: ");
                 lastNameUser = keyIn.next().trim().toUpperCase();
-            } while (lastNameUser.equalsIgnoreCase("") || lastNameUser == null);
+            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
@@ -1368,7 +1366,7 @@ public class DatabaseConnection {
             do {
                 System.out.println("Please enter the user's last name: ");
                 lastNameUser = keyIn.next().trim().toUpperCase();
-            } while (lastNameUser.equalsIgnoreCase("") || lastNameUser == null);
+            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
@@ -1652,8 +1650,8 @@ public class DatabaseConnection {
             LinkedList currentPath = new LinkedList();
             currentPath.add(startID);
             int degrees = 1;
-            while(resultSet.next() || !connections.isEmpty()){
-                if (resultSet.getInt(1) == endID){
+            while (resultSet.next() || !connections.isEmpty()) {
+                if (resultSet.getInt(1) == endID) {
                     currentPath.add(resultSet.getInt(1));
                     break;
                     //completely found
@@ -1661,21 +1659,18 @@ public class DatabaseConnection {
                     //add connection to list
                     connections.add(resultSet.getInt(1));
                 }
-                if(resultSet.isLast() && !connections.isEmpty()){
-                    if(currentPath.size() > 1){
+                if (resultSet.isLast() && !connections.isEmpty()) {
+                    if (currentPath.size() > 1) {
                         currentPath.removeLast();
                     }
                     int nextSearch = (int) connections.removeFirst();
                     prepStatement.setInt(1, nextSearch);
                     prepStatement.executeQuery();
                     currentPath.add(nextSearch);
-                    
-                    degrees++;
-                } 
-            }
-            
 
-            
+                    degrees++;
+                }
+            }
 
             System.out.println("\nAfter the insert, data is...\n");
             int counter = 1;
