@@ -20,17 +20,17 @@ public class DatabaseConnection {
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "";
-        String password = "";
+        String username = "kwm19";
+        String password = "3841077";
 
         // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
 
         // get the username and password
-        System.out.println("Please enter DB username: ");
-        username = keyIn.next().toLowerCase();
-        System.out.println("Please enter DB password: ");
-        password = keyIn.next();
+//        System.out.println("Please enter DB username: ");
+//        username = keyIn.next().toLowerCase();
+//        System.out.println("Please enter DB password: ");
+//        password = keyIn.next();
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
@@ -155,7 +155,8 @@ public class DatabaseConnection {
 
     /**
      * *
-     * Creates a pending friendship from one user to another inside the database.
+     * Creates a pending friendship from one user to another inside the
+     * database.
      */
     public void initiateFriendship() {
         try {
@@ -307,7 +308,8 @@ public class DatabaseConnection {
 
     /**
      * *
-     * Creates an established friendship from one user to another inside the database.
+     * Creates an established friendship from one user to another inside the
+     * database.
      */
     public void establishFriendship() {
         try {
@@ -1054,7 +1056,8 @@ public class DatabaseConnection {
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4) + ", "
                         + resultSet.getString(5) + ", "
-                        + resultSet.getString(6));
+                        + resultSet.getString(6) + ", "
+                        + resultSet.getString(7));
                 counter++;
             }
             resultSet.close();
@@ -1133,7 +1136,7 @@ public class DatabaseConnection {
             // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter recipient group name: ");
-                groupName = keyIn.next().trim().toUpperCase();
+                groupName = keyIn.nextLine().trim().toUpperCase();
             } while (groupName == null || groupName.equalsIgnoreCase(""));
 
             //make sure group exists
@@ -1641,9 +1644,23 @@ public class DatabaseConnection {
                     + "AND APPROVED = 1\n"
                     + "ORDER BY FRIENDID";
 
-            //Create the prepared statement
-            prepStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE);
+            String countQuery = "SELECT COUNT(FRIENDID) FROM\n"
+                    + "FRIENDSHIPS \n"
+                    + "WHERE USERID = ?\n"
+                    + "AND APPROVED = 1\n"
+                    + "ORDER BY FRIENDID";
 
+            //get the number of rows returned
+            prepStatement = connection.prepareStatement(countQuery);
+            prepStatement.setInt(1, startID);
+            resultSet = prepStatement.executeQuery();
+            int numRows = 0;
+            while (resultSet.next()) {
+                numRows = resultSet.getInt(1);
+            }
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
             //Set parameters of of insert statement
             prepStatement.setInt(1, startID);
             //execute the insert
@@ -1652,52 +1669,57 @@ public class DatabaseConnection {
             LinkedList currentPath = new LinkedList();
             currentPath.add(startID);
             int degrees = 1;
-            while (resultSet.next() || !connections.isEmpty()) {
-                if (resultSet.getInt(1) == endID) {
-                    currentPath.add(resultSet.getInt(1));
-                    break;
-                    //completely found
-                } else if (!connections.contains(resultSet.getInt(1))) {
-                    //add connection to list
-                    connections.add(resultSet.getInt(1));
+            int count = 0;
+            while (true || !connections.isEmpty()) {
+                if (resultSet.next()) {
+                    if (resultSet.getInt(1) == endID) {
+                        currentPath.add(resultSet.getInt(1));
+                        break;
+                        //completely found
+                    } else if (!connections.contains(resultSet.getInt(1)) && resultSet.getInt(1) != startID) {
+                        //add connection to list
+                        connections.add(resultSet.getInt(1));
+                    }
+                    count++;
                 }
-                if (resultSet.isLast() && !connections.isEmpty()) {
+                //if you are on the last row, remove the last user that did not 
+                //work, grab a new userID and get all of their friends
+                if (count == numRows && !connections.isEmpty()) {
                     if (currentPath.size() > 1) {
                         currentPath.removeLast();
+                        degrees--;
                     }
                     int nextSearch = (int) connections.removeFirst();
+                    //get the number of rows for this user
+                    prepStatement = connection.prepareStatement(countQuery);
                     prepStatement.setInt(1, nextSearch);
-                    prepStatement.executeQuery();
+                    resultSet = prepStatement.executeQuery();
+                    while (resultSet.next()) {
+                        numRows = resultSet.getInt(1);
+                    }
+                    count = 0;
+                    //get the list of friendIDs for the next user
+                    prepStatement = connection.prepareStatement(query);
+                    prepStatement.setInt(1, nextSearch);
+                    resultSet = prepStatement.executeQuery();
                     currentPath.add(nextSearch);
 
                     degrees++;
+                } else if (count == numRows && connections.isEmpty()){
+                    break;
+                    //no dice
+                }
+                if(degrees>3){
+                    break;
+                    //too many degrees
                 }
             }
 
-            System.out.println("\nAfter the insert, data is...\n");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4));
-                counter++;
+            System.out.println("\nPath for three degrees is ... ");
+            for (int i = 0; i < currentPath.size(); i++) {
+                System.out.println(currentPath.get(i));
             }
             resultSet.close();
-        } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            switch (errorCode) {
-                case 20001:
-                    System.out.println("Friendship already pending");
-                    break;
-                case 20002:
-                    System.out.println("Friendship already established");
-                    break;
-                default:
-                    e.printStackTrace();
-                    break;
-            }
         } catch (Exception e) {
 
             if (e.getMessage().equals("No User Found")) {
