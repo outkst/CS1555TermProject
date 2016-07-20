@@ -148,7 +148,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -278,7 +278,7 @@ public class DatabaseConnection {
                     System.out.println("Friendship already established");
                     break;
                 default:
-                    e.printStackTrace();
+                    System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
                     break;
             }
         } catch (Exception e) {
@@ -300,7 +300,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -478,7 +478,7 @@ public class DatabaseConnection {
                     System.out.println("Friendship already established");
                     break;
                 default:
-                    e.printStackTrace();
+                    System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
                     break;
             }
         } catch (Exception e) {
@@ -500,7 +500,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -573,8 +573,7 @@ public class DatabaseConnection {
             }
             resultSet.close();
         } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            e.printStackTrace();
+            System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
         } catch (Exception e) {
 
             if (e.getMessage().equals("No User Found")) {
@@ -594,7 +593,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -688,7 +687,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -804,7 +803,7 @@ public class DatabaseConnection {
                     System.out.println("Group Membership limit is already met");
                     break;
                 default:
-                    e.printStackTrace();
+                    System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
                     break;
             }
         } catch (Exception e) {
@@ -827,7 +826,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -927,7 +926,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -1077,7 +1076,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -1198,9 +1197,10 @@ public class DatabaseConnection {
 
             //execute the insert
             if (groupHasMember) {
-//                prepStatement.executeBatch();
-////                connection.commit();
-//                connection.setAutoCommit(true);
+                prepStatement.executeQuery();
+                //prepStatement.executeBatch();
+                //connection.commit();
+                //connection.setAutoCommit(true);
             } else {
                 System.out.println("The group you entered has no members");
                 return;
@@ -1247,7 +1247,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -1323,8 +1323,7 @@ public class DatabaseConnection {
             }
             resultSet.close();
         } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            e.printStackTrace();
+            System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
@@ -1343,7 +1342,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -1459,9 +1458,8 @@ public class DatabaseConnection {
                 counter++;
             }
             resultSet.close();
-        } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println(String.format("\nSQL Error: %s", ex.getMessage()));
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
@@ -1480,7 +1478,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -1535,9 +1533,8 @@ public class DatabaseConnection {
             }
 
             resultSet.close();
-        } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println(String.format("\nSQL Error: %s", ex.getMessage()));
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
@@ -1556,7 +1553,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
@@ -1695,7 +1692,7 @@ public class DatabaseConnection {
                     System.out.println("Friendship already established");
                     break;
                 default:
-                    e.printStackTrace();
+                    System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
                     break;
             }
         } catch (Exception e) {
@@ -1717,7 +1714,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println("Cannot close Statement. Machine error: " + e.toString());
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
             }
         }
     }
