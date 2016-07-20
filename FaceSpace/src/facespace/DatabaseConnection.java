@@ -20,17 +20,17 @@ public class DatabaseConnection {
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "kwm19";
-        String password = "3841077";
+        String username = "";
+        String password = "";
 
         // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
 
         // get the username and password
-//        System.out.println("Please enter DB username: ");
-//        username = keyIn.next().toLowerCase();
-//        System.out.println("Please enter DB password: ");
-//        password = keyIn.next();
+        System.out.println("Please enter DB username: ");
+        username = keyIn.next().toLowerCase();
+        System.out.println("Please enter DB password: ");
+        password = keyIn.next();
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
@@ -1702,11 +1702,11 @@ public class DatabaseConnection {
                     currentPath.add(nextSearch);
 
                     degrees++;
-                } else if (count == numRows && connections.isEmpty()){
+                } else if (count == numRows && connections.isEmpty()) {
                     break;
                     //no dice
                 }
-                if(degrees>3){
+                if (degrees > 3) {
                     break;
                     //too many degrees
                 }
@@ -1730,6 +1730,101 @@ public class DatabaseConnection {
                     System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
                     break;
             }
+        } catch (Exception e) {
+
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Cannot close Statement. Machine error: " + e.getMessage());
+            }
+        }
+    }
+
+    // Method to display the top messagers for the past k months and display x results
+    // current query treats all messages equally (aka no special consideration for
+    // group messages) So if a user sends 1 message to a group of 10 people, that
+    // would count as them sending 10 messages
+    public void topMessagers() {
+        try {
+            //initialize input variables for User and Friend info
+            int numMonths = 0;
+            int numResults = 0;
+            String numberOfMonths = null;
+            String numberOfResults = null;
+
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter the number of months: ");
+                numberOfMonths = keyIn.next().trim();
+            } while (numberOfMonths == null || numberOfMonths.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfMonths));
+
+            numMonths = Integer.parseInt(numberOfMonths);
+            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.println("Please enter the number of results you would like to see: ");
+                numberOfResults = keyIn.next().trim().toUpperCase();
+            } while (numberOfResults == null || numberOfResults.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfResults));
+
+            numResults = Integer.parseInt(numberOfResults);
+            //query to make sure user exists and get their ID
+            query = "SELECT U.FNAME, U.LNAME, M.MESSAGE_COUNT FROM\n"
+                    + "(SELECT S.USERID AS USER_ID, S.TOTAL_SENT + R.TOTAL_RECEIVED AS MESSAGE_COUNT \n"
+                    + "FROM \n"
+                    + "(\n"
+                    + "SELECT SENDERID AS USERID, COUNT(*) AS TOTAL_SENT\n"
+                    + "FROM MESSAGES \n"
+                    + "WHERE DATECREATED > CURRENT_TIMESTAMP - NUMTOYMINTERVAL(?, 'MONTH')\n"
+                    + "GROUP BY SENDERID\n"
+                    + "ORDER BY SENDERID\n"
+                    + ") S, \n"
+                    + "(\n"
+                    + "SELECT RECIPIENTID AS USERID, COUNT(*) AS TOTAL_RECEIVED\n"
+                    + "FROM MESSAGES \n"
+                    + "WHERE DATECREATED > CURRENT_TIMESTAMP - NUMTOYMINTERVAL(?, 'MONTH')\n"
+                    + "GROUP BY RECIPIENTID\n"
+                    + "ORDER BY RECIPIENTID\n"
+                    + ") R\n"
+                    + "WHERE S.USERID = R.USERID\n"
+                    + "ORDER BY MESSAGE_COUNT DESC) M, USERS U\n"
+                    + "WHERE M.USER_ID = U.ID AND ROWNUM <= ?";
+
+            prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setString(1, numberOfMonths);
+            prepStatement.setString(2, numberOfMonths);
+            prepStatement.setInt(3, numResults);
+
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nAfter the insert, data is...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3));
+                counter++;
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
         } catch (Exception e) {
 
             if (e.getMessage().equals("No User Found")) {

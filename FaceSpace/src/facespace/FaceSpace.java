@@ -83,7 +83,7 @@ public class FaceSpace {
                         break;
                     case "M":
                         System.out.println("topMessagers");
-//                topMessagers();
+                    db.topMessagers();
                         break;
                     case "N":
                         System.out.println("dropUser");
