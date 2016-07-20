@@ -1,7 +1,6 @@
 package facespace;
 
 import java.sql.*;  //import the file containing definitions for the parts
-import java.text.ParseException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.*;
@@ -133,6 +132,8 @@ public class DatabaseConnection {
             }
             resultSet.close();
             statement.close();
+        } catch (SQLException e) {
+            System.out.println(String.format("\nSQL Error: %s", e.getMessage()));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -1173,7 +1174,7 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
 
             //Insert statement for establishing pending friendship
-            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, current_timestamp)";
+            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED) VALUES (?, ?, ?, ?, ?, current_timestamp)";
 
             //Create the prepared statement 
             //I tried to do a batch update, but had conflicts with
@@ -1190,6 +1191,7 @@ public class DatabaseConnection {
                 prepStatement.setString(2, messageSubject);
                 prepStatement.setString(3, messageBody);
                 prepStatement.setInt(4, resultSet.getInt(1));
+                prepStatement.setInt(5, groupID);
                 prepStatement.executeUpdate();
                 groupHasMember = true;
             }
