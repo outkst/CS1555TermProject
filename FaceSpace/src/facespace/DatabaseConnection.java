@@ -28,9 +28,9 @@ public class DatabaseConnection {
 
         // get the username and password
         System.out.println("Please enter DB username: ");
-        username = keyIn.next().toLowerCase();
+        username = keyIn.nextLine().toLowerCase();
         System.out.println("Please enter DB password: ");
-        password = keyIn.next();
+        password = keyIn.nextLine();
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
@@ -73,25 +73,25 @@ public class DatabaseConnection {
             // get the firstName and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter a first name:");
-                firstName = keyIn.next().trim().toUpperCase();
+                firstName = keyIn.nextLine().trim().toUpperCase();
             } while (firstName == null || firstName.equalsIgnoreCase(""));
 
             // get the lastName and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter a last name:");
-                lastName = keyIn.next().trim().toUpperCase();
+                lastName = keyIn.nextLine().trim().toUpperCase();
             } while (lastName == null || lastName.equalsIgnoreCase(""));
 
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter a valid email address: ");
-                email = keyIn.next().trim().toLowerCase();
+                email = keyIn.nextLine().trim().toLowerCase();
             } while (email == null || email.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", email));
 
             // get the date of birth (DOB) and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Enter a valid date of birth (DD-MON-YYYY): ");
-                dateOfBirth = keyIn.next().trim().toUpperCase();
+                dateOfBirth = keyIn.nextLine().trim().toUpperCase();
             } while (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{4}", dateOfBirth));
 
             // show the user input
@@ -175,13 +175,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's first name: ");
-                firstNameUser = keyIn.next().trim().toUpperCase();
+                firstNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's last name: ");
-                lastNameUser = keyIn.next().trim().toUpperCase();
+                lastNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -204,13 +204,13 @@ public class DatabaseConnection {
             // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter friend's first name: ");
-                firstNameFriend = keyIn.next().trim().toUpperCase();
+                firstNameFriend = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameFriend == null || firstNameFriend.equalsIgnoreCase(""));
 
             // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter friend's last name: ");
-                lastNameFriend = keyIn.next().trim().toUpperCase();
+                lastNameFriend = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameFriend == null || lastNameFriend.equalsIgnoreCase(""));
 
             //query to make sure friend exists and get their ID
@@ -328,13 +328,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's first name: ");
-                firstNameUser = keyIn.next().trim().toUpperCase();
+                firstNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's last name: ");
-                lastNameUser = keyIn.next().trim().toUpperCase();
+                lastNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -357,13 +357,13 @@ public class DatabaseConnection {
             // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter friend's first name: ");
-                firstNameFriend = keyIn.next().trim().toUpperCase();
+                firstNameFriend = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameFriend == null || firstNameFriend.equalsIgnoreCase(""));
 
             // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter friend's last name: ");
-                lastNameFriend = keyIn.next().trim().toUpperCase();
+                lastNameFriend = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameFriend == null || lastNameFriend.equalsIgnoreCase(""));
 
             //query to make sure friend exists and get their ID
@@ -520,13 +520,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's first name: ");
-                firstNameUser = keyIn.next().trim().toUpperCase();
+                firstNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's last name: ");
-                lastNameUser = keyIn.next().trim().toUpperCase();
+                lastNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -629,7 +629,7 @@ public class DatabaseConnection {
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter a membership limit: ");
-                limitS = keyIn.next().trim();
+                limitS = keyIn.nextLine().trim();
 
             } while (limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS));
 
@@ -712,13 +712,13 @@ public class DatabaseConnection {
             // get the firstName and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter a first name:");
-                firstName = keyIn.next().trim().toUpperCase();
+                firstName = keyIn.nextLine().trim().toUpperCase();
             } while (firstName == null || firstName.equalsIgnoreCase(""));
 
             // get the lastName and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter a last name:");
-                lastName = keyIn.next().trim().toUpperCase();
+                lastName = keyIn.nextLine().trim().toUpperCase();
             } while (lastName == null || lastName.equalsIgnoreCase(""));
 
             //make sure user exists
@@ -847,13 +847,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's first name: ");
-                firstName = keyIn.next().trim().toUpperCase();
+                firstName = keyIn.nextLine().trim().toUpperCase();
             } while (firstName == null || firstName.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's last name: ");
-                lastName = keyIn.next().trim().toUpperCase();
+                lastName = keyIn.nextLine().trim().toUpperCase();
             } while (lastName == null || lastName.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -954,13 +954,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the sender's first name: ");
-                firstNameSender = keyIn.next().trim().toUpperCase();
+                firstNameSender = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameSender == null || firstNameSender.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the sender's last name: ");
-                lastNameSender = keyIn.next().trim().toUpperCase();
+                lastNameSender = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameSender == null || lastNameSender.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -983,13 +983,13 @@ public class DatabaseConnection {
             // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter recipient's first name: ");
-                firstNameRecip = keyIn.next().trim().toUpperCase();
+                firstNameRecip = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameRecip == null || firstNameRecip.equalsIgnoreCase(""));
 
             // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter recipient's last name: ");
-                lastNameRecip = keyIn.next().trim().toUpperCase();
+                lastNameRecip = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameRecip == null || lastNameRecip.equalsIgnoreCase(""));
 
             //query to make sure friend exists and get their ID
@@ -1106,13 +1106,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the sender's first name: ");
-                firstNameSender = keyIn.next().trim().toUpperCase();
+                firstNameSender = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameSender == null || firstNameSender.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the sender's last name: ");
-                lastNameSender = keyIn.next().trim().toUpperCase();
+                lastNameSender = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameSender == null || lastNameSender.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -1268,13 +1268,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's first name: ");
-                firstNameUser = keyIn.next().trim().toUpperCase();
+                firstNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's last name: ");
-                lastNameUser = keyIn.next().trim().toUpperCase();
+                lastNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -1363,13 +1363,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's first name: ");
-                firstNameUser = keyIn.next().trim().toUpperCase();
+                firstNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's last name: ");
-                lastNameUser = keyIn.next().trim().toUpperCase();
+                lastNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -1578,13 +1578,13 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's first name: ");
-                firstNameStart = keyIn.next().trim().toUpperCase();
+                firstNameStart = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameStart == null || firstNameStart.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the user's last name: ");
-                lastNameStart = keyIn.next().trim().toUpperCase();
+                lastNameStart = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameStart == null || lastNameStart.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
@@ -1607,13 +1607,13 @@ public class DatabaseConnection {
             // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter friend's first name: ");
-                firstNameEnd = keyIn.next().trim().toUpperCase();
+                firstNameEnd = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameEnd == null || firstNameEnd.equalsIgnoreCase(""));
 
             // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter friend's last name: ");
-                lastNameEnd = keyIn.next().trim().toUpperCase();
+                lastNameEnd = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameEnd == null || lastNameEnd.equalsIgnoreCase(""));
 
             //query to make sure friend exists and get their ID
@@ -1772,14 +1772,14 @@ public class DatabaseConnection {
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the number of months: ");
-                numberOfMonths = keyIn.next().trim();
+                numberOfMonths = keyIn.nextLine().trim();
             } while (numberOfMonths == null || numberOfMonths.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfMonths));
 
             numMonths = Integer.parseInt(numberOfMonths);
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.println("Please enter the number of results you would like to see: ");
-                numberOfResults = keyIn.next().trim().toUpperCase();
+                numberOfResults = keyIn.nextLine().trim().toUpperCase();
             } while (numberOfResults == null || numberOfResults.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfResults));
 
             numResults = Integer.parseInt(numberOfResults);
