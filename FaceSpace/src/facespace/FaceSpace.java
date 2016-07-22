@@ -22,7 +22,7 @@ public class FaceSpace {
             db = new DatabaseConnection();
             String input = "";
             while (!input.equals("Q")) {
-                System.out.println("What would you like to do? (Enter q to exit)\n"
+                System.out.println("\nWhat would you like to do? (Enter q to exit)\n"
                         + "A - Create a User \t\t\t H - Send Group a Message \t\t\t O - Log in User \n"
                         + "B - Initiate a friendship \t\t I - Display Messages for User \n"
                         + "C - Establish a friendship \t\t J - Display New Messages for User\n"
