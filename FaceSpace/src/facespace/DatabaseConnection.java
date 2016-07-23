@@ -57,6 +57,246 @@ public class DatabaseConnection {
     
 
     /**
+     * Closes the database connection.
+     */
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+        }
+    }
+    
+    
+    /**
+     * Adds a new user to a group in the database system.
+     */
+    public void addToGroup() {
+        try {
+            //initialize input variables
+            String firstName = null;
+            String lastName = null;
+            String groupName = null;
+            int userID = 0;
+            int groupID = 0;
+
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the firstName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter a first name: ");
+                firstName = keyIn.nextLine().trim().toUpperCase();
+            } while (firstName == null || firstName.equalsIgnoreCase(""));
+
+            // get the lastName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter a last name: ");
+                lastName = keyIn.nextLine().trim().toUpperCase();
+            } while (lastName == null || lastName.equalsIgnoreCase(""));
+
+            //make sure user exists
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+
+            prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setString(1, firstName);
+            prepStatement.setString(2, lastName);
+
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // get the groupName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter a group name: ");
+                groupName = keyIn.nextLine().trim().toUpperCase();
+            } while (groupName == null || groupName.equalsIgnoreCase(""));
+
+            //make sure group exists
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM GROUPS WHERE UPPER(NAME) = ?";
+
+            prepStatement = connection.prepareStatement(query);
+
+            prepStatement.setString(1, groupName);
+
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No Group Found");
+            } else {
+                groupID = resultSet.getInt(1);
+            }
+
+            // show the user input
+            System.out.println(String.format("User ID: {%d} Group ID: {%d}", userID, groupID));
+
+            //Insert query statement
+            query = "INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (?, ?, current_timestamp)";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+
+            //Set parameters of the insert statement
+            prepStatement.setInt(1, groupID);
+            prepStatement.setInt(2, userID);
+
+            //execute the insert into groupmembers
+            prepStatement.executeUpdate();
+
+            query = "SELECT * FROM GROUPMEMBERS WHERE GROUPID = ? AND USERID = ?";
+            prepStatement = connection.prepareStatement(query); //create an instance
+
+            prepStatement.setInt(1, groupID);
+            prepStatement.setInt(2, userID);
+
+            //execute query to display result set
+            resultSet = prepStatement.executeQuery();
+
+            // display the new list of users
+            System.out.println("\nAfter the insert, data is...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3));
+                counter++;
+            }
+        } catch (SQLException e) {
+            int errorCode = e.getErrorCode();
+            switch (errorCode) {
+                case 20000:
+                    System.out.println("Group Membership limit is already met");
+                    break;
+                default:
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+                    break;
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else if (e.getMessage().equals("No Group Found")) {
+                System.out.println("The group name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+    
+
+    /**
+     * Adds a new group to the database system.
+     */
+    public void createGroup() {
+        try {
+            //initialize input variables
+            String groupName = null;
+            String description = null;
+            String limitS = null;
+            int limitI = 0;
+
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the firstName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter a group name: ");
+                groupName = keyIn.nextLine().trim().toUpperCase();
+            } while (groupName == null || groupName.equalsIgnoreCase(""));
+
+            // get the lastName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter a description for the group: ");
+                description = keyIn.nextLine().trim();
+            } while (description == null || description.equalsIgnoreCase(""));
+
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter a membership limit: ");
+                limitS = keyIn.nextLine().trim();
+
+            } while (limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS));
+
+            limitI = Integer.parseInt(limitS);
+            if (limitI <= 0) {
+                System.out.println("Group membership limit must be greater than 0");
+                return;
+            }
+
+            // show the user input
+            System.out.println(String.format("Group Name: {%s} description: {%s} limit: {%s}", groupName, description, limitS));
+
+            //Insert query statement
+            query = "INSERT INTO GROUPS (NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (?, ?, ?, current_timestamp)";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, groupName);
+            prepStatement.setString(2, description);
+            prepStatement.setInt(3, limitI);
+            prepStatement.executeUpdate();
+
+            // get the new list of users
+            statement = connection.createStatement(); //create an instance
+            query = "Select * FROM groups";
+            resultSet = statement.executeQuery(query);
+
+            // display the new list of users
+            System.out.println("\nAfter the insert, data is...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+
+    /**
      * Adds a new user to the database system.
      */
     public void createUser() {
@@ -149,121 +389,59 @@ public class DatabaseConnection {
         }
     }
     
-
+    
     /**
-     * *
-     * Creates a pending friendship from one user to another inside the database.
+     * Displays all of that user's pending, and established, friendships. 
      */
-    public void initiateFriendship() {
+    public void displayFriends() {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
             String firstNameUser = null;
             String lastNameUser = null;
 
-            int friendID = 0;
-            String firstNameFriend = null;
-            String lastNameFriend = null;
-
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            
-            /**
-             * GET THE FIRSTNAME/LASTNAME OF THE USER INITIATING A FRIENDSHIP
-             * 
-             */
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's first name: ");
                 firstNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
-            // get the lastName of User and normalize (uppercase with no leading/trailing spaces)
+            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's last name: ");
                 lastNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
-            // query to make sure user exists and get their ID
+            //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, firstNameUser);
             prepStatement.setString(2, lastNameUser);
             resultSet = prepStatement.executeQuery();
 
-            // check if result set is empty and alert user, otherwise get the ID of the user
+            //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("The user name entered does not exist");
+                throw new Exception("No User Found");
             } else {
                 userID = resultSet.getInt(1);
             }
 
-            
-            /**
-             * GET THE FIRSTNAME/LASTNAME OF THE USER TO FRIEND
-             * 
-             */
-            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter friend's first name: ");
-                firstNameFriend = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameFriend == null || firstNameFriend.equalsIgnoreCase(""));
-
-            // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter friend's last name: ");
-                lastNameFriend = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameFriend == null || lastNameFriend.equalsIgnoreCase(""));
-
-            // query to make sure friend exists and get their ID
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameFriend);
-            prepStatement.setString(2, lastNameFriend);
-            resultSet = prepStatement.executeQuery();
-
-            // check if result set is empty and alert user, otherwise get the ID of the user
-            if (!resultSet.next()) {
-                throw new Exception("The friend name entered does not exist");
-            } else {
-                friendID = resultSet.getInt(1);
-            }
-
             // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", userID, friendID));
+            System.out.println(String.format("ID of user: {%d}", userID));
 
-            
-            /**
-             * USE THE USER_ID AND FRIEND_ID TO CREATE A "FRIENDSHIP". THIS DEPENDS ON THE
-             * TRIGGER THAT WAS BUILT, WHICH WILL DO ONE OF TWO THINGS:
-             * 
-             *  1) Create a "Pending Friendship"
-             *  2) Create a "Friendship"
-             * 
-             */
-            // insert statement for establishing pending friendship
-            query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, userID);
-            prepStatement.setInt(2, friendID);
-            prepStatement.executeUpdate();
-
-            
-            /**
-             * GRAB THE INSERTED ROW FROM THE DB AND DISPLAY TO USER.
-             * 
-             */
-            // query to show that the row was inserted
-            query = "SELECT U.FNAME, U.LNAME, F.APPROVED, F.DATEAPPROVED\n"
+            //query to display friends
+            query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                    + "U.LNAME AS LASTNAME,\n"
+                    + "F.APPROVED AS APPROVED,\n"
+                    + "F.DATEAPPROVED AS DATEAPPROVED\n"
                     + "FROM FRIENDSHIPS F, USERS U\n"
-                    + "WHERE ((F.USERID = ? AND F.FRIENDID = ?)\n"
-                    + "OR (F.USERID = ? AND F.FRIENDID = ?))\n"
-                    + "AND F.USERID = U.ID";
+                    + "WHERE F.FRIENDID = U.ID\n"
+                    + "AND F.USERID = ?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
-            prepStatement.setInt(2, friendID);
-            prepStatement.setInt(3, userID);
-            prepStatement.setInt(4, friendID);
             resultSet = prepStatement.executeQuery();
 
             System.out.println("\nAfter the insert, data is...\n");
@@ -277,22 +455,243 @@ public class DatabaseConnection {
                 counter++;
             }
         } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            switch (errorCode) {
-                case 20001:
-                    System.out.println("Friendship already pending");
-                    break;
-                case 20002:
-                    System.out.println("Friendship already established");
-                    break;
-                default:
-                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-                    break;
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+        } catch (Exception e) {
+
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }    
+    
+    
+    /**
+     * Given a user, look up all of the messages sent to that user 
+     *  (either directly or via a group that they belong to).
+     */
+    public void displayMessages() {
+        try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+            String firstNameUser = null;
+            String lastNameUser = null;
+
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter the user's first name: ");
+                firstNameUser = keyIn.nextLine().trim().toUpperCase();
+            } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
+
+            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter the user's last name: ");
+                lastNameUser = keyIn.nextLine().trim().toUpperCase();
+            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
+
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, firstNameUser);
+            prepStatement.setString(2, lastNameUser);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d}", userID));
+
+            //query to display friends
+            query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                    + "  U.LNAME AS LASTNAME,\n"
+                    + "  M.SUBJECT AS SUBJECT,\n"
+                    + "  M.BODY AS BODY,\n"
+                    + "  M.DATECREATED AS DATE_RECEIVED\n"
+                    + "FROM MESSAGES M, USERS U\n"
+                    + "WHERE RECIPIENTID = ? \n"
+                    + "AND U.ID = M.SENDERID\n"
+                    + "ORDER BY DATE_RECEIVED";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nMessages for the users are ...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+        } catch (Exception e) {
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+
+    /**
+     * Given a user, look up all of the messages sent to that user 
+     *  (either directly or via a group that they belong to).
+     */
+    public void displayNewMessages() {
+        try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+            String firstNameUser = null;
+            String lastNameUser = null;
+            Timestamp lastLogin = null;
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+
+            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter the user's first name: ");
+                firstNameUser = keyIn.nextLine().trim().toUpperCase();
+            } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
+
+            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter the user's last name: ");
+                lastNameUser = keyIn.nextLine().trim().toUpperCase();
+            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
+
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, firstNameUser);
+            prepStatement.setString(2, lastNameUser);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d}", userID));
+
+            query = "SELECT LASTLOGIN FROM USERS WHERE ID = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
+
+            //check result set to see whether last log in is null
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                lastLogin = resultSet.getTimestamp(1);
+            }
+
+            if (lastLogin == null) {
+                //query if last login is null, just display all messages
+                System.out.println("No previous login, displaying all messages");
+                query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                        + "  U.LNAME AS LASTNAME,\n"
+                        + "  M.SUBJECT AS SUBJECT,\n"
+                        + "  M.BODY AS BODY,\n"
+                        + "  M.DATECREATED AS DATE_RECEIVED\n"
+                        + "FROM MESSAGES M, USERS U\n"
+                        + "WHERE RECIPIENTID = ? \n"
+                        + "AND U.ID = M.SENDERID\n"
+                        + "ORDER BY DATE_RECEIVED";
+            } else {
+                //query if last login is not null, and will display all message
+                //after the time of last login
+                query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                        + "  U.LNAME AS LASTNAME,\n"
+                        + "  M.SUBJECT AS SUBJECT,\n"
+                        + "  M.BODY AS BODY,\n"
+                        + "  M.DATECREATED AS DATE_RECEIVED\n"
+                        + "FROM MESSAGES M, USERS U\n"
+                        + "WHERE RECIPIENTID = ? \n"
+                        + "AND U.ID = M.SENDERID\n"
+                        + "AND M.DATECREATED > ?\n"
+                        + "ORDER BY DATE_RECEIVED";
+            }
+
+            prepStatement = connection.prepareStatement(query);
+
+            if (lastLogin == null) {
+                //query if last login is null, just display all messages
+                prepStatement.setInt(1, userID);
+            } else {
+                //query if last login is not null, and will display all message
+                //after the time of last login
+                prepStatement.setInt(1, userID);
+                prepStatement.setTimestamp(2, lastLogin);
+
+            }
+
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nMessages for the users are ...\n");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
             
         } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
         } finally {
             try {
                 if (statement != null) {
@@ -310,9 +709,8 @@ public class DatabaseConnection {
         }
     }
     
-
+    
     /**
-     * 
      * Creates an established friendship from one user to another inside the database.
      */
     public void establishFriendship() {
@@ -508,60 +906,121 @@ public class DatabaseConnection {
             }
         }
     }
-
+    
     
     /**
-     * Given a user, look up all of that user's establish and pending friendships. 
+     * Creates a pending friendship from one user to another inside the database.
      */
-    public void displayFriends() {
+    public void initiateFriendship() {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
             String firstNameUser = null;
             String lastNameUser = null;
 
+            int friendID = 0;
+            String firstNameFriend = null;
+            String lastNameFriend = null;
+
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
+            
+            /**
+             * GET THE FIRSTNAME/LASTNAME OF THE USER INITIATING A FRIENDSHIP
+             * 
+             */
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's first name: ");
                 firstNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
 
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
+            // get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's last name: ");
                 lastNameUser = keyIn.nextLine().trim().toUpperCase();
             } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
 
-            //query to make sure user exists and get their ID
+            // query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, firstNameUser);
             prepStatement.setString(2, lastNameUser);
             resultSet = prepStatement.executeQuery();
 
-            //check if result set is empty and alert user, otherwise get the ID of the user
+            // check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("No User Found");
+                throw new Exception("The user name entered does not exist");
             } else {
                 userID = resultSet.getInt(1);
             }
 
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d}", userID));
+            
+            /**
+             * GET THE FIRSTNAME/LASTNAME OF THE USER TO FRIEND
+             * 
+             */
+            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter friend's first name: ");
+                firstNameFriend = keyIn.nextLine().trim().toUpperCase();
+            } while (firstNameFriend == null || firstNameFriend.equalsIgnoreCase(""));
 
-            //query to display friends
-            query = "SELECT U.FNAME AS FIRSTNAME,\n"
-                    + "U.LNAME AS LASTNAME,\n"
-                    + "F.APPROVED AS APPROVED,\n"
-                    + "F.DATEAPPROVED AS DATEAPPROVED\n"
-                    + "FROM FRIENDSHIPS F, USERS U\n"
-                    + "WHERE F.FRIENDID = U.ID\n"
-                    + "AND F.USERID = ?";
+            // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter friend's last name: ");
+                lastNameFriend = keyIn.nextLine().trim().toUpperCase();
+            } while (lastNameFriend == null || lastNameFriend.equalsIgnoreCase(""));
+
+            // query to make sure friend exists and get their ID
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, firstNameFriend);
+            prepStatement.setString(2, lastNameFriend);
+            resultSet = prepStatement.executeQuery();
+
+            // check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("The friend name entered does not exist");
+            } else {
+                friendID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", userID, friendID));
+
+            
+            /**
+             * USE THE USER_ID AND FRIEND_ID TO CREATE A "FRIENDSHIP". THIS DEPENDS ON THE
+             * TRIGGER THAT WAS BUILT, WHICH WILL DO ONE OF TWO THINGS:
+             * 
+             *  1) Create a "Pending Friendship"
+             *  2) Create a "Friendship"
+             * 
+             */
+            // insert statement for establishing pending friendship
+            query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, friendID);
+            prepStatement.executeUpdate();
+
+            
+            /**
+             * GRAB THE INSERTED ROW FROM THE DB AND DISPLAY TO USER.
+             * 
+             */
+            // query to show that the row was inserted
+            query = "SELECT U.FNAME, U.LNAME, F.APPROVED, F.DATEAPPROVED\n"
+                    + "FROM FRIENDSHIPS F, USERS U\n"
+                    + "WHERE ((F.USERID = ? AND F.FRIENDID = ?)\n"
+                    + "OR (F.USERID = ? AND F.FRIENDID = ?))\n"
+                    + "AND F.USERID = U.ID";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, friendID);
+            prepStatement.setInt(3, userID);
+            prepStatement.setInt(4, friendID);
             resultSet = prepStatement.executeQuery();
 
             System.out.println("\nAfter the insert, data is...\n");
@@ -575,240 +1034,22 @@ public class DatabaseConnection {
                 counter++;
             }
         } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-        } catch (Exception e) {
-
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
-            }
-        }
-    }
-
-    /**
-     * Adds a new group to the database system.
-     */
-    public void createGroup() {
-        try {
-            //initialize input variables
-            String groupName = null;
-            String description = null;
-            String limitS = null;
-            int limitI = 0;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get the firstName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a group name: ");
-                groupName = keyIn.nextLine().trim().toUpperCase();
-            } while (groupName == null || groupName.equalsIgnoreCase(""));
-
-            // get the lastName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a description for the group: ");
-                description = keyIn.nextLine().trim();
-            } while (description == null || description.equalsIgnoreCase(""));
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a membership limit: ");
-                limitS = keyIn.nextLine().trim();
-
-            } while (limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS));
-
-            limitI = Integer.parseInt(limitS);
-            if (limitI <= 0) {
-                System.out.println("Group membership limit must be greater than 0");
-                return;
-            }
-
-            // show the user input
-            System.out.println(String.format("Group Name: {%s} description: {%s} limit: {%s}", groupName, description, limitS));
-
-            //Insert query statement
-            query = "INSERT INTO GROUPS (NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (?, ?, ?, current_timestamp)";
-
-            //Create the prepared statement
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, groupName);
-            prepStatement.setString(2, description);
-            prepStatement.setInt(3, limitI);
-            prepStatement.executeUpdate();
-
-            // get the new list of users
-            statement = connection.createStatement(); //create an instance
-            query = "Select * FROM groups";
-            resultSet = statement.executeQuery(query);
-
-            // display the new list of users
-            System.out.println("\nAfter the insert, data is...\n");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5));
-                counter++;
-            }
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
-            }
-        }
-    }
-
-    /**
-     * Adds a new user to a group in the database system.
-     */
-    public void addToGroup() {
-        try {
-            //initialize input variables
-            String firstName = null;
-            String lastName = null;
-            String groupName = null;
-            int userID = 0;
-            int groupID = 0;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get the firstName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a first name: ");
-                firstName = keyIn.nextLine().trim().toUpperCase();
-            } while (firstName == null || firstName.equalsIgnoreCase(""));
-
-            // get the lastName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a last name: ");
-                lastName = keyIn.nextLine().trim().toUpperCase();
-            } while (lastName == null || lastName.equalsIgnoreCase(""));
-
-            //make sure user exists
-            //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
-
-            prepStatement = connection.prepareStatement(query);
-
-            prepStatement.setString(1, firstName);
-            prepStatement.setString(2, lastName);
-
-            resultSet = prepStatement.executeQuery();
-
-            //check if result set is empty and alert user, otherwise get the ID of the user
-            if (!resultSet.next()) {
-                throw new Exception("No User Found");
-            } else {
-                userID = resultSet.getInt(1);
-            }
-
-            // get the groupName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a group name: ");
-                groupName = keyIn.nextLine().trim().toUpperCase();
-            } while (groupName == null || groupName.equalsIgnoreCase(""));
-
-            //make sure group exists
-            //query to make sure user exists and get their ID
-            query = "SELECT ID FROM GROUPS WHERE UPPER(NAME) = ?";
-
-            prepStatement = connection.prepareStatement(query);
-
-            prepStatement.setString(1, groupName);
-
-            resultSet = prepStatement.executeQuery();
-
-            //check if result set is empty and alert user, otherwise get the ID of the user
-            if (!resultSet.next()) {
-                throw new Exception("No Group Found");
-            } else {
-                groupID = resultSet.getInt(1);
-            }
-
-            // show the user input
-            System.out.println(String.format("User ID: {%d} Group ID: {%d}", userID, groupID));
-
-            //Insert query statement
-            query = "INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (?, ?, current_timestamp)";
-
-            //Create the prepared statement
-            prepStatement = connection.prepareStatement(query);
-
-            //Set parameters of the insert statement
-            prepStatement.setInt(1, groupID);
-            prepStatement.setInt(2, userID);
-
-            //execute the insert into groupmembers
-            prepStatement.executeUpdate();
-
-            query = "SELECT * FROM GROUPMEMBERS WHERE GROUPID = ? AND USERID = ?";
-            prepStatement = connection.prepareStatement(query); //create an instance
-
-            prepStatement.setInt(1, groupID);
-            prepStatement.setInt(2, userID);
-
-            //execute query to display result set
-            resultSet = prepStatement.executeQuery();
-
-            // display the new list of users
-            System.out.println("\nAfter the insert, data is...\n");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3));
-                counter++;
-            }
-        } catch (SQLException e) {
             int errorCode = e.getErrorCode();
             switch (errorCode) {
-                case 20000:
-                    System.out.println("Group Membership limit is already met");
+                case 20001:
+                    System.out.println("Friendship already pending");
+                    break;
+                case 20002:
+                    System.out.println("Friendship already established");
                     break;
                 default:
                     System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
                     break;
             }
+            
         } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else if (e.getMessage().equals("No Group Found")) {
-                System.out.println("The group name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            
         } finally {
             try {
                 if (statement != null) {
@@ -828,7 +1069,7 @@ public class DatabaseConnection {
     
 
     /**
-     Logs in the user by updating their last login to the current timestamp.
+     * Logs in the user by updating their last login to the current timestamp.
      */
     public void logInUser() {
         try {
@@ -920,125 +1161,57 @@ public class DatabaseConnection {
 
     
     /**
-     * Send a message to an individual user.
+     * Searches firstname, lastname, and email as applicable search fields.
+     *  breaks up search string by using regular regular expression on whitespace.
+     *  runs queries for each of the search terms.
      */
-    public void sendMessageToUser() {
+    public void searchForUser() {
         try {
             //initialize input variables for User and Friend info
-            int senderID = 0;
-            String firstNameSender = null;
-            String lastNameSender = null;
-
-            int recipID = 0;
-            String firstNameRecip = null;
-            String lastNameRecip = null;
-
-            String messageSubject = null;
-            String messageBody = null;
-
+            int userID = 0;
+            String searchString = null;
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get the search terms (uppercase with no leading/trailing spaces)
+            //      and separate each term with comma (,)
             do {
-                System.out.print("Please enter the sender's first name: ");
-                firstNameSender = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameSender == null || firstNameSender.equalsIgnoreCase(""));
+                System.out.print("Please enter string you would like to search (break up terms with spaces): ");
+                searchString = keyIn.nextLine().trim().toUpperCase().replaceAll(" ", ",");
+            } while (searchString == null || searchString.equalsIgnoreCase(""));
 
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the sender's last name: ");
-                lastNameSender = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameSender == null || lastNameSender.equalsIgnoreCase(""));
+            String[] searchItems = searchString.split("\\s+");
+            System.out.println("searchItems length = " + searchItems.length);
 
-            //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            //query that looks at firstname, lastname, and email as applicable search fields
+            query = "select fname as firstname,\n"
+                    + "lname as lastname,\n"
+                    + "email as email\n"
+                    + "from users\n"
+                    + "where fname like ? \n"
+                    + "or lname like ? \n"
+                    + "or email like ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameSender);
-            prepStatement.setString(2, lastNameSender);
-            resultSet = prepStatement.executeQuery();
 
-            //check if result set is empty and alert user, otherwise get the ID of the user
-            if (!resultSet.next()) {
-                throw new Exception("No User Found");
-            } else {
-                senderID = resultSet.getInt(1);
-            }
-
-            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter recipient's first name: ");
-                firstNameRecip = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameRecip == null || firstNameRecip.equalsIgnoreCase(""));
-
-            // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter recipient's last name: ");
-                lastNameRecip = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameRecip == null || lastNameRecip.equalsIgnoreCase(""));
-
-            //query to make sure friend exists and get their ID
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameRecip);
-            prepStatement.setString(2, lastNameRecip);
-            resultSet = prepStatement.executeQuery();
-
-            //check if result set is empty and alert user, otherwise get the ID of the user
-            if (!resultSet.next()) {
-                throw new Exception("No User Found");
-            } else {
-                recipID = resultSet.getInt(1);
-            }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of sender: {%d} ID of recipient: {%d}", senderID, recipID));
-
-            // get the subject of the message
-            do {
-                System.out.print("Please enter your message subject: ");
-                messageSubject = keyIn.nextLine().trim();
-            } while (messageSubject == null || messageSubject.equalsIgnoreCase(""));
-
-            // get the body of the message
-            do {
-                System.out.print("Please enter your message body: ");
-                messageBody = keyIn.nextLine().trim();
-            } while (messageBody == null || messageBody.equalsIgnoreCase(""));
-
-            //Insert statement for establishing pending friendship
-            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, current_timestamp)";
-
-            //Create the prepared statement
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, senderID);
-            prepStatement.setString(2, messageSubject);
-            prepStatement.setString(3, messageBody);
-            prepStatement.setInt(4, recipID);
-            prepStatement.executeUpdate();
-
-            //just a query to show that the row was inserted
-            query = "select * from messages\n"
-                    + "where senderID = ? and RECIPIENTID = ?";
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, senderID);
-            prepStatement.setInt(2, recipID);
-            resultSet = prepStatement.executeQuery();
-
-            System.out.println("\nAfter the insert, data is...\n");
+            System.out.println("\nSearch results looking for matching Firstname, Lastname, or Email...\n");
             int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5) + ", "
-                        + resultSet.getString(6) + ", "
-                        + resultSet.getString(7));
-                counter++;
-            }
-        } catch (Exception e) {
+            for (int i = 0; i < searchItems.length; i++) {
+                prepStatement.setString(1, "%" + searchItems[i] + "%");
+                prepStatement.setString(2, "%" + searchItems[i] + "%");
+                prepStatement.setString(3, "%" + searchItems[i] + "%");
+                resultSet = prepStatement.executeQuery();
 
+                while (resultSet.next()) {
+                    System.out.println("Record " + counter + ": "
+                            + resultSet.getString(1) + ", "
+                            + resultSet.getString(2) + ", "
+                            + resultSet.getString(3));
+                    counter++;
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
+        } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
@@ -1060,6 +1233,7 @@ public class DatabaseConnection {
             }
         }
     }
+    
 
     /**
      * Send a message to an entire group of users.
@@ -1226,65 +1400,113 @@ public class DatabaseConnection {
         }
     }
 
-    
+
     /**
-     * Given a user, look up all of the messages sent to that user 
-     *  (either directly or via a group that they belong to).
+     * Send a message to an individual user.
      */
-    public void displayMessages() {
+    public void sendMessageToUser() {
         try {
             //initialize input variables for User and Friend info
-            int userID = 0;
-            String firstNameUser = null;
-            String lastNameUser = null;
+            int senderID = 0;
+            String firstNameSender = null;
+            String lastNameSender = null;
+
+            int recipID = 0;
+            String firstNameRecip = null;
+            String lastNameRecip = null;
+
+            String messageSubject = null;
+            String messageBody = null;
 
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
             // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the user's first name: ");
-                firstNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
+                System.out.print("Please enter the sender's first name: ");
+                firstNameSender = keyIn.nextLine().trim().toUpperCase();
+            } while (firstNameSender == null || firstNameSender.equalsIgnoreCase(""));
 
             //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the user's last name: ");
-                lastNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
+                System.out.print("Please enter the sender's last name: ");
+                lastNameSender = keyIn.nextLine().trim().toUpperCase();
+            } while (lastNameSender == null || lastNameSender.equalsIgnoreCase(""));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameUser);
-            prepStatement.setString(2, lastNameUser);
+            prepStatement.setString(1, firstNameSender);
+            prepStatement.setString(2, lastNameSender);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
                 throw new Exception("No User Found");
             } else {
-                userID = resultSet.getInt(1);
+                senderID = resultSet.getInt(1);
+            }
+
+            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter recipient's first name: ");
+                firstNameRecip = keyIn.nextLine().trim().toUpperCase();
+            } while (firstNameRecip == null || firstNameRecip.equalsIgnoreCase(""));
+
+            // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter recipient's last name: ");
+                lastNameRecip = keyIn.nextLine().trim().toUpperCase();
+            } while (lastNameRecip == null || lastNameRecip.equalsIgnoreCase(""));
+
+            //query to make sure friend exists and get their ID
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, firstNameRecip);
+            prepStatement.setString(2, lastNameRecip);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                recipID = resultSet.getInt(1);
             }
 
             // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d}", userID));
+            System.out.println(String.format("ID of sender: {%d} ID of recipient: {%d}", senderID, recipID));
 
-            //query to display friends
-            query = "SELECT U.FNAME AS FIRSTNAME,\n"
-                    + "  U.LNAME AS LASTNAME,\n"
-                    + "  M.SUBJECT AS SUBJECT,\n"
-                    + "  M.BODY AS BODY,\n"
-                    + "  M.DATECREATED AS DATE_RECEIVED\n"
-                    + "FROM MESSAGES M, USERS U\n"
-                    + "WHERE RECIPIENTID = ? \n"
-                    + "AND U.ID = M.SENDERID\n"
-                    + "ORDER BY DATE_RECEIVED";
+            // get the subject of the message
+            do {
+                System.out.print("Please enter your message subject: ");
+                messageSubject = keyIn.nextLine().trim();
+            } while (messageSubject == null || messageSubject.equalsIgnoreCase(""));
+
+            // get the body of the message
+            do {
+                System.out.print("Please enter your message body: ");
+                messageBody = keyIn.nextLine().trim();
+            } while (messageBody == null || messageBody.equalsIgnoreCase(""));
+
+            //Insert statement for establishing pending friendship
+            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, current_timestamp)";
+
+            //Create the prepared statement
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, userID);
+            prepStatement.setInt(1, senderID);
+            prepStatement.setString(2, messageSubject);
+            prepStatement.setString(3, messageBody);
+            prepStatement.setInt(4, recipID);
+            prepStatement.executeUpdate();
+
+            //just a query to show that the row was inserted
+            query = "select * from messages\n"
+                    + "where senderID = ? and RECIPIENTID = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, senderID);
+            prepStatement.setInt(2, recipID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are ...\n");
+            System.out.println("\nAfter the insert, data is...\n");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -1292,12 +1514,13 @@ public class DatabaseConnection {
                         + resultSet.getString(2) + ", "
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4) + ", "
-                        + resultSet.getString(5));
+                        + resultSet.getString(5) + ", "
+                        + resultSet.getString(6) + ", "
+                        + resultSet.getString(7));
                 counter++;
             }
-        } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
         } catch (Exception e) {
+
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
@@ -1319,212 +1542,7 @@ public class DatabaseConnection {
             }
         }
     }
-
-    public void displayNewMessages() {
-        try {
-            //initialize input variables for User and Friend info
-            int userID = 0;
-            String firstNameUser = null;
-            String lastNameUser = null;
-            Timestamp lastLogin = null;
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's first name: ");
-                firstNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
-
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's last name: ");
-                lastNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
-
-            //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameUser);
-            prepStatement.setString(2, lastNameUser);
-            resultSet = prepStatement.executeQuery();
-
-            //check if result set is empty and alert user, otherwise get the ID of the user
-            if (!resultSet.next()) {
-                throw new Exception("No User Found");
-            } else {
-                userID = resultSet.getInt(1);
-            }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d}", userID));
-
-            query = "SELECT LASTLOGIN FROM USERS WHERE ID = ?";
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, userID);
-            resultSet = prepStatement.executeQuery();
-
-            //check result set to see whether last log in is null
-            if (!resultSet.next()) {
-                throw new Exception("No User Found");
-            } else {
-                lastLogin = resultSet.getTimestamp(1);
-            }
-
-            if (lastLogin == null) {
-                //query if last login is null, just display all messages
-                System.out.println("No previous login, displaying all messages");
-                query = "SELECT U.FNAME AS FIRSTNAME,\n"
-                        + "  U.LNAME AS LASTNAME,\n"
-                        + "  M.SUBJECT AS SUBJECT,\n"
-                        + "  M.BODY AS BODY,\n"
-                        + "  M.DATECREATED AS DATE_RECEIVED\n"
-                        + "FROM MESSAGES M, USERS U\n"
-                        + "WHERE RECIPIENTID = ? \n"
-                        + "AND U.ID = M.SENDERID\n"
-                        + "ORDER BY DATE_RECEIVED";
-            } else {
-                //query if last login is not null, and will display all message
-                //after the time of last login
-                query = "SELECT U.FNAME AS FIRSTNAME,\n"
-                        + "  U.LNAME AS LASTNAME,\n"
-                        + "  M.SUBJECT AS SUBJECT,\n"
-                        + "  M.BODY AS BODY,\n"
-                        + "  M.DATECREATED AS DATE_RECEIVED\n"
-                        + "FROM MESSAGES M, USERS U\n"
-                        + "WHERE RECIPIENTID = ? \n"
-                        + "AND U.ID = M.SENDERID\n"
-                        + "AND M.DATECREATED > ?\n"
-                        + "ORDER BY DATE_RECEIVED";
-            }
-
-            prepStatement = connection.prepareStatement(query);
-
-            if (lastLogin == null) {
-                //query if last login is null, just display all messages
-                prepStatement.setInt(1, userID);
-            } else {
-                //query if last login is not null, and will display all message
-                //after the time of last login
-                prepStatement.setInt(1, userID);
-                prepStatement.setTimestamp(2, lastLogin);
-
-            }
-
-            resultSet = prepStatement.executeQuery();
-
-            System.out.println("\nMessages for the users are ...\n");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5));
-                counter++;
-            }
-        } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-            
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
-            }
-        }
-    }
-
     
-    /**
-     * Searches firstname, lastname, and email as applicable search fields.
-     *  breaks up search string by using regular regular expression on whitespace.
-     *  runs querys for each of the search terms.
-     */
-    public void searchForUser() {
-        try {
-            //initialize input variables for User and Friend info
-            int userID = 0;
-            String searchString = null;
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get the search terms (uppercase with no leading/trailing spaces)
-            //      and separate each term with comma (,)
-            do {
-                System.out.print("Please enter string you would like to search (break up terms with spaces): ");
-                searchString = keyIn.nextLine().trim().toUpperCase().replaceAll(" ", ",");
-            } while (searchString == null || searchString.equalsIgnoreCase(""));
-
-            String[] searchItems = searchString.split("\\s+");
-            System.out.println("searchItems length = " + searchItems.length);
-
-            //query that looks at firstname, lastname, and email as applicable search fields
-            query = "select fname as firstname,\n"
-                    + "lname as lastname,\n"
-                    + "email as email\n"
-                    + "from users\n"
-                    + "where fname like ? \n"
-                    + "or lname like ? \n"
-                    + "or email like ?";
-            prepStatement = connection.prepareStatement(query);
-
-            System.out.println("\nSearch results looking for matching Firstname, Lastname, or Email...\n");
-            int counter = 1;
-            for (int i = 0; i < searchItems.length; i++) {
-                prepStatement.setString(1, "%" + searchItems[i] + "%");
-                prepStatement.setString(2, "%" + searchItems[i] + "%");
-                prepStatement.setString(3, "%" + searchItems[i] + "%");
-                resultSet = prepStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    System.out.println("Record " + counter + ": "
-                            + resultSet.getString(1) + ", "
-                            + resultSet.getString(2) + ", "
-                            + resultSet.getString(3));
-                    counter++;
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
-            }
-        }
-    }
-
     
     /**
      * Given two users (userA and userB), find a path, if one exists, between the 
@@ -1717,13 +1735,14 @@ public class DatabaseConnection {
         }
     }
 
-    // Method to display the top messagers for the past k months and display x results
-    // current query treats all messages equally (aka no special consideration for
-    // group messages) So if a user sends 1 message to a group of 10 people, that
-    // would count as them sending 10 messages
+    
     /**
      * Display the top K who have sent or received the highest number of messages during 
      * for the past X months. X and K should be input parameters to this function.
+     * 
+     * The current query treats all messages equally (aka no special consideration
+     *  for group messages), so if a user sends 1 message to a group of 10 people, 
+     *  that would count as them sending 10 messages.
      */
     public void topMessagers() {
         try {
@@ -1810,17 +1829,6 @@ public class DatabaseConnection {
             } catch (SQLException e) {
                 System.out.println("\nCannot close object. Machine error: " + e.getMessage());
             }
-        }
-    }
-
-    /**
-     * Closes the database connection.
-     */
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         }
     }
 }
