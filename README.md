@@ -69,18 +69,18 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 ### Milestone 2: A JDBC Application To Manage '*FaceSpace*' (Due: July 24 @ 11:59PM)
 
 1. [ ] Create a '**FaceSpace**' Java application:  
-  * [ ] Must interface the Pitt Oracle server (*unixs.cis.pitt.edu*).  
-  * [ ] Must use the Java Database Connectivity (JDBC) API.  
+  * [X] Must interface the Pitt Oracle server (*unixs.cis.pitt.edu*).  
+  * [X] Must use the Java Database Connectivity (JDBC) API.  
   * [ ] All Tasks must check for, and properly react, to any errors reported by the DBMS.  
   * [ ] All Tasks must provide appropriate *SUCCESS* or *FAILURE* feedback to the user.  
   * [ ] Transactions must be defined appropriately:  
-    * [ ] Design all SQL transactions only when necessary.  
+    * [X] Design all SQL transactions only when necessary.  
     * [ ] Use concurrency control mechanisms supported by Oracle to ensure inconsistent states do not occur:  
       * Isolation Level  
       * Locking Modes  
     * [ ] Assume multiple requests can be made at the same time, on behalf of multiple users.  
   * [ ] Implement the following functions:  
-    * [ ] **_createUser_**
+    * [X] **_createUser_**
       * Given a **name**, **email address**, and **date of birth**, add a new user to the system.  
     * [ ] **_initiateFriendship_**
       * Create a pending friendship from one user to another.  
@@ -88,9 +88,9 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Create a bilateral friendship between two users.  
     * [ ] **_displayFriends_**
       * Given a **user**, look up all of that user's establish and pending friendships. Print out this information in a nicely formatted way.  
-    * [ ] **_createGroup_**
+    * [X] **_createGroup_**
       * Given a **name**, **description**, and **membership limit**, add a new group to the system.  
-    * [ ] **_addToGroup_**
+    * [X] **_addToGroup_**
       * Given a **user** and a **group**, add the user to the group so long as that would not violate the group's membership limit.  
     * [ ] **_sendMessageToUser_**
       * Given a message **subject**, **body**, **recipient**, and **sender**, create a new message.  

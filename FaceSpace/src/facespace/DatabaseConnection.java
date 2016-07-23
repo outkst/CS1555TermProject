@@ -320,7 +320,7 @@ public class DatabaseConnection {
             } while (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{4}", dateOfBirth));
 
             // show the user input
-            System.out.println(String.format("\n[USER INPUT] First Name: {%s} LastName: {%s} Email: {%s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
+            System.out.println(String.format("\nFirst Name: {%s} LastName: {%s} Email: {%s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
 
             // Create the query and insert
             query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YYYY'), NULL, current_timestamp)";
@@ -337,7 +337,8 @@ public class DatabaseConnection {
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
-            System.out.println("\nAfter the insert, data is...\n");
+            System.out.println("\nAfter the insert, data is...\n"
+                    + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[BIRTHDATE],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
