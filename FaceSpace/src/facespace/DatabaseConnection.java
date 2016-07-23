@@ -20,27 +20,27 @@ public class DatabaseConnection {
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "";
-        String password = "";
+        String username = "system";
+        String password = "poiu0987";
 
         // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
 
         // get the username and password
-        System.out.print("Please enter DB username: ");
-        username = keyIn.nextLine().toLowerCase();
-        System.out.print("Please enter DB password: ");
-        password = keyIn.nextLine();
+//        System.out.print("Please enter DB username: ");
+//        username = keyIn.nextLine().toLowerCase();
+//        System.out.print("Please enter DB password: ");
+//        password = keyIn.nextLine();
         
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
-            //This is the location of the database. This is the database in oracle provided to our school class
-            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-            //String url = "jdbc:oracle:thin:@localhost:1521:xe";
+            //This is the location of the database.
+            //String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
+            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
 
-            //create a connection to DB on class3.cs.pitt.edu
+            //create the database connection
             connection = DriverManager.getConnection(url, username, password);
 
         } catch (Exception Ex) {
@@ -48,7 +48,7 @@ public class DatabaseConnection {
             System.exit(0); // immediately exit
         } finally {
             /*
-             * NOTE: the connection should be created once and used through out the whole project;
+             * NOTE: the connection should be created ONCE and used through out the whole project;
              * Is very expensive to open a connection therefore you should not close it after 
              * every operation on database. Closing will be handled by a call to closeConnection()
              */
@@ -95,7 +95,7 @@ public class DatabaseConnection {
             } while (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{4}", dateOfBirth));
 
             // show the user input
-            System.out.println(String.format("\n\t[USER INPUT] First Name: {%s} LastName: {%s} Email: {%s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
+            System.out.println(String.format("\n[USER INPUT] First Name: {%s} LastName: {%s} Email: {%s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
 
             // Create the query and insert
             query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YYYY'), NULL, current_timestamp)";
@@ -124,11 +124,13 @@ public class DatabaseConnection {
                         + resultSet.getString(7));
                 counter++;
             }
+            
+            System.out.println("\nSUCCESS!");
         } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
             
         } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             
         } finally {
             try {
@@ -142,7 +144,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -284,12 +286,12 @@ public class DatabaseConnection {
                     System.out.println("Friendship already established");
                     break;
                 default:
-                    System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
                     break;
             }
             
         } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             
         } finally {
             try {
@@ -303,14 +305,14 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
     
 
     /**
-     * *
+     * 
      * Creates an established friendship from one user to another inside the database.
      */
     public void establishFriendship() {
@@ -480,7 +482,7 @@ public class DatabaseConnection {
                     System.out.println("Friendship already established");
                     break;
                 default:
-                    System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
                     break;
             }
         } catch (Exception e) {
@@ -488,7 +490,7 @@ public class DatabaseConnection {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -502,7 +504,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -573,13 +575,13 @@ public class DatabaseConnection {
                 counter++;
             }
         } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
         } catch (Exception e) {
 
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -593,7 +595,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -614,13 +616,13 @@ public class DatabaseConnection {
 
             // get the firstName and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter a group name:");
+                System.out.print("Please enter a group name: ");
                 groupName = keyIn.nextLine().trim().toUpperCase();
             } while (groupName == null || groupName.equalsIgnoreCase(""));
 
             // get the lastName and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter a description for the group:");
+                System.out.print("Please enter a description for the group: ");
                 description = keyIn.nextLine().trim();
             } while (description == null || description.equalsIgnoreCase(""));
 
@@ -668,7 +670,7 @@ public class DatabaseConnection {
                 counter++;
             }
         } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         } finally {
             try {
                 if (statement != null) {
@@ -681,7 +683,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -703,13 +705,13 @@ public class DatabaseConnection {
 
             // get the firstName and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter a first name:");
+                System.out.print("Please enter a first name: ");
                 firstName = keyIn.nextLine().trim().toUpperCase();
             } while (firstName == null || firstName.equalsIgnoreCase(""));
 
             // get the lastName and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter a last name:");
+                System.out.print("Please enter a last name: ");
                 lastName = keyIn.nextLine().trim().toUpperCase();
             } while (lastName == null || lastName.equalsIgnoreCase(""));
 
@@ -733,7 +735,7 @@ public class DatabaseConnection {
 
             // get the groupName and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter a group name:");
+                System.out.print("Please enter a group name: ");
                 groupName = keyIn.nextLine().trim().toUpperCase();
             } while (groupName == null || groupName.equalsIgnoreCase(""));
 
@@ -796,7 +798,7 @@ public class DatabaseConnection {
                     System.out.println("Group Membership limit is already met");
                     break;
                 default:
-                    System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
                     break;
             }
         } catch (Exception e) {
@@ -805,7 +807,7 @@ public class DatabaseConnection {
             } else if (e.getMessage().equals("No Group Found")) {
                 System.out.println("The group name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -819,7 +821,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -897,7 +899,7 @@ public class DatabaseConnection {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -911,7 +913,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -1040,7 +1042,7 @@ public class DatabaseConnection {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -1054,7 +1056,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -1205,7 +1207,7 @@ public class DatabaseConnection {
             } else if (e.getMessage().equals("No Group Found")) {
                 System.out.println("The group name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -1219,7 +1221,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -1294,12 +1296,12 @@ public class DatabaseConnection {
                 counter++;
             }
         } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -1313,7 +1315,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -1423,13 +1425,13 @@ public class DatabaseConnection {
                 counter++;
             }
         } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s !!", ex.getMessage()));
+            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
             
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -1443,7 +1445,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -1499,12 +1501,12 @@ public class DatabaseConnection {
                 }
             }
         } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s !!", ex.getMessage()));
+            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -1518,7 +1520,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -1688,7 +1690,7 @@ public class DatabaseConnection {
                     System.out.println("\nFriendship already established");
                     break;
                 default:
-                    System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
                     break;
             }
         } catch (Exception e) {
@@ -1696,7 +1698,7 @@ public class DatabaseConnection {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -1710,7 +1712,7 @@ public class DatabaseConnection {
                     resultSet.close();
                 }
             } catch (SQLException e) {
-                System.out.println(String.format("!! Cannot close object. Error: %s !!", e.getMessage()));
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
@@ -1786,13 +1788,13 @@ public class DatabaseConnection {
                 counter++;
             }
         } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
         } catch (Exception e) {
 
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("\nThe user name you entered does not exist");
             } else {
-                System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             try {
@@ -1811,11 +1813,14 @@ public class DatabaseConnection {
         }
     }
 
+    /**
+     * Closes the database connection.
+     */
     public void closeConnection() {
         try {
             connection.close();
         } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s !!", e.getMessage()));
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         }
     }
 }
