@@ -103,6 +103,8 @@ public class FaceSpace {
                         System.out.println("\n[LIST ALL GROUPS]");
                         db.listAllGroups();
                         break;
+                    case "Z":
+                        break;
                     default:
                         System.out.println("INVALID INPUT");
                 }

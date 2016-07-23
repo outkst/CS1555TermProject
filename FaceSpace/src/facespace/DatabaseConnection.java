@@ -1194,37 +1194,41 @@ public class DatabaseConnection {
             //      and separate each term with comma (,)
             do {
                 System.out.print("Please enter string you would like to search (break up terms with spaces): ");
-                searchString = keyIn.nextLine().trim().toUpperCase().replaceAll(" ", ",");
+                searchString = keyIn.nextLine().trim().toUpperCase();
             } while (searchString == null || searchString.equalsIgnoreCase(""));
 
             String[] searchItems = searchString.split("\\s+");
             System.out.println("searchItems length = " + searchItems.length);
 
             //query that looks at firstname, lastname, and email as applicable search fields
-            query = "select fname as firstname,\n"
-                    + "lname as lastname,\n"
-                    + "email as email\n"
-                    + "from users\n"
-                    + "where fname like ? \n"
-                    + "or lname like ? \n"
-                    + "or email like ?";
-            prepStatement = connection.prepareStatement(query);
-
-            System.out.println("\nSearch results looking for matching Firstname, Lastname, or Email...\n");
-            int counter = 1;
-            for (int i = 0; i < searchItems.length; i++) {
-                prepStatement.setString(1, "%" + searchItems[i] + "%");
-                prepStatement.setString(2, "%" + searchItems[i] + "%");
-                prepStatement.setString(3, "%" + searchItems[i] + "%");
-                resultSet = prepStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    System.out.println("Record " + counter + ": "
-                            + resultSet.getString(1) + ", "
-                            + resultSet.getString(2) + ", "
-                            + resultSet.getString(3));
-                    counter++;
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.append("SELECT ID, FNAME, LNAME, EMAIL FROM USERS WHERE ");
+            for (int x=0; x < searchItems.length; x++) {
+                if (x==0) {
+                    queryBuilder.append("(");
+                } else {
+                    queryBuilder.append("OR (");
                 }
+                
+                queryBuilder.append("FNAME LIKE '%").append(searchItems[x]).append("%'");
+                queryBuilder.append(" OR LNAME LIKE '%").append(searchItems[x]).append("%'");
+                queryBuilder.append(" OR UPPER(EMAIL) LIKE '%").append(searchItems[x]).append("%'");
+                queryBuilder.append(") ");
+            }
+            
+            prepStatement = connection.prepareStatement(queryBuilder.toString());
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nSearch results looking for matching Firstname, Lastname, OR Email...\n"
+                    + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4));
+                counter++;
             }
         } catch (SQLException ex) {
             System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
