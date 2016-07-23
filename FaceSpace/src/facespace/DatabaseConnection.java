@@ -390,7 +390,7 @@ public class DatabaseConnection {
 
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the uesr's email address: ");
+                System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
@@ -476,7 +476,7 @@ public class DatabaseConnection {
 
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the uesr's email address: ");
+                System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
@@ -563,7 +563,7 @@ public class DatabaseConnection {
 
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the uesr's email address: ");
+                System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
