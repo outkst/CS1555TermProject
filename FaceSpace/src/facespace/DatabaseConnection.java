@@ -1019,16 +1019,18 @@ public class DatabaseConnection {
      */
     public void listAllGroups() {
         try {
-            query = "SELECT NAME, DESCRIPTION, LIMIT FROM GROUPS";
+            query = "SELECT NAME, DESCRIPTION, LIMIT, DATECREATED FROM GROUPS";
             prepStatement = connection.prepareStatement(query);
             resultSet = prepStatement.executeQuery();
             
+            System.out.println("\n[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]");
             int counter=1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter++ + ": "
                         + resultSet.getString(1) + ", "
                         + resultSet.getString(2) + ", "
-                        + resultSet.getString(3));
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4));
             }
         } catch (SQLException ex) {
             System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
@@ -1053,16 +1055,20 @@ public class DatabaseConnection {
      */
     public void listAllUsers() {
         try {
-            query = "SELECT FNAME, LNAME, EMAIL FROM USERS";
+            query = "SELECT FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED FROM USERS";
             prepStatement = connection.prepareStatement(query);
             resultSet = prepStatement.executeQuery();
             
+            System.out.println("[RECORD#] [FNAME],[LNAME],[EMAIL],[DOB],[LASTLOGIN],[DATECREATED]");
             int counter=1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter++ + ": "
                         + resultSet.getString(1) + ", "
                         + resultSet.getString(2) + ", "
-                        + resultSet.getString(3));
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5) + ", "
+                        + resultSet.getString(6));
             }
         } catch (SQLException ex) {
             System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
