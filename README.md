@@ -82,7 +82,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [ ] Implement the following functions:  
     * [X] **_createUser_**
       * Given a **name**, **email address**, and **date of birth**, add a new user to the system.  
-    * [ ] **_initiateFriendship_**
+    * [X] **_initiateFriendship_**
       * Create a pending friendship from one user to another.  
     * [X] **_establishFriendship_**
       * Create a bilateral friendship between two users.  

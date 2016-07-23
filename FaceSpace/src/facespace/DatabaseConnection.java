@@ -698,11 +698,12 @@ public class DatabaseConnection {
              * GET THE BEFRIENDING USER'S FIRST AND LAST NAME TO BEGIN
              * 
              */
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the user's email: ");
+                System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase(""));
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
+
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -722,11 +723,12 @@ public class DatabaseConnection {
              * GET THE FIRST AND LAST NAME OF THE USER THAT IS TO BE FRIENDED
              * 
              */
-            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter friend's email: ");
+                System.out.print("Please enter the friend's email address: ");
                 friendEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (friendEmail == null || friendEmail.equalsIgnoreCase(""));
+            } while (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail));
+
 
             //query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
@@ -801,7 +803,7 @@ public class DatabaseConnection {
             }
 
             //just a query to show that the row was inserted
-            query = "SELECT U.FNAME, U.LNAME, F.APPROVED, F.DATEAPPROVED\n"
+            query = "SELECT U.FNAME, U.LNAME, U.EMAIL, F.APPROVED, F.DATEAPPROVED\n"
                     + "FROM FRIENDSHIPS F, USERS U\n"
                     + "WHERE ((F.USERID = ? AND F.FRIENDID = ?)\n"
                     + "OR (F.USERID = ? AND F.FRIENDID = ?))\n"
@@ -814,7 +816,7 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
 
             System.out.println("\nAfter the insert, data is...\n"
-                    + "[RECORD#] [FNAME],[LNAME],[APPROVED?],[DATEAPPROVED]");
+                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -882,11 +884,12 @@ public class DatabaseConnection {
              * GET THE EMAIL OF THE USER INITIATING A FRIENDSHIP
              * 
              */
-            // get the email of the user and normalize (lowercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase(""));
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
+
 
             // query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -907,10 +910,12 @@ public class DatabaseConnection {
              * 
              */
             // get the email of the friend and normalize (lowercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter friend's email address: ");
+                System.out.print("Please enter the email address of the person to friend: ");
                 friendEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (friendEmail == null || friendEmail.equalsIgnoreCase(""));
+            } while (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail));
+
 
 
             // query to make sure friend exists and get their ID
@@ -950,7 +955,7 @@ public class DatabaseConnection {
              * 
              */
             // query to show that the row was inserted
-            query = "SELECT U.FNAME, U.LNAME, F.APPROVED, F.DATEAPPROVED\n"
+            query = "SELECT U.FNAME, U.LNAME, U.EMAIL, F.APPROVED, F.DATEAPPROVED\n"
                     + "FROM FRIENDSHIPS F, USERS U\n"
                     + "WHERE ((F.USERID = ? AND F.FRIENDID = ?)\n"
                     + "OR (F.USERID = ? AND F.FRIENDID = ?))\n"
@@ -963,14 +968,15 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
 
             System.out.println("\nAfter the insert, data is...\n"
-                    + "[RECORD ##],[FNAME],[LNAME],[APPROVED?],[DATEAPPROVED]");
+                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
                         + resultSet.getString(2) + ", "
                         + resultSet.getString(3) + ", "
-                        + resultSet.getString(4));
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
                 counter++;
             }
         } catch (SQLException e) {
