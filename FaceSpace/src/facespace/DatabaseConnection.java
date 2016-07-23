@@ -74,8 +74,7 @@ public class DatabaseConnection {
     public void addToGroup() {
         try {
             //initialize input variables
-            String firstName = null;
-            String lastName = null;
+            String email = null;
             String groupName = null;
             int userID = 0;
             int groupID = 0;
@@ -85,25 +84,15 @@ public class DatabaseConnection {
 
             // get the firstName and normalize (uppercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter a first name: ");
-                firstName = keyIn.nextLine().trim().toUpperCase();
-            } while (firstName == null || firstName.equalsIgnoreCase(""));
-
-            // get the lastName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a last name: ");
-                lastName = keyIn.nextLine().trim().toUpperCase();
-            } while (lastName == null || lastName.equalsIgnoreCase(""));
+                System.out.print("Please enter the user's email address: ");
+                email = keyIn.nextLine().trim().toLowerCase();
+            } while (email == null || email.equalsIgnoreCase(""));
 
             //make sure user exists
             //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
-
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-
-            prepStatement.setString(1, firstName);
-            prepStatement.setString(2, lastName);
-
+            prepStatement.setString(1, email);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -1068,6 +1057,74 @@ public class DatabaseConnection {
     }
     
 
+    /**
+     * Lists all the groups in the database
+     */
+    public void listAllGroups() {
+        try {
+            query = "SELECT NAME, DESCRIPTION, LIMIT FROM GROUPS";
+            prepStatement = connection.prepareStatement(query);
+            resultSet = prepStatement.executeQuery();
+            
+            int counter=1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter++ + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3));
+            }
+        } catch (SQLException ex) {
+            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
+            
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            
+        } finally {
+            try {
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+    
+    /**
+     * Lists all the users in the database
+     */
+    public void listAllUsers() {
+        try {
+            query = "SELECT FNAME, LNAME, EMAIL FROM USERS";
+            prepStatement = connection.prepareStatement(query);
+            resultSet = prepStatement.executeQuery();
+            
+            int counter=1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter++ + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3));
+            }
+        } catch (SQLException ex) {
+            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
+            
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            
+        } finally {
+            try {
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+    
+            
     /**
      * Logs in the user by updating their last login to the current timestamp.
      */

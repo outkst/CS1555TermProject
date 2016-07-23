@@ -22,11 +22,11 @@ public class FaceSpace {
         try {
             db = new DatabaseConnection();
             String input = "";
-            while (!input.equals("Q")) {
-                System.out.print("\nWhat would you like to do? (Enter q to exit)\n"
+            while (!input.equals("Z")) {
+                System.out.print("\nWhat would you like to do? (Enter Z to exit)\n"
                         + "A - Create a User \t\t\t H - Send Group a Message \t\t\t O - Log in User \n"
-                        + "B - Initiate a friendship \t\t I - Display Messages for User \n"
-                        + "C - Establish a friendship \t\t J - Display New Messages for User\n"
+                        + "B - Initiate a friendship \t\t I - Display Messages for User \t\t\t P - List All Users \n"
+                        + "C - Establish a friendship \t\t J - Display New Messages for User \t\t Q - List All Groups \n"
                         + "D - Display User's friends \t\t K - Search for User\n"
                         + "E - Create a Group \t\t\t L - Three Degrees Between Users\n"
                         + "F - Add User to Group \t\t\t M - Top Messagers\n"
@@ -94,6 +94,15 @@ public class FaceSpace {
                     case "O":
                         System.out.println("\n[LOG IN USER]");
                         db.logInUser();
+                        break;
+                    case "P":
+                        System.out.println("\n[LIST ALL USERS]");
+                        db.listAllUsers();
+                        break;
+                    case "Q":
+                        System.out.println("\n[LIST ALL GROUPS]");
+                        db.listAllGroups();
+                        break;
                     default:
                         System.out.println("INVALID INPUT");
                 }
