@@ -1095,29 +1095,23 @@ public class DatabaseConnection {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
-            String firstName = null;
-            String lastName = null;
+            String userEmail = null;
 
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the user's first name: ");
-                firstName = keyIn.nextLine().trim().toUpperCase();
-            } while (firstName == null || firstName.equalsIgnoreCase(""));
+                System.out.print("Please enter the user's email address: ");
+                userEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's last name: ");
-                lastName = keyIn.nextLine().trim().toUpperCase();
-            } while (lastName == null || lastName.equalsIgnoreCase(""));
+
 
             //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstName);
-            prepStatement.setString(2, lastName);
+            prepStatement.setString(1, userEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -1139,21 +1133,24 @@ public class DatabaseConnection {
             prepStatement.executeUpdate();
 
             //just a query to show that the row was inserted
-            query = "select id, fname, lname, lastlogin\n"
+            query = "select id, fname, lname, email, lastlogin\n"
                     + "from users\n"
                     + "where id = ?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the update, data is...\n");
+            
+            System.out.println("\nAfter the update, data is...\n"
+                    + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[LASTLOGIN]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
                         + resultSet.getString(2) + ", "
                         + resultSet.getString(3) + ", "
-                        + resultSet.getString(4));
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
                 counter++;
             }
         } catch (Exception e) {
