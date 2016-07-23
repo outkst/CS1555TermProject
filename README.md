@@ -86,7 +86,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Create a pending friendship from one user to another.  
     * [ ] **_establishFriendship_**
       * Create a bilateral friendship between two users.  
-    * [ ] **_displayFriends_**
+    * [X] **_displayFriends_**
       * Given a **user**, look up all of that user's establish and pending friendships. Print out this information in a nicely formatted way.  
     * [X] **_createGroup_**
       * Given a **name**, **description**, and **membership limit**, add a new group to the system.  

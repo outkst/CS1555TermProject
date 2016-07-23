@@ -74,7 +74,7 @@ public class DatabaseConnection {
     public void addToGroup() {
         try {
             //initialize input variables
-            String email = null;
+            String userEmail = null;
             String groupName = null;
             int userID = 0;
             int groupID = 0;
@@ -82,17 +82,17 @@ public class DatabaseConnection {
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the email and normalize (lowercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's email address: ");
-                email = keyIn.nextLine().trim().toLowerCase();
-            } while (email == null || email.equalsIgnoreCase(""));
+                userEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //make sure user exists
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, email);
+            prepStatement.setString(1, userEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -383,29 +383,21 @@ public class DatabaseConnection {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
-            String firstNameUser = null;
-            String lastNameUser = null;
+            String userEmail = null;
 
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the user's first name: ");
-                firstNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
-
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's last name: ");
-                lastNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
+                System.out.print("Please enter the uesr's email address: ");
+                userEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameUser);
-            prepStatement.setString(2, lastNameUser);
+            prepStatement.setString(1, userEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -421,6 +413,7 @@ public class DatabaseConnection {
             //query to display friends
             query = "SELECT U.FNAME AS FIRSTNAME,\n"
                     + "U.LNAME AS LASTNAME,\n"
+                    + "U.EMAIL AS EMAILADDRESS,\n"
                     + "F.APPROVED AS APPROVED,\n"
                     + "F.DATEAPPROVED AS DATEAPPROVED\n"
                     + "FROM FRIENDSHIPS F, USERS U\n"
@@ -430,7 +423,8 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the insert, data is...\n");
+            System.out.println("\nAfter the insert, data is...\n"
+                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
