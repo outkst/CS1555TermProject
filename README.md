@@ -98,7 +98,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * This should operate similarly to **sendMessageToUser** only it should send the message to *every* member currently in the specified group.  
     * [X] **_displayMessages_**
       * Given a **user**, look up all of the messages sent to that user (either directly or via a group that they belong to). The program should print out the user's messages in a nicely formatted way.  
-    * [ ] **_displayNewMessages_**
+    * [X] **_displayNewMessages_**
       * Operates similarly to **displayMessages**, but only displays messages sent since the user's last login.  
     * [ ] **_searchForUser_**
       * This provides a simple search function for the system. Given a string on which to match any user in the system, any item in this string must be matched against any significant field of a user's profile. That is if the user searches for "**xyz abc**", the results should be the set of all profiles that match "**xyz**" UNION the set of all profiles that matches "**abc**". The names of all matching users should be printed out in a nicely formatted way.  
