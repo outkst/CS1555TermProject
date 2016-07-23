@@ -469,29 +469,21 @@ public class DatabaseConnection {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
-            String firstNameUser = null;
-            String lastNameUser = null;
+            String userEmail = null;
 
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the user's first name: ");
-                firstNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameUser == null || firstNameUser.equalsIgnoreCase(""));
-
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's last name: ");
-                lastNameUser = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameUser == null || lastNameUser.equalsIgnoreCase(""));
+                System.out.print("Please enter the uesr's email address: ");
+                userEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameUser);
-            prepStatement.setString(2, lastNameUser);
+            prepStatement.setString(1, userEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -518,7 +510,8 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are ...\n");
+            System.out.println("\nMessages for the users are...\n"
+                    + "[RECORD#] [FNAME],[LNAME],[SUBJECT],[BODY],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
