@@ -814,7 +814,7 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
 
             System.out.println("\nAfter the insert, data is...\n"
-                    + "[RECORD ##],[FNAME],[LNAME],[APPROVED?],[DATEAPPROVED]");
+                    + "[RECORD#] [FNAME],[LNAME],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "

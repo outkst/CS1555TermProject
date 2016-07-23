@@ -84,7 +84,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Given a **name**, **email address**, and **date of birth**, add a new user to the system.  
     * [ ] **_initiateFriendship_**
       * Create a pending friendship from one user to another.  
-    * [ ] **_establishFriendship_**
+    * [X] **_establishFriendship_**
       * Create a bilateral friendship between two users.  
     * [X] **_displayFriends_**
       * Given a **user**, look up all of that user's establish and pending friendships. Print out this information in a nicely formatted way.  
