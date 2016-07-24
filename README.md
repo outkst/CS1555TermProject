@@ -92,7 +92,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Given a **name**, **description**, and **membership limit**, add a new group to the system.  
     * [X] **_addToGroup_**
       * Given a **user** and a **group**, add the user to the group so long as that would not violate the group's membership limit.  
-    * [ ] **_sendMessageToUser_**
+    * [X] **_sendMessageToUser_**
       * Given a message **subject**, **body**, **recipient**, and **sender**, create a new message.  
     * [X] **_sendMessageToGroup_**
       * This should operate similarly to **sendMessageToUser** only it should send the message to *every* member currently in the specified group.  

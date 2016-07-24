@@ -1364,12 +1364,10 @@ public class DatabaseConnection {
         try {
             //initialize input variables for User and Friend info
             int senderID = 0;
-            String firstNameSender = null;
-            String lastNameSender = null;
+            String userEmail = null;
 
             int recipID = 0;
-            String firstNameRecip = null;
-            String lastNameRecip = null;
+            String recipEmail = null;
 
             String messageSubject = null;
             String messageBody = null;
@@ -1377,23 +1375,16 @@ public class DatabaseConnection {
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the sender's first name: ");
-                firstNameSender = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameSender == null || firstNameSender.equalsIgnoreCase(""));
-
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the sender's last name: ");
-                lastNameSender = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameSender == null || lastNameSender.equalsIgnoreCase(""));
+                System.out.print("Please enter the sender's email address: ");
+                userEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameSender);
-            prepStatement.setString(2, lastNameSender);
+            prepStatement.setString(1, userEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -1403,22 +1394,15 @@ public class DatabaseConnection {
                 senderID = resultSet.getInt(1);
             }
 
-            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter recipient's first name: ");
-                firstNameRecip = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameRecip == null || firstNameRecip.equalsIgnoreCase(""));
-
-            // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter recipient's last name: ");
-                lastNameRecip = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameRecip == null || lastNameRecip.equalsIgnoreCase(""));
+                System.out.print("Please enter the recipient's email address: ");
+                recipEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (recipEmail == null || recipEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", recipEmail));
 
             //query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameRecip);
-            prepStatement.setString(2, lastNameRecip);
+            prepStatement.setString(1, recipEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -1455,14 +1439,17 @@ public class DatabaseConnection {
             prepStatement.executeUpdate();
 
             //just a query to show that the row was inserted
-            query = "select * from messages\n"
-                    + "where senderID = ? and RECIPIENTID = ?";
+            query = "SELECT M.ID, U.FNAME, U.LNAME, M.SUBJECT, M.BODY, RU.FNAME, RU.LNAME, M.DATECREATED FROM MESSAGES M "
+                    + "LEFT JOIN USERS U ON U.ID=M.SENDERID "
+                    + "LEFT JOIN USERS RU ON RU.ID=M.RECIPIENTID "
+                    + "WHERE M.SENDERID=? AND M.RECIPIENTID=?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, senderID);
             prepStatement.setInt(2, recipID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n");
+            System.out.println("\nAfter successful insert, data is...\n"
+                    + "[RECORD#] [ID],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -1472,7 +1459,8 @@ public class DatabaseConnection {
                         + resultSet.getString(4) + ", "
                         + resultSet.getString(5) + ", "
                         + resultSet.getString(6) + ", "
-                        + resultSet.getString(7));
+                        + resultSet.getString(7) + ", "
+                        + resultSet.getString(8));
                 counter++;
             }
         } catch (Exception e) {
