@@ -94,7 +94,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Given a **user** and a **group**, add the user to the group so long as that would not violate the group's membership limit.  
     * [ ] **_sendMessageToUser_**
       * Given a message **subject**, **body**, **recipient**, and **sender**, create a new message.  
-    * [ ] **_sendMessageToGroup_**
+    * [X] **_sendMessageToGroup_**
       * This should operate similarly to **sendMessageToUser** only it should send the message to *every* member currently in the specified group.  
     * [X] **_displayMessages_**
       * Given a **user**, look up all of the messages sent to that user (either directly or via a group that they belong to). The program should print out the user's messages in a nicely formatted way.  

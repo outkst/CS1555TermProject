@@ -143,7 +143,7 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
 
             // display the new list of users
-            System.out.println("\nAfter the insert, data is...\n"
+            System.out.println("\nAfter successful insert, data is...\n"
                     + "[RECORD#] [GROUPNAME],[FNAME],[LNAME],[EMAIL],[DATEJOINED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -175,15 +175,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -225,10 +219,7 @@ public class DatabaseConnection {
             } while (limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS));
 
             limitI = Integer.parseInt(limitS);
-            if (limitI <= 0) {
-                System.out.println("Group membership limit must be greater than 0");
-                return;
-            }
+            if (limitI <= 0) { throw new Exception("Group membership limit must be greater than 0"); }
 
             // show the user input
             System.out.println(String.format("Group Name: {%s} description: {%s} limit: {%s}", groupName, description, limitS));
@@ -249,7 +240,7 @@ public class DatabaseConnection {
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
-            System.out.println("\nAfter the insert, data is...\n"
+            System.out.println("\nAfter successful insert, data is...\n"
                     + "[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -265,15 +256,9 @@ public class DatabaseConnection {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -337,7 +322,7 @@ public class DatabaseConnection {
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
-            System.out.println("\nAfter the insert, data is...\n"
+            System.out.println("\nQuery success, data is...\n"
                     + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[BIRTHDATE],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -360,15 +345,9 @@ public class DatabaseConnection {
             
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -423,7 +402,7 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the insert, data is...\n"
+            System.out.println("\nQuery success, data is...\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -445,15 +424,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -532,15 +505,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -663,15 +630,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -815,7 +776,7 @@ public class DatabaseConnection {
             prepStatement.setInt(4, friendID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the insert, data is...\n"
+            System.out.println("\nAfter successful insert, data is...\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -848,15 +809,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -967,7 +922,7 @@ public class DatabaseConnection {
             prepStatement.setInt(4, friendID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the insert, data is...\n"
+            System.out.println("\nAfter successful insert, data is...\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -998,15 +953,9 @@ public class DatabaseConnection {
             
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1141,7 +1090,7 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
 
             
-            System.out.println("\nAfter the update, data is...\n"
+            System.out.println("\nAfter successful update, data is...\n"
                     + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[LASTLOGIN]");
             int counter = 1;
             while (resultSet.next()) {
@@ -1161,15 +1110,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1240,15 +1183,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1263,8 +1200,7 @@ public class DatabaseConnection {
         try {
             //initialize input variables for User and Friend info
             int senderID = 0;
-            String firstNameSender = null;
-            String lastNameSender = null;
+            String userEmail = null;
 
             int groupID = 0;
             String groupName = null;
@@ -1277,23 +1213,16 @@ public class DatabaseConnection {
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the sender's first name: ");
-                firstNameSender = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameSender == null || firstNameSender.equalsIgnoreCase(""));
-
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the sender's last name: ");
-                lastNameSender = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameSender == null || lastNameSender.equalsIgnoreCase(""));
+                System.out.print("Please enter the user's email address: ");
+                userEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameSender);
-            prepStatement.setString(2, lastNameSender);
+            prepStatement.setString(1, userEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -1377,14 +1306,23 @@ public class DatabaseConnection {
             }
 
             //just a query to show that the row was inserted
-            query = "select * from messages where senderid = ?";
+            query = "SELECT M.ID, M.SUBJECT, M.BODY, M.DATECREATED FROM MESSAGES "
+                    + "LEFT JOIN USERS U ON U.ID = M.SENDERID "
+                    + "LEFT JOIN GROUPS G ON G.ID = M.GROUPID"
+                    + "* from messages left join where senderid = ?";
+            query = "SELECT M.ID, G.NAME, U.FNAME, U.LNAME, M.SUBJECT, M.BODY, RU.FNAME, RU.LNAME, M.DATECREATED FROM MESSAGES M "
+                    + "LEFT JOIN USERS U ON U.ID = M.SENDERID "
+                    + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID "
+                    + "LEFT JOIN GROUPS G ON G.ID = M.GROUPID "
+                    + "WHERE M.SENDERID=?";
             prepStatement = connection.prepareStatement(query);
 
             prepStatement.setInt(1, senderID);
 
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the insert, data is...\n");
+            System.out.println("\nAfter successful insert, data is...\n"
+                    + "[RECORD#] [ID],[GROUP],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECFNAME],[RECLNAME],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -1393,7 +1331,10 @@ public class DatabaseConnection {
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4) + ", "
                         + resultSet.getString(5) + ", "
-                        + resultSet.getString(6));
+                        + resultSet.getString(6) + ", "
+                        + resultSet.getString(7) + ", "
+                        + resultSet.getString(8) + ", "
+                        + resultSet.getString(9));
                 counter++;
             }
         } catch (Exception e) {
@@ -1406,15 +1347,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1527,7 +1462,7 @@ public class DatabaseConnection {
             prepStatement.setInt(2, recipID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the insert, data is...\n");
+            System.out.println("\nAfter successful insert, data is...\n");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -1549,15 +1484,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1741,15 +1670,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1818,7 +1741,7 @@ public class DatabaseConnection {
             prepStatement.setInt(3, numResults);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter the insert, data is...");
+            System.out.println("\nQuery success, data is...");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -1830,7 +1753,6 @@ public class DatabaseConnection {
         } catch (SQLException e) {
             System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
         } catch (Exception e) {
-
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("\nThe user name you entered does not exist");
             } else {
@@ -1838,15 +1760,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println("\nCannot close object. Machine error: " + e.getMessage());
             }
