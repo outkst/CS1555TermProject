@@ -690,6 +690,9 @@ public class DatabaseConnection {
                 friendEmail = keyIn.nextLine().trim().toLowerCase();
             } while (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail));
 
+            if (friendEmail.equals(userEmail)) {
+                throw new Exception("You cannot friend yourself!");
+            }
 
             //query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
@@ -870,9 +873,11 @@ public class DatabaseConnection {
                 System.out.print("Please enter the email address of the person to friend: ");
                 friendEmail = keyIn.nextLine().trim().toLowerCase();
             } while (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail));
-
-
-
+            
+            if (friendEmail.equals(userEmail)) {
+                throw new Exception("You cannot friend yourself!");
+            }
+            
             // query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, friendEmail);
@@ -1491,33 +1496,23 @@ public class DatabaseConnection {
         try {
             //initialize input variables for User and Friend info
             int startID = 0;
-            String firstNameStart = null;
-            String lastNameStart = null;
-
+            String startEmail = null;
             int endID = 0;
-            String firstNameEnd = null;
-            String lastNameEnd = null;
+            String endEmail = null;
 
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter the user's first name: ");
-                firstNameStart = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameStart == null || firstNameStart.equalsIgnoreCase(""));
-
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's last name: ");
-                lastNameStart = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameStart == null || lastNameStart.equalsIgnoreCase(""));
+                System.out.print("Please enter the user's email address: ");
+                startEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (startEmail == null || startEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", startEmail));
 
             //query to make sure user exists and get their ID
-            query = "SELECT ID FROM USERS WHERE UPPER(FNAME) = ? AND UPPER(LNAME) = ?";
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameStart);
-            prepStatement.setString(2, lastNameStart);
+            prepStatement.setString(1, startEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -1527,22 +1522,15 @@ public class DatabaseConnection {
                 startID = resultSet.getInt(1);
             }
 
-            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
-                System.out.print("Please enter friend's first name: ");
-                firstNameEnd = keyIn.nextLine().trim().toUpperCase();
-            } while (firstNameEnd == null || firstNameEnd.equalsIgnoreCase(""));
-
-            // get the last name of the friend and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter friend's last name: ");
-                lastNameEnd = keyIn.nextLine().trim().toUpperCase();
-            } while (lastNameEnd == null || lastNameEnd.equalsIgnoreCase(""));
+                System.out.print("Please enter the user's email address: ");
+                endEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (endEmail == null || endEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", endEmail));
 
             //query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, firstNameEnd);
-            prepStatement.setString(2, lastNameEnd);
+            prepStatement.setString(1, endEmail);
             resultSet = prepStatement.executeQuery();
 
             //check if result set is empty and alert user, otherwise get the ID of the user
@@ -1555,7 +1543,7 @@ public class DatabaseConnection {
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", startID, endID));
 
-            //Insert statement for establishing pending friendship
+            //Select statement for establishing pending friendship
             query = "SELECT FRIENDID FROM\n"
                     + "FRIENDSHIPS \n"
                     + "WHERE USERID = ?\n"
