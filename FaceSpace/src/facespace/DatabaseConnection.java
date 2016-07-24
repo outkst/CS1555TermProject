@@ -641,6 +641,63 @@ public class DatabaseConnection {
     
     
     /**
+     * Remove a user and all of their information from the system. 
+     */
+    public void dropUser() {
+        try {            
+            // intialize input variables for user
+            String userEmail = null;
+            int userID = 0;
+            
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
+            
+            // get a valid email and normalize (lowercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter the user's email address: ");
+                userEmail = keyIn.nextLine().trim().toLowerCase();
+            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
+            
+            // build a sql query to get the user's ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, 
+            //  otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+            
+            // use this ID to delete the user, which will fire a 
+            //      trigger and remove all of their data
+            
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+            
+        } catch (Exception e) {
+
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+        } finally {
+            try {
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+    
+    
+    /**
      * Creates an established friendship from one user to another inside the database.
      */
     public void establishFriendship() {
@@ -656,7 +713,7 @@ public class DatabaseConnection {
             Scanner keyIn = new Scanner(System.in);
 
             /**
-             * GET THE BEFRIENDING USER'S FIRST AND LAST NAME TO BEGIN
+             * GET THE BEFRIENDING USER'S EMAIL
              * 
              */
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
@@ -664,7 +721,6 @@ public class DatabaseConnection {
                 System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
-
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -681,7 +737,7 @@ public class DatabaseConnection {
 
             
             /**
-             * GET THE FIRST AND LAST NAME OF THE USER THAT IS TO BE FRIENDED
+             * GET THE EMAIL OF USER THAT IS TO BE FRIENDED
              * 
              */
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
@@ -1311,10 +1367,6 @@ public class DatabaseConnection {
             }
 
             //just a query to show that the row was inserted
-            query = "SELECT M.ID, M.SUBJECT, M.BODY, M.DATECREATED FROM MESSAGES "
-                    + "LEFT JOIN USERS U ON U.ID = M.SENDERID "
-                    + "LEFT JOIN GROUPS G ON G.ID = M.GROUPID"
-                    + "* from messages left join where senderid = ?";
             query = "SELECT M.ID, G.NAME, U.FNAME, U.LNAME, M.SUBJECT, M.BODY, RU.FNAME, RU.LNAME, M.DATECREATED FROM MESSAGES M "
                     + "LEFT JOIN USERS U ON U.ID = M.SENDERID "
                     + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID "
@@ -1675,7 +1727,7 @@ public class DatabaseConnection {
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            // get the first name of the user and normalize (uppercase with no leading/trailing spaces)
+            // get the amount of months
             do {
                 System.out.print("Please enter the number of months: ");
                 numberOfMonths = keyIn.nextLine().trim();
