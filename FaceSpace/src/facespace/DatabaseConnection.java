@@ -1727,7 +1727,7 @@ public class DatabaseConnection {
 
                     int nextSearch = 0;
                     if (!l.isEmpty()) {
-                        nextSearch = (int) l.removeFirst();
+                        nextSearch = (Integer) l.removeFirst();
                     } else if (lastID != null) {
                         degrees--;
                         currentPath.remove(currentID);
@@ -1738,25 +1738,25 @@ public class DatabaseConnection {
                             currentFriendships.remove(currentID);
                             currentPath.remove(currentID);
                             degrees--;
-                            currentID = (int) currentPath.getLast();
+                            currentID = (Integer) currentPath.getLast();
                             l = currentFriendships.get(currentID);
                             if (l.isEmpty()) {
                                 currentFriendships.remove(currentID);
                                 currentPath.remove(currentID);
                                 degrees--;
-                                currentID = (int) currentPath.getLast();
+                                currentID = (Integer) currentPath.getLast();
                                 l = currentFriendships.get(currentID);
                                 if (l.isEmpty()){
                                     success = false;
                                     break;
                                 } else {
-                                    nextSearch = (int) l.removeFirst();
+                                    nextSearch = (Integer) l.removeFirst();
                                 }
                             } else {
-                                nextSearch = (int) l.removeFirst();
+                                nextSearch = (Integer) l.removeFirst();
                             }
                         } else {
-                            nextSearch = (int) l.removeFirst();
+                            nextSearch = (Integer) l.removeFirst();
                         }
                         
                     } else {
@@ -1800,7 +1800,7 @@ public class DatabaseConnection {
                 System.out.println("\nPath for three degrees is ... ");
                 for (int i = 0; i < currentPath.size(); i++) {
                     prepStatement = connection.prepareStatement(query);
-                    prepStatement.setInt(1, (int) currentPath.get(i));
+                    prepStatement.setInt(1, (Integer) currentPath.get(i));
                     resultSet = prepStatement.executeQuery();
                     while(resultSet.next()){
                         System.out.print(resultSet.getString(1) + " "
