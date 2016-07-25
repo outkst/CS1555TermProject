@@ -108,8 +108,8 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Display the top **K** who have sent or received the highest number of messages during for the past **X** months. **X** and **K** should be input parameters to this function.  
     * [X] **_dropUser_**
       * Remove a user and all of their information from the system. When a user is removed, the system should then delete the user from the groups he or she was a member of using a trigger. Note that messages require special handling because they are owned by both the sender and the receiver. Therefore, a message is deleted only when both the sender and all receivers are deleted. Attention should be paid handling integrity constraints.  
-2. [ ] Create a commit labeled "**Milestone 2 submission**" and push it to the repository.  
-3. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
+2. [X] Create a commit labeled "**Milestone 2 submission**" and push it to the repository.  
+3. [X] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
   * [X] The email title should be "**[CS1555] Project milestone 2 submission**".  
   * [X] Insert a link to the repository.  
-  * [ ] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
+  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
