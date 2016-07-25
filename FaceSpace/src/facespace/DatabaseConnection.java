@@ -20,24 +20,24 @@ public class DatabaseConnection {
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "system";
-        String password = "poiu0987";
+        String username = "";
+        String password = "";
 
         // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
 
         // get the username and password
-//        System.out.print("Please enter DB username: ");
-//        username = keyIn.nextLine().toLowerCase();
-//        System.out.print("Please enter DB password: ");
-//        password = keyIn.nextLine();
+        System.out.print("Please enter DB username: ");
+        username = keyIn.nextLine().toLowerCase();
+        System.out.print("Please enter DB password: ");
+        password = keyIn.nextLine();
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
             //This is the location of the database.
-            //String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
-            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
+            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
+            //String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
 
             //create the database connection
             connection = DriverManager.getConnection(url, username, password);
@@ -708,6 +708,8 @@ public class DatabaseConnection {
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
+            
+            System.out.println("\nSUCCESS!");
         } catch (SQLException e) {
             System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
             
