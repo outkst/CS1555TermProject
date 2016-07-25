@@ -20,8 +20,8 @@ public class DatabaseConnection {
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "system";
-        String password = "poiu0987";
+        String username = "kwm19";
+        String password = "3841077";
 
         // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
@@ -31,14 +31,13 @@ public class DatabaseConnection {
 //        username = keyIn.nextLine().toLowerCase();
 //        System.out.print("Please enter DB password: ");
 //        password = keyIn.nextLine();
-        
         try {
             // Register the oracle driver.  
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
             //This is the location of the database.
-            //String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
-            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
+            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
+//            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
 
             //create the database connection
             connection = DriverManager.getConnection(url, username, password);
@@ -54,7 +53,6 @@ public class DatabaseConnection {
              */
         }
     }
-    
 
     /**
      * Closes the database connection.
@@ -66,8 +64,7 @@ public class DatabaseConnection {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         }
     }
-    
-    
+
     /**
      * Adds a new user to a group in the database system.
      */
@@ -175,15 +172,20 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
 
     /**
      * Adds a new group to the database system.
@@ -219,7 +221,9 @@ public class DatabaseConnection {
             } while (limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS));
 
             limitI = Integer.parseInt(limitS);
-            if (limitI <= 0) { throw new Exception("Group membership limit must be greater than 0"); }
+            if (limitI <= 0) {
+                throw new Exception("Group membership limit must be greater than 0");
+            }
 
             // show the user input
             System.out.println(String.format("Group Name: {%s} description: {%s} limit: {%s}", groupName, description, limitS));
@@ -256,15 +260,20 @@ public class DatabaseConnection {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-
 
     /**
      * Adds a new user to the database system.
@@ -335,28 +344,33 @@ public class DatabaseConnection {
                         + resultSet.getString(7));
                 counter++;
             }
-            
+
             System.out.println("\nSUCCESS!");
         } catch (SQLException e) {
             System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-            
+
         } catch (Exception e) {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            
+
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
-    
+
     /**
-     * Displays all of that user's pending, and established, friendships. 
+     * Displays all of that user's pending, and established, friendships.
      */
     public void displayFriends() {
         try {
@@ -410,7 +424,8 @@ public class DatabaseConnection {
                         + resultSet.getString(1) + ", "
                         + resultSet.getString(2) + ", "
                         + resultSet.getString(3) + ", "
-                        + resultSet.getString(4));
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
                 counter++;
             }
         } catch (SQLException e) {
@@ -424,19 +439,24 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
-    }    
-    
-    
+    }
+
     /**
-     * Given a user, look up all of the messages sent to that user 
-     *  (either directly or via a group that they belong to).
+     * Given a user, look up all of the messages sent to that user (either
+     * directly or via a group that they belong to).
      */
     public void displayMessages() {
         try {
@@ -505,19 +525,24 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
 
-
     /**
-     * Given a user, look up all of the messages sent to that user 
-     *  (either directly or via a group that they belong to).
+     * Given a user, look up all of the messages sent to that user (either
+     * directly or via a group that they belong to).
      */
     public void displayNewMessages() {
         try {
@@ -621,7 +646,7 @@ public class DatabaseConnection {
             }
         } catch (SQLException ex) {
             System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-            
+
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("The user name you entered does not exist");
@@ -630,18 +655,24 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
-    
+
     /**
-     * Creates an established friendship from one user to another inside the database.
+     * Creates an established friendship from one user to another inside the
+     * database.
      */
     public void establishFriendship() {
         try {
@@ -657,14 +688,13 @@ public class DatabaseConnection {
 
             /**
              * GET THE BEFRIENDING USER'S FIRST AND LAST NAME TO BEGIN
-             * 
+             *
              */
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
-
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -679,10 +709,9 @@ public class DatabaseConnection {
                 userID = resultSet.getInt(1);
             }
 
-            
             /**
              * GET THE FIRST AND LAST NAME OF THE USER THAT IS TO BE FRIENDED
-             * 
+             *
              */
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
@@ -709,14 +738,12 @@ public class DatabaseConnection {
             // show user input (in form of ID's)
             System.out.println(String.format("\nID of user: {%d} ID of friend: {%d}", userID, friendID));
 
-            
             /**
              * GET THE STATUS OF THIS FRIENDSHIP (IF EXISTS), AND EITHER
-             * 
-             *  1) CREATE A NEW PENDING FRIENDSHIP
-             *  2) CREATE AN APPROVED FRIENDSHIP
-             *  3) TELL THE USER THAT A FRIENDSHIP ALREADY EXISTS
-             * 
+             *
+             * 1) CREATE A NEW PENDING FRIENDSHIP 2) CREATE AN APPROVED
+             * FRIENDSHIP 3) TELL THE USER THAT A FRIENDSHIP ALREADY EXISTS
+             *
              */
             //Select the current status of a friendship between the 2 users
             query = "SELECT * FROM FRIENDSHIPS WHERE USERID = ? AND FRIENDID = ?";
@@ -745,6 +772,8 @@ public class DatabaseConnection {
 
             query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
 
+            String countQuery = "SELECT COUNT(*) FROM FRIENDSHIPS WHERE USERID = ? AND FRIENDID = ?";
+
             if (oppositeDirection == false) {
                 //insert in both directions
                 //Create the prepared statement
@@ -753,10 +782,18 @@ public class DatabaseConnection {
                 prepStatement.setInt(2, friendID);
                 prepStatement.executeUpdate();
 
-                prepStatement = connection.prepareStatement(query);
+                prepStatement = connection.prepareStatement(countQuery);
                 prepStatement.setInt(1, friendID);
                 prepStatement.setInt(2, userID);
-                prepStatement.executeUpdate();
+                resultSet = prepStatement.executeQuery();
+                if (resultSet.next()) {
+                    if (resultSet.getInt(1) == 0) {
+                        prepStatement = connection.prepareStatement(query);
+                        prepStatement.setInt(1, friendID);
+                        prepStatement.setInt(2, userID);
+                        prepStatement.executeUpdate();
+                    }
+                }
 
             } else {
                 //insert in only the opposite direction of the 
@@ -787,7 +824,8 @@ public class DatabaseConnection {
                         + resultSet.getString(1) + ", "
                         + resultSet.getString(2) + ", "
                         + resultSet.getString(3) + ", "
-                        + resultSet.getString(4));
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
                 counter++;
             }
         } catch (SQLException e) {
@@ -812,18 +850,24 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
-    
+
     /**
-     * Creates a pending friendship from one user to another inside the database.
+     * Creates a pending friendship from one user to another inside the
+     * database.
      */
     public void initiateFriendship() {
         try {
@@ -837,17 +881,15 @@ public class DatabaseConnection {
             // create a scanner to get user input
             Scanner keyIn = new Scanner(System.in);
 
-            
             /**
              * GET THE EMAIL OF THE USER INITIATING A FRIENDSHIP
-             * 
+             *
              */
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
             do {
                 System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
-
 
             // query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -862,10 +904,9 @@ public class DatabaseConnection {
                 userID = resultSet.getInt(1);
             }
 
-            
             /**
              * GET THE EMAIL OF THE USER TO FRIEND
-             * 
+             *
              */
             // get the email of the friend and normalize (lowercase with no leading/trailing spaces)
             // get a valid email and normalize (lowercase with no leading/trailing spaces)
@@ -873,11 +914,11 @@ public class DatabaseConnection {
                 System.out.print("Please enter the email address of the person to friend: ");
                 friendEmail = keyIn.nextLine().trim().toLowerCase();
             } while (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail));
-            
+
             if (friendEmail.equals(userEmail)) {
                 throw new Exception("You cannot friend yourself!");
             }
-            
+
             // query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, friendEmail);
@@ -893,14 +934,13 @@ public class DatabaseConnection {
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", userID, friendID));
 
-            
             /**
-             * USE THE USER_ID AND FRIEND_ID TO CREATE A "FRIENDSHIP". THIS DEPENDS ON THE
-             * TRIGGER THAT WAS BUILT, WHICH WILL DO ONE OF TWO THINGS:
-             * 
-             *  1) Create a "Pending Friendship"
-             *  2) Create a "Friendship"
-             * 
+             * USE THE USER_ID AND FRIEND_ID TO CREATE A "FRIENDSHIP". THIS
+             * DEPENDS ON THE TRIGGER THAT WAS BUILT, WHICH WILL DO ONE OF TWO
+             * THINGS:
+             *
+             * 1) Create a "Pending Friendship" 2) Create a "Friendship"
+             *
              */
             // insert statement for establishing pending friendship
             query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
@@ -909,10 +949,9 @@ public class DatabaseConnection {
             prepStatement.setInt(2, friendID);
             prepStatement.executeUpdate();
 
-            
             /**
              * GRAB THE INSERTED ROW FROM THE DB AND DISPLAY TO USER.
-             * 
+             *
              */
             // query to show that the row was inserted
             query = "SELECT U.FNAME, U.LNAME, U.EMAIL, F.APPROVED, F.DATEAPPROVED\n"
@@ -952,21 +991,26 @@ public class DatabaseConnection {
                     System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
                     break;
             }
-            
+
         } catch (Exception e) {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            
+
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
 
     /**
      * Lists all the groups in the database
@@ -976,9 +1020,9 @@ public class DatabaseConnection {
             query = "SELECT NAME, DESCRIPTION, LIMIT, DATECREATED FROM GROUPS";
             prepStatement = connection.prepareStatement(query);
             resultSet = prepStatement.executeQuery();
-            
+
             System.out.println("\n[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]");
-            int counter=1;
+            int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter++ + ": "
                         + resultSet.getString(1) + ", "
@@ -988,22 +1032,27 @@ public class DatabaseConnection {
             }
         } catch (SQLException ex) {
             System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-            
+
         } catch (Exception e) {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            
+
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
 
-    
     /**
      * Lists all the users in the database
      */
@@ -1012,9 +1061,9 @@ public class DatabaseConnection {
             query = "SELECT FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED FROM USERS";
             prepStatement = connection.prepareStatement(query);
             resultSet = prepStatement.executeQuery();
-            
+
             System.out.println("[RECORD#] [FNAME],[LNAME],[EMAIL],[DOB],[LASTLOGIN],[DATECREATED]");
-            int counter=1;
+            int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter++ + ": "
                         + resultSet.getString(1) + ", "
@@ -1026,22 +1075,27 @@ public class DatabaseConnection {
             }
         } catch (SQLException ex) {
             System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-            
+
         } catch (Exception e) {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            
+
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
-            
+
     /**
      * Logs in the user by updating their last login to the current timestamp.
      */
@@ -1059,8 +1113,6 @@ public class DatabaseConnection {
                 System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
-
-
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -1094,7 +1146,6 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            
             System.out.println("\nAfter successful update, data is...\n"
                     + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[LASTLOGIN]");
             int counter = 1;
@@ -1115,20 +1166,25 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
 
-    
     /**
      * Searches firstname, lastname, and email as applicable search fields.
-     *  breaks up search string by using regular regular expression on whitespace.
-     *  runs queries for each of the search terms.
+     * breaks up search string by using regular regular expression on
+     * whitespace. runs queries for each of the search terms.
      */
     public void searchForUser() {
         try {
@@ -1151,19 +1207,19 @@ public class DatabaseConnection {
             //query that looks at firstname, lastname, and email as applicable search fields
             StringBuilder queryBuilder = new StringBuilder();
             queryBuilder.append("SELECT ID, FNAME, LNAME, EMAIL FROM USERS WHERE ");
-            for (int x=0; x < searchItems.length; x++) {
-                if (x==0) {
+            for (int x = 0; x < searchItems.length; x++) {
+                if (x == 0) {
                     queryBuilder.append("(");
                 } else {
                     queryBuilder.append("OR (");
                 }
-                
+
                 queryBuilder.append("FNAME LIKE '%").append(searchItems[x]).append("%'");
                 queryBuilder.append(" OR LNAME LIKE '%").append(searchItems[x]).append("%'");
                 queryBuilder.append(" OR UPPER(EMAIL) LIKE '%").append(searchItems[x]).append("%'");
                 queryBuilder.append(") ");
             }
-            
+
             prepStatement = connection.prepareStatement(queryBuilder.toString());
             resultSet = prepStatement.executeQuery();
 
@@ -1188,15 +1244,20 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
 
     /**
      * Send a message to an entire group of users.
@@ -1284,7 +1345,6 @@ public class DatabaseConnection {
             //updates, because the trigger is a before insert, in order to
             //determine the id for the message
             //going to do a batch update so turn autocommit off
-            
             //connection.setAutoCommit(false);
             prepStatement = connection.prepareStatement(query);
 
@@ -1301,7 +1361,7 @@ public class DatabaseConnection {
 
             //execute the insert
             if (groupHasMember) {
-                prepStatement.executeQuery();
+//                prepStatement.executeQuery();
                 //prepStatement.executeBatch();
                 //connection.commit();
                 //connection.setAutoCommit(true);
@@ -1352,15 +1412,20 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-
 
     /**
      * Send a message to an individual user.
@@ -1477,20 +1542,25 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
-    
-    
+
     /**
-     * Given two users (userA and userB), find a path, if one exists, between the 
-     *  userA and the userB with at most 3 hop between them. A hop is defined 
-     *  as a friendship between any two users.
+     * Given two users (userA and userB), find a path, if one exists, between
+     * the userA and the userB with at most 3 hop between them. A hop is defined
+     * as a friendship between any two users.
      */
     public void threeDegrees() {
         try {
@@ -1569,32 +1639,81 @@ public class DatabaseConnection {
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, startID);
             resultSet = prepStatement.executeQuery();
-            
+
             LinkedList connections = new LinkedList();
             LinkedList currentPath = new LinkedList();
+            Hashtable<Integer, LinkedList> currentFriendships = new Hashtable<Integer, LinkedList>();
             currentPath.add(startID);
+            int curConnection = 0;
             int degrees = 1;
             int count = 0;
-            while (true || !connections.isEmpty()) {
-                if (resultSet.next()) {
-                    if (resultSet.getInt(1) == endID) {
-                        currentPath.add(resultSet.getInt(1));
-                        break;
-                        //completely found
-                    } else if (!connections.contains(resultSet.getInt(1)) && resultSet.getInt(1) != startID) {
-                        //add connection to list
-                        connections.add(resultSet.getInt(1));
+            Integer currentID = new Integer(startID);
+            Integer lastID = null;
+            currentFriendships.put(startID, new LinkedList());
+            boolean success = false;
+            while (true) {
+                if (degrees <= 3) {
+                    if (resultSet.next()) {
+
+                        if (resultSet.getInt(1) == endID) {
+                            currentPath.add(resultSet.getInt(1));
+                            success = true;
+                            break;
+                            //completely found
+                        }
+                        if (!currentPath.contains(resultSet.getInt(1))) {
+                            LinkedList l = currentFriendships.get(currentID);
+                            l.add(resultSet.getInt(1));
+                            currentFriendships.put(currentID, l);
+                        }
+                        count++;
                     }
-                    count++;
                 }
                 //if you are on the last row, remove the last user that did not 
                 //work, grab a new userID and get all of their friends
-                if (count == numRows && !connections.isEmpty()) {
-                    if (currentPath.size() > 1) {
-                        currentPath.removeLast();
+                if (count == numRows || (degrees > 3 && !currentFriendships.isEmpty())) {
+
+                    LinkedList l = currentFriendships.get(currentID);
+
+                    int nextSearch = 0;
+                    if (!l.isEmpty()) {
+                        nextSearch = (int) l.removeFirst();
+                    } else if (lastID != null) {
                         degrees--;
+                        currentPath.remove(currentID);
+                        currentFriendships.remove(currentID);
+                        currentID = lastID;
+                        l = currentFriendships.get(currentID);
+                        if (l.isEmpty()) {
+                            currentFriendships.remove(currentID);
+                            currentPath.remove(currentID);
+                            degrees--;
+                            currentID = (int) currentPath.getLast();
+                            l = currentFriendships.get(currentID);
+                            if (l.isEmpty()) {
+                                currentFriendships.remove(currentID);
+                                currentPath.remove(currentID);
+                                degrees--;
+                                currentID = (int) currentPath.getLast();
+                                l = currentFriendships.get(currentID);
+                                if (l.isEmpty()){
+                                    success = false;
+                                    break;
+                                } else {
+                                    nextSearch = (int) l.removeFirst();
+                                }
+                            } else {
+                                nextSearch = (int) l.removeFirst();
+                            }
+                        } else {
+                            nextSearch = (int) l.removeFirst();
+                        }
+                        
+                    } else {
+                        success = false;
+                        break;
                     }
-                    int nextSearch = (int) connections.removeFirst();
+
                     //get the number of rows for this user
                     prepStatement = connection.prepareStatement(countQuery);
                     prepStatement.setInt(1, nextSearch);
@@ -1607,23 +1726,41 @@ public class DatabaseConnection {
                     prepStatement = connection.prepareStatement(query);
                     prepStatement.setInt(1, nextSearch);
                     resultSet = prepStatement.executeQuery();
+
                     currentPath.add(nextSearch);
+                    lastID = currentID;
+                    currentID = new Integer(nextSearch);
+                    currentFriendships.put(currentID, new LinkedList());
 
                     degrees++;
-                } else if (count == numRows && connections.isEmpty()) {
+                } else if (count == numRows && currentFriendships.isEmpty()) {
+                    success = false;
                     break;
                     //no dice
                 }
-                if (degrees > 3) {
+                if (degrees > 3 && currentFriendships.isEmpty()) {
+                    success = false;
                     break;
                     //too many degrees
                 }
             }
-
-            System.out.println("\nPath for three degrees is ... ");
-            for (int i = 0; i < currentPath.size(); i++) {
-                System.out.println(currentPath.get(i));
+            if (success) {
+                query = "select FNAME, LNAME from users WHERE ID = ?";
+                
+                System.out.println("\nPath for three degrees is ... ");
+                for (int i = 0; i < currentPath.size(); i++) {
+                    prepStatement = connection.prepareStatement(query);
+                    prepStatement.setInt(1, (int) currentPath.get(i));
+                    resultSet = prepStatement.executeQuery();
+                    while(resultSet.next()){
+                        System.out.print(resultSet.getString(1) + " "
+                        + resultSet.getString(2) + " -> ");
+                    }
+                }
+            } else {
+                System.out.println("No successful 3 degree matching could be made");
             }
+
         } catch (SQLException e) {
             int errorCode = e.getErrorCode();
             switch (errorCode) {
@@ -1646,23 +1783,29 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
         }
     }
 
-    
     /**
-     * Display the top K who have sent or received the highest number of messages during 
-     * for the past X months. X and K should be input parameters to this function.
-     * 
-     * The current query treats all messages equally (aka no special consideration
-     *  for group messages), so if a user sends 1 message to a group of 10 people, 
-     *  that would count as them sending 10 messages.
+     * Display the top K who have sent or received the highest number of
+     * messages during for the past X months. X and K should be input parameters
+     * to this function.
+     *
+     * The current query treats all messages equally (aka no special
+     * consideration for group messages), so if a user sends 1 message to a
+     * group of 10 people, that would count as them sending 10 messages.
      */
     public void topMessagers() {
         try {
@@ -1719,6 +1862,7 @@ public class DatabaseConnection {
 
             System.out.println("\nQuery success, data is...");
             int counter = 1;
+            System.out.println("[FNAME],[LNAME],[NUM MESSAGES]");
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
@@ -1736,9 +1880,15 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) { statement.close(); }
-                if (prepStatement != null) { prepStatement.close(); }
-                if (resultSet != null) { resultSet.close(); }
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
             } catch (SQLException e) {
                 System.out.println("\nCannot close object. Machine error: " + e.getMessage());
             }
