@@ -79,7 +79,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Isolation Level  
       * Locking Modes  
     * [X] Assume multiple requests can be made at the same time, on behalf of multiple users.  
-  * [ ] Implement the following functions:  
+  * [X] Implement the following functions:  
     * [X] **_createUser_**
       * Given a **name**, **email address**, and **date of birth**, add a new user to the system.  
     * [X] **_initiateFriendship_**

@@ -1,2 +1,4 @@
 /FaceSpace/build/
-/FaceSpace/dist/
+/FaceSpace/nbproject/
+build.xml
+manifest.mf
