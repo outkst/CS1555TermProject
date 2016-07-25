@@ -21,9 +21,9 @@ public class FaceSpace {
         DatabaseConnection db = null;
         try {
             db = new DatabaseConnection();
-            int input = 0;
-            while (input != 18) {
-                System.out.print("\nWhat would you like to do? (Enter 18 to exit)\n"
+            int input = -1;
+            while (input != 0) {
+                System.out.print("\nWhat would you like to do? (Enter 0 to exit)\n"
                         + "1 - Create a User \t\t\t 8 - Send Group a Message \t\t\t 15 - Log in User \n"
                         + "2 - Initiate a friendship \t\t 9 - Display Messages for User \t\t\t 16 - List All Users \n"
                         + "3 - Establish a friendship \t\t 10 - Display New Messages for User \t\t 17 - List All Groups \n"
@@ -35,6 +35,8 @@ public class FaceSpace {
                 Scanner keyIn = new Scanner(System.in);
                 input = keyIn.nextInt();
                 switch (input) {
+                    case 0:
+                        break;
                     case 1:
                         System.out.println("\n[CREATE USER]");
                         db.createUser();
@@ -102,8 +104,6 @@ public class FaceSpace {
                     case 17:
                         System.out.println("\n[LIST ALL GROUPS]");
                         db.listAllGroups();
-                        break;
-                    case 18:
                         break;
                     default:
                         System.out.println("INVALID INPUT");

@@ -68,7 +68,7 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 
 ### Milestone 2: A JDBC Application To Manage '*FaceSpace*' (Due: July 24 @ 11:59PM)
 
-1. [ ] Create a '**FaceSpace**' Java application:  
+1. [X] Create a '**FaceSpace**' Java application:  
   * [X] Must interface the Pitt Oracle server (*unixs.cis.pitt.edu*).  
   * [X] Must use the Java Database Connectivity (JDBC) API.  
   * [X] All Tasks must check for, and properly react, to any errors reported by the DBMS.  
@@ -102,11 +102,11 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Operates similarly to **displayMessages**, but only displays messages sent since the user's last login.  
     * [X] **_searchForUser_**
       * This provides a simple search function for the system. Given a string on which to match any user in the system, any item in this string must be matched against any significant field of a user's profile. That is if the user searches for "**xyz abc**", the results should be the set of all profiles that match "**xyz**" UNION the set of all profiles that matches "**abc**". The names of all matching users should be printed out in a nicely formatted way.  
-    * [ ] **_threeDegrees_**
+    * [X] **_threeDegrees_**
       * This task explores the user's social network. Given two users (**userA** and **userB**), find a path, if one exists, between the **userA** and the **userB** with at most 3 hop between them. A hop is defined as a friendship between any two users. The path should be printed out in a nicely formatted way.  
     * [X] **_topMessages_**
       * Display the top **K** who have sent or received the highest number of messages during for the past **X** months. **X** and **K** should be input parameters to this function.  
-    * [ ] **_dropUser_**
+    * [X] **_dropUser_**
       * Remove a user and all of their information from the system. When a user is removed, the system should then delete the user from the groups he or she was a member of using a trigger. Note that messages require special handling because they are owned by both the sender and the receiver. Therefore, a message is deleted only when both the sender and all receivers are deleted. Attention should be paid handling integrity constraints.  
 2. [ ] Create a commit labeled "**Milestone 2 submission**" and push it to the repository.  
 3. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  

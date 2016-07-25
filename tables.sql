@@ -3,6 +3,8 @@ DROP TRIGGER FRIENDSHIP_CHECK;
 DROP TRIGGER ADD_USER;
 DROP TRIGGER ADD_GROUP;
 DROP TRIGGER ADD_MESSAGE;
+DROP TRIGGER DROP_USER_DATA;
+DROP TRIGGER DROP_USER_MESSAGES;
 DROP TABLE MESSAGES CASCADE CONSTRAINTS;
 DROP TABLE GROUPMEMBERS CASCADE CONSTRAINTS;
 DROP TABLE FRIENDSHIPS CASCADE CONSTRAINTS;
@@ -255,11 +257,9 @@ BEGIN
 END;
 /
 
--- Assumption: All of a user's data will be removed when they are deleted
--- Trigger to remove ALL user data when a user is deleted. Also removes
---		all Message entries that no longer have a valid sender and recipient
---		within the Users table.
-CREATE OR REPLACE TRIGGER DROP_USER
+-- Assumption: A user's friendships and group membership should be removed from the database when the user record is deleted.
+-- Trigger to remove Friendship and Group Membership data when a user is deleted.
+CREATE OR REPLACE TRIGGER DROP_USER_DATA
 BEFORE DELETE ON USERS
 FOR EACH ROW
 BEGIN
@@ -268,11 +268,17 @@ BEGIN
 
 	-- Remove all group entries for this user-to-be-deleted
 	DELETE FROM GROUPMEMBERS WHERE USERID=:old.ID;
+END;
+/
 
-	-- Remove any entries from the MESSAGES table where both the
-	--	sender and recipient no longer exist in the users table.
-	DELETE FROM MESSAGES WHERE SENDERID NOT IN (SELECT ID FROM USERS WHERE ID != :old.ID) 
-		AND RECIPIENTID NOT IN (SELECT ID FROM USERS WHERE ID != :old.ID);
+-- Assumption: Messages which have no valid senderID and recipientID should be removed.
+-- Trigger to remove ALL records in the MESSAGES table if their SENDERID
+--	and RECIPIENTID no longer exist in the USERS table.
+CREATE OR REPLACE TRIGGER DROP_USER_MESSAGES
+AFTER DELETE ON USERS
+BEGIN
+	DELETE FROM MESSAGES WHERE SENDERID NOT IN (SELECT ID FROM USERS) 
+		AND RECIPIENTID NOT IN (SELECT ID FROM USERS);
 END;
 /
 
@@ -1687,7 +1693,7 @@ INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED
 INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED) VALUES (101, 'Hey there', 'Hi how are you doing.', 1, 25, TIMESTAMP '2016-07-13 22:04:31.763');
 INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED) VALUES (101, 'Hey there', 'Hi how are you doing.', 102, 25, TIMESTAMP '2016-07-13 22:04:31.763');
 INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED) VALUES (101, 'Hey there', 'Hi how are you doing.', 103, 25, TIMESTAMP '2016-07-13 22:04:31.763');
-INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED) VALUES (102, 'RE: Hey there', 'Hi how are you doing.', 101, NULL, TIMESTAMP '2016-07-13 22:07:11.110');
+INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED) VALUES (102, 'RE: Hey there', 'I''m doing well. it''s good to hear from you!', 101, NULL, TIMESTAMP '2016-07-13 22:07:11.110');
 
 
 -- Show the counts from all the tables

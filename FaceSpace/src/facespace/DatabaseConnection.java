@@ -20,8 +20,8 @@ public class DatabaseConnection {
     public DatabaseConnection() throws SQLException {
 
         //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "kwm19";
-        String password = "3841077";
+        String username = "system";
+        String password = "poiu0987";
 
         // create a scanner to get user input
         Scanner keyIn = new Scanner(System.in);
@@ -36,8 +36,8 @@ public class DatabaseConnection {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
             //This is the location of the database.
-            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
-//            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
+            //String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
+            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
 
             //create the database connection
             connection = DriverManager.getConnection(url, username, password);
