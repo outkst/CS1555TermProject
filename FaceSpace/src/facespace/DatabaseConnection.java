@@ -674,17 +674,16 @@ public class DatabaseConnection {
             
             // use this ID to delete the user, which will fire a 
             //      trigger and remove all of their data
-            
+            query = "DELETE FROM USERS WHERE ID=?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
         } catch (SQLException e) {
             System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
             
         } catch (Exception e) {
-
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            
         } finally {
             try {
                 if (statement != null) { statement.close(); }
@@ -1742,7 +1741,7 @@ public class DatabaseConnection {
 
             numResults = Integer.parseInt(numberOfResults);
             //query to make sure user exists and get their ID
-            query = "SELECT U.FNAME, U.LNAME, M.MESSAGE_COUNT FROM\n"
+            query = "SELECT M.MESSAGE_COUNT, U.FNAME, U.LNAME, U.EMAIL FROM\n"
                     + "(SELECT S.USERID AS USER_ID, S.TOTAL_SENT + R.TOTAL_RECEIVED AS MESSAGE_COUNT \n"
                     + "FROM \n"
                     + "(\n"
@@ -1769,13 +1768,15 @@ public class DatabaseConnection {
             prepStatement.setInt(3, numResults);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nQuery success, data is...");
+            System.out.println("\nQuery success, data is...\n"
+                    + "[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
                         + resultSet.getString(2) + ", "
-                        + resultSet.getString(3));
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4));
                 counter++;
             }
         } catch (SQLException e) {
