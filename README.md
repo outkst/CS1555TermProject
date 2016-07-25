@@ -71,14 +71,14 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 1. [ ] Create a '**FaceSpace**' Java application:  
   * [X] Must interface the Pitt Oracle server (*unixs.cis.pitt.edu*).  
   * [X] Must use the Java Database Connectivity (JDBC) API.  
-  * [ ] All Tasks must check for, and properly react, to any errors reported by the DBMS.  
-  * [ ] All Tasks must provide appropriate *SUCCESS* or *FAILURE* feedback to the user.  
-  * [ ] Transactions must be defined appropriately:  
+  * [X] All Tasks must check for, and properly react, to any errors reported by the DBMS.  
+  * [X] All Tasks must provide appropriate *SUCCESS* or *FAILURE* feedback to the user.  
+  * [X] Transactions must be defined appropriately:  
     * [X] Design all SQL transactions only when necessary.  
-    * [ ] Use concurrency control mechanisms supported by Oracle to ensure inconsistent states do not occur:  
+    * [X] Use concurrency control mechanisms supported by Oracle to ensure inconsistent states do not occur:  
       * Isolation Level  
       * Locking Modes  
-    * [ ] Assume multiple requests can be made at the same time, on behalf of multiple users.  
+    * [X] Assume multiple requests can be made at the same time, on behalf of multiple users.  
   * [ ] Implement the following functions:  
     * [X] **_createUser_**
       * Given a **name**, **email address**, and **date of birth**, add a new user to the system.  
@@ -100,16 +100,16 @@ A full list of this project's requirements can be viewed in **_1555_term_project
       * Given a **user**, look up all of the messages sent to that user (either directly or via a group that they belong to). The program should print out the user's messages in a nicely formatted way.  
     * [X] **_displayNewMessages_**
       * Operates similarly to **displayMessages**, but only displays messages sent since the user's last login.  
-    * [ ] **_searchForUser_**
+    * [X] **_searchForUser_**
       * This provides a simple search function for the system. Given a string on which to match any user in the system, any item in this string must be matched against any significant field of a user's profile. That is if the user searches for "**xyz abc**", the results should be the set of all profiles that match "**xyz**" UNION the set of all profiles that matches "**abc**". The names of all matching users should be printed out in a nicely formatted way.  
     * [ ] **_threeDegrees_**
       * This task explores the user's social network. Given two users (**userA** and **userB**), find a path, if one exists, between the **userA** and the **userB** with at most 3 hop between them. A hop is defined as a friendship between any two users. The path should be printed out in a nicely formatted way.  
-    * [ ] **_topMessages_**
+    * [X] **_topMessages_**
       * Display the top **K** who have sent or received the highest number of messages during for the past **X** months. **X** and **K** should be input parameters to this function.  
     * [ ] **_dropUser_**
       * Remove a user and all of their information from the system. When a user is removed, the system should then delete the user from the groups he or she was a member of using a trigger. Note that messages require special handling because they are owned by both the sender and the receiver. Therefore, a message is deleted only when both the sender and all receivers are deleted. Attention should be paid handling integrity constraints.  
 2. [ ] Create a commit labeled "**Milestone 2 submission**" and push it to the repository.  
 3. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
-  * [ ] The email title should be "**[CS1555] Project milestone 2 submission**".  
-  * [ ] Insert a link to the repository.  
+  * [X] The email title should be "**[CS1555] Project milestone 2 submission**".  
+  * [X] Insert a link to the repository.  
   * [ ] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
