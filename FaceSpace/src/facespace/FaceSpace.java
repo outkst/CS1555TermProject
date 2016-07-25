@@ -89,7 +89,7 @@ public class FaceSpace {
                         break;
                     case "N":
                         System.out.println("\n[DROP USER]");
-                        //dropUser();
+                        db.dropUser();
                         break;
                     case "O":
                         System.out.println("\n[LOG IN USER]");
