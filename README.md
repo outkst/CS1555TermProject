@@ -117,7 +117,9 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 ### Milestone 3: Bringing It All Together (Due: August 4 @ 11:59PM)
 
 1. [ ] Create a Java driver program to demonstrate the FaceSpace database by calling all of the created methods from Milestone 2.  
-  * [ ] Rewrite the methods to take input parameters.  
+  * [ ] Rewrite all of the methods to do the following:
+    * [ ] Take input parameters instead of querying for data.  
+    * [ ] Use `@throws SQLException` and remove all exception handling. Let the driver handle the exceptions.  
   * [ ] Remove the input Scanner object from the methods and place it in the driver program.  
       * The driver will ask for the input, and pass to the methods.  
 2. [ ] Create at least one JUnit test for each method in DatabaseConnections.java  
