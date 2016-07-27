@@ -113,3 +113,16 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] The email title should be "**[CS1555] Project milestone 2 submission**".  
   * [X] Insert a link to the repository.  
   * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
+
+### Milestone 3: Bringing It All Together (Due: August 4 @ 11:59PM)
+
+1. [ ] Create a Java driver program to demonstrate the FaceSpace database by calling all of the created methods from Milestone 2.  
+  * [ ] Rewrite the methods to take input parameters.  
+  * [ ] Remove the input Scanner object from the methods and place it in the driver program.  
+      * The driver will ask for the input, and pass to the methods.  
+2. [ ] Create at least one JUnit test for each method in DatabaseConnections.java  
+3. [X] Create a commit labeled "**Milestone 3 submission**" and push it to the repository.  
+4. [X] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
+  * [X] The email title should be "**[CS1555] Project milestone 3 submission**".  
+  * [X] Insert a link to the repository.  
+  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
