@@ -6,86 +6,50 @@ import java.util.regex.Pattern;
 import java.util.*;
 
 /**
- *
  * @author Kyle Monto (kwm19@pitt.edu) | Joe Meszar (jwm54@pitt.edu)
  */
 public class DatabaseConnection {
 
-    private static Connection connection; //used to hold the jdbc connection to the DB
-    private Statement statement; //used to create an instance of the connection
-    private PreparedStatement prepStatement; //used to create a prepared statement, that will be later reused
-    private ResultSet resultSet; //used to hold the result of your query (if one exists)
-    private String query;  //this will hold the query we are using
+    private static Connection connection;       // used to hold the jdbc connection to the DB
+    private Statement statement;                // used to create an instance of the connection
+    private PreparedStatement prepStatement;    // used to create a prepared statement, that will be later reused
+    private ResultSet resultSet;                // used to hold the result of your query (if one exists)
+    private String query;                       // this will hold the query we are using
 
-    public DatabaseConnection() throws SQLException {
+    /**
+     * @param url The URL of the database to connect to. (e.g. jdbc:oracle:thin:@localhost:1521:xe)
+     * @param username The username of the database account.
+     * @param password The password of the database account.
+     * @throws SQLException
+     */
+    public DatabaseConnection(String url, String username, String password) throws SQLException {
+        // register the oracle driver.  
+        DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
-        //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "";
-        String password = "";
-
-        // create a scanner to get user input
-        Scanner keyIn = new Scanner(System.in);
-
-        // get the username and password
-        System.out.print("Please enter DB username: ");
-        username = keyIn.nextLine().toLowerCase();
-        System.out.print("Please enter DB password: ");
-        password = keyIn.nextLine();
-        try {
-            // Register the oracle driver.  
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-
-            //This is the location of the database.
-            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
-            //String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
-
-            //create the database connection
-            connection = DriverManager.getConnection(url, username, password);
-
-        } catch (Exception Ex) {
-            System.out.println("\nError connecting to database.  Machine Error: " + Ex.toString());
-            System.exit(0); // immediately exit
-        } finally {
-            /*
-             * NOTE: the connection should be created ONCE and used through out the whole project;
-             * Is very expensive to open a connection therefore you should not close it after 
-             * every operation on database. Closing will be handled by a call to closeConnection()
-             */
-        }
+        // create the database connection
+        connection = DriverManager.getConnection(url, username, password);
     }
 
     /**
-     * Closes the database connection.
+     * Close the database connection.
+     * @throws SQLException
      */
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-        }
+    public void closeConnection() throws SQLException {
+        connection.close();
     }
 
     /**
      * Adds a new user to a group in the database system.
+     * @param userEmail The user's email address.
+     * @param groupName The name of the group to add the user into.
+     * @throws SQLException
      */
-    public void addToGroup() {
+    public void addToGroup(String userEmail, String groupName) throws SQLException, Exception {
         try {
             //initialize input variables
-            String userEmail = null;
-            String groupName = null;
             int userID = 0;
             int groupID = 0;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
-
-            //make sure user exists
+            
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
@@ -98,12 +62,6 @@ public class DatabaseConnection {
             } else {
                 userID = resultSet.getInt(1);
             }
-
-            // get the groupName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a group name: ");
-                groupName = keyIn.nextLine().trim().toUpperCase();
-            } while (groupName == null || groupName.equalsIgnoreCase(""));
 
             //make sure group exists
             //query to make sure user exists and get their ID
@@ -152,35 +110,11 @@ public class DatabaseConnection {
                         + resultSet.getString(5));
                 counter++;
             }
-        } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            switch (errorCode) {
-                case 20000:
-                    System.out.println("Group Membership limit is already met");
-                    break;
-                default:
-                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-                    break;
-            }
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else if (e.getMessage().equals("No Group Found")) {
-                System.out.println("The group name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -260,15 +194,9 @@ public class DatabaseConnection {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -354,15 +282,9 @@ public class DatabaseConnection {
 
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -439,15 +361,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -525,15 +441,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -655,15 +565,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -905,15 +809,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1052,15 +950,9 @@ public class DatabaseConnection {
 
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1093,15 +985,9 @@ public class DatabaseConnection {
 
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1136,15 +1022,9 @@ public class DatabaseConnection {
 
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1221,15 +1101,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1299,15 +1173,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1463,15 +1331,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1593,15 +1455,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1834,15 +1690,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
             }
@@ -1933,15 +1783,9 @@ public class DatabaseConnection {
             }
         } finally {
             try {
-                if (statement != null) {
-                    statement.close();
-                }
-                if (prepStatement != null) {
-                    prepStatement.close();
-                }
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
             } catch (SQLException e) {
                 System.out.println("\nCannot close object. Machine error: " + e.getMessage());
             }
