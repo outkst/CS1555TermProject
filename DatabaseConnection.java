@@ -2226,7 +2226,7 @@ public class DatabaseConnection {
      * Testing Method
      * Logs in the user by updating their last login to the current timestamp.
      */
-    public void logInUser(String userEmail) {
+    public void logInUserTest(String userEmail) {
        try {
             //initialize input variables for User and Friend info
             int userID = 0;
