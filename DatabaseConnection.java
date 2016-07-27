@@ -187,6 +187,125 @@ public class DatabaseConnection {
     }
 
     /**
+     * Testing Method
+     * Adds a new user to a group in the database system.
+     */
+    public void addToGroupTest(String userEmail, String groupName) {
+        try {
+
+            int userID = 0;
+            int groupID = 0;
+
+
+            //check to ensure that the email provided is valid
+            if(userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)){
+                 System.out.print("Invalid email address");
+                 return;
+            }
+            userEmail = userEmail.trim().toLowerCase();
+            //make sure user exists
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            //check to ensure that the email provided is valid
+            if(groupName == null || groupName.equalsIgnoreCase("")){
+                 System.out.print("Invalid groupname");
+                 return;
+            }
+            groupName = groupName.trim().toUpperCase();
+            //make sure group exists
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM GROUPS WHERE UPPER(NAME) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, groupName);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No Group Found");
+            } else {
+                groupID = resultSet.getInt(1);
+            }
+
+            // show the user input
+            System.out.println(String.format("User ID: {%d} Group ID: {%d}", userID, groupID));
+
+            //Insert query statement
+            query = "INSERT INTO GROUPMEMBERS (GROUPID, USERID, DATEJOINED) VALUES (?, ?, current_timestamp)";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, groupID);
+            prepStatement.setInt(2, userID);
+            prepStatement.executeUpdate();
+
+            // get the updated data
+            query = "SELECT G.NAME, U.FNAME, U.LNAME, U.EMAIL, GM.DATEJOINED FROM GROUPS G "
+                    + "LEFT JOIN GROUPMEMBERS GM ON GM.GROUPID = G.ID "
+                    + "LEFT JOIN USERS U ON U.ID = GM.USERID "
+                    + "WHERE GM.GROUPID=? AND GM.USERID=?";
+            prepStatement = connection.prepareStatement(query); //create a new instance
+            prepStatement.setInt(1, groupID);
+            prepStatement.setInt(2, userID);
+            resultSet = prepStatement.executeQuery();
+
+            // display the new list of users
+            System.out.println("\nAfter successful insert, data is...\n"
+                    + "[RECORD#] [GROUPNAME],[FNAME],[LNAME],[EMAIL],[DATEJOINED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+        } catch (SQLException e) {
+            int errorCode = e.getErrorCode();
+            switch (errorCode) {
+                case 20000:
+                    System.out.println("Group Membership limit is already met");
+                    break;
+                default:
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+                    break;
+            }
+        } catch (Exception e) {
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else if (e.getMessage().equals("No Group Found")) {
+                System.out.println("The group name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+    /**
      * Adds a new group to the database system.
      */
     public void createGroup() {
@@ -218,6 +337,93 @@ public class DatabaseConnection {
                 limitS = keyIn.nextLine().trim();
 
             } while (limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS));
+
+            limitI = Integer.parseInt(limitS);
+            if (limitI <= 0) {
+                throw new Exception("Group membership limit must be greater than 0");
+            }
+
+            // show the user input
+            System.out.println(String.format("Group Name: {%s} description: {%s} limit: {%s}", groupName, description, limitS));
+
+            //Insert query statement
+            query = "INSERT INTO GROUPS (NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (?, ?, ?, current_timestamp)";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, groupName);
+            prepStatement.setString(2, description);
+            prepStatement.setInt(3, limitI);
+            prepStatement.executeUpdate();
+
+            // get the new list of users
+            statement = connection.createStatement(); //create an instance
+            query = "Select * FROM groups";
+            resultSet = statement.executeQuery(query);
+
+            // display the new list of users
+            System.out.println("\nAfter successful insert, data is...\n"
+                    + "[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+    /**
+     * Testing Method
+     * Adds a new group to the database system.
+     */
+    public void createGroupTest(String groupName, String description, String limitS) {
+        try {
+            //initialize input variables
+
+            int limitI = 0;
+
+
+            //check validity of groupname
+            if (groupName == null || groupName.equalsIgnoreCase("")){
+                 System.out.println("Invalid group name");
+                 return;
+            }
+            groupName = groupName.trim().toUpperCase();
+
+            //check validity of description
+            if(description == null || description.equalsIgnoreCase("")){
+                 System.out.println("Invalid description");
+                 return;
+            }
+            description = description.trim();
+
+            //check validity of group limit
+            if(limitS == null || limitS.equalsIgnoreCase("") || !Pattern.matches("\\d+", limitS)){
+                 System.out.println("Invalid limit");
+                 return;
+            }
+            limitS = limitS.trim();
 
             limitI = Integer.parseInt(limitS);
             if (limitI <= 0) {
@@ -369,6 +575,98 @@ public class DatabaseConnection {
     }
 
     /**
+     * Testing Method
+     * Adds a new user to the database system.
+     */
+    public void createUserTest(String firstName, String lastName, String email, String dateOfBirth) {
+        try {
+
+
+            // check validity of firstName
+            if(firstName == null || firstName.equalsIgnoreCase("")){
+                 System.out.println("Invalid first name");
+                 return;
+            }
+            firstName = firstName.trim().toUpperCase();
+
+            // check the validity of lastName
+            if (lastName == null || lastName.equalsIgnoreCase("")){
+                 System.out.println("Invalid last name");
+                 return;
+            }
+            lastName = lastName.trim().toUpperCase();
+
+            // check validity of email address
+            if(email == null || email.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", email)){
+                 System.out.println("Invalid email address");
+                 return;
+            }
+            email = email.trim().toLowerCase();
+
+            // check validity of date of birth
+            if (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{4}", dateOfBirth)) {
+                 System.out.println("Invalid Date of Birth");
+                 return;
+            }
+            dateOfBirth = dateOfBirth.trim().toUpperCase();
+
+            // show the user input
+            System.out.println(String.format("\nFirst Name: {%s} LastName: {%s} Email: {%s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
+
+            // Create the query and insert
+            query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YYYY'), NULL, current_timestamp)";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, firstName);
+            prepStatement.setString(2, lastName);
+            prepStatement.setString(3, email);
+            prepStatement.setString(4, dateOfBirth);
+            prepStatement.executeUpdate();
+
+            // get the new list of users
+            statement = connection.createStatement(); //create an instance
+            query = "Select * FROM USERS";
+            resultSet = statement.executeQuery(query);
+
+            // display the new list of users
+            System.out.println("\nQuery success, data is...\n"
+                    + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[BIRTHDATE],[DATECREATED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5) + ", "
+                        + resultSet.getString(7));
+                counter++;
+            }
+
+            System.out.println("\nSUCCESS!");
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+    /**
      * Displays all of that user's pending, and established, friendships.
      */
     public void displayFriends() {
@@ -385,6 +683,89 @@ public class DatabaseConnection {
                 System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
+
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d}", userID));
+
+            //query to display friends
+            query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                    + "U.LNAME AS LASTNAME,\n"
+                    + "U.EMAIL AS EMAILADDRESS,\n"
+                    + "F.APPROVED AS APPROVED,\n"
+                    + "F.DATEAPPROVED AS DATEAPPROVED\n"
+                    + "FROM FRIENDSHIPS F, USERS U\n"
+                    + "WHERE F.FRIENDID = U.ID\n"
+                    + "AND F.USERID = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nQuery success, data is...\n"
+                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+        } catch (Exception e) {
+
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+    /**
+     * Testing Method
+     * Displays all of that user's pending, and established, friendships.
+     */
+    public void displayFriendsTest(String userEmail) {
+        try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+
+            // check validity of userEmail
+            if (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)) {
+                 System.out.println("Invalid email address");
+                 return;
+            }
+            userEmail = userEmail.trim().toLowerCase();
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -473,6 +854,91 @@ public class DatabaseConnection {
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d}", userID));
+
+            //query to display friends
+            query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                    + "  U.LNAME AS LASTNAME,\n"
+                    + "  M.SUBJECT AS SUBJECT,\n"
+                    + "  M.BODY AS BODY,\n"
+                    + "  M.DATECREATED AS DATE_RECEIVED\n"
+                    + "FROM MESSAGES M, USERS U\n"
+                    + "WHERE RECIPIENTID = ? \n"
+                    + "AND U.ID = M.SENDERID\n"
+                    + "ORDER BY DATE_RECEIVED";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nMessages for the users are...\n"
+                    + "[RECORD#] [FNAME],[LNAME],[SUBJECT],[BODY],[DATECREATED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+        } catch (Exception e) {
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+    /**
+     * Testing Method
+     * Given a user, look up all of the messages sent to that user (either
+     * directly or via a group that they belong to).
+     */
+    public void displayMessagesTest(String userEmail) {
+        try {
+            //initialize input variables for User and Friend info
+           int userID = 0;
+
+
+            // check validity of userEmail
+           if (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)) {
+                System.out.println("Invalid email address");
+                return;
+           }
+           userEmail = userEmail.trim().toLowerCase();
+
+           //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, userEmail);
@@ -668,6 +1134,134 @@ public class DatabaseConnection {
             }
         }
     }
+    /**
+     * Testing Method
+     * Given a user, look up all of the messages sent to that user (either
+     * directly or via a group that they belong to).
+     */
+    public void displayNewMessagesTest(String userEmail) {
+        try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+            Timestamp lastLogin = null;
+
+            // check validity of userEmail
+            if (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)) {
+               System.out.println("Invalid email address");
+               return;
+            }
+            userEmail = userEmail.trim().toLowerCase();
+
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d}", userID));
+
+            query = "SELECT LASTLOGIN FROM USERS WHERE ID = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
+
+            //check result set to see whether last log in is null
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                lastLogin = resultSet.getTimestamp(1);
+            }
+
+            if (lastLogin == null) {
+                //query if last login is null, just display all messages
+                System.out.println("No previous login, displaying all messages");
+                query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                        + "  U.LNAME AS LASTNAME,\n"
+                        + "  U.EMAIL AS EMAILADDRESS,\n"
+                        + "  M.SUBJECT AS SUBJECT,\n"
+                        + "  M.BODY AS BODY,\n"
+                        + "  M.DATECREATED AS DATE_RECEIVED\n"
+                        + "FROM MESSAGES M, USERS U\n"
+                        + "WHERE RECIPIENTID = ? \n"
+                        + "AND U.ID = M.SENDERID\n"
+                        + "ORDER BY DATE_RECEIVED";
+            } else {
+                //query if last login is not null, and will display all message
+                //after the time of last login
+                query = "SELECT U.FNAME AS FIRSTNAME,\n"
+                        + "  U.LNAME AS LASTNAME,\n"
+                        + "  U.EMAIL AS EMAILADDRESS,\n"
+                        + "  M.SUBJECT AS SUBJECT,\n"
+                        + "  M.BODY AS BODY,\n"
+                        + "  M.DATECREATED AS DATE_RECEIVED\n"
+                        + "FROM MESSAGES M, USERS U\n"
+                        + "WHERE RECIPIENTID = ? \n"
+                        + "AND U.ID = M.SENDERID\n"
+                        + "AND M.DATECREATED > ?\n"
+                        + "ORDER BY DATE_RECEIVED";
+            }
+
+            prepStatement = connection.prepareStatement(query);
+
+            if (lastLogin == null) {
+                //query if last login is null, just display all messages
+                prepStatement.setInt(1, userID);
+            } else {
+                //query if last login is not null, and will display all message
+                //after the time of last login
+                prepStatement.setInt(1, userID);
+                prepStatement.setTimestamp(2, lastLogin);
+
+            }
+
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nMessages for the users are...\n"
+                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[SUBJECT],[BODY],[DATECREATED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5) + ", "
+                        + resultSet.getString(6));
+                counter++;
+            }
+        } catch (SQLException ex) {
+            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
+
+        } catch (Exception e) {
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+        } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
 
     /**
      * Remove a user and all of their information from the system.
@@ -686,6 +1280,61 @@ public class DatabaseConnection {
                 System.out.print("Please enter the user's email address: ");
                 userEmail = keyIn.nextLine().trim().toLowerCase();
             } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
+
+            // build a sql query to get the user's ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user,
+            //  otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // use this ID to delete the user, which will fire a
+            //      trigger and remove all of their data
+            query = "DELETE FROM USERS WHERE ID=?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nSUCCESS!");
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+
+        } finally {
+            try {
+                if (statement != null) { statement.close(); }
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+
+    /**
+     * Testing Method
+     * Remove a user and all of their information from the system.
+     */
+    public void dropUserTest(String userEmail) {
+        try {
+
+            int userID = 0;
+
+            // check validity of userEmail
+            if (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)) {
+               System.out.println("Invalid email address");
+               return;
+            }
+            userEmail = userEmail.trim().toLowerCase();
 
             // build a sql query to get the user's ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -920,6 +1569,198 @@ public class DatabaseConnection {
     }
 
     /**
+     * Testing Method
+     * Creates an established friendship from one user to another inside the database.
+     */
+    public void establishFriendshipTest(String userEmail, String friendEmail) {
+       try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+
+            int friendID = 0;
+
+
+            /**
+            * GET THE BEFRIENDING USER'S EMAIL
+            *
+            */
+            //check validity of user email
+            if (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)){
+                 System.out.println("Invalid user email");
+                 return;
+            }
+            userEmail = userEmail.trim().toLowerCase();
+
+
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            /**
+            */
+            //check validity of friend email
+            if (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail)){
+                 System.out.println("Invalid user email");
+                 return;
+            }
+            friendEmail = friendEmail.trim().toLowerCase();
+
+            if (friendEmail.equals(userEmail)) {
+                throw new Exception("You cannot friend yourself!");
+            }
+
+            //query to make sure friend exists and get their ID
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, friendEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                friendID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("\nID of user: {%d} ID of friend: {%d}", userID, friendID));
+
+            /**
+            * GET THE STATUS OF THIS FRIENDSHIP (IF EXISTS), AND EITHER
+            *
+            * 1) CREATE A NEW PENDING FRIENDSHIP 2) CREATE AN APPROVED
+            * FRIENDSHIP 3) TELL THE USER THAT A FRIENDSHIP ALREADY EXISTS
+            *
+            */
+            //Select the current status of a friendship between the 2 users
+            query = "SELECT * FROM FRIENDSHIPS WHERE USERID = ? AND FRIENDID = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, friendID);
+            resultSet = prepStatement.executeQuery();
+
+            //normally insert userid, friendid, then friendid, userid
+            boolean oppositeDirection = false;
+            //if resultSet has a next then there is a friendship present
+            if (resultSet.next()) {
+                //if the result is 0 then its pending
+                int status = resultSet.getInt(3);
+                if (status == 0) {
+                    System.out.println("Friendship is pending");
+                    //carry out from the opposite direction
+                    oppositeDirection = true;
+
+                } else if (status == 1) { //otherwise its already established
+                    System.out.println("Friendship is already established");
+                    //quit operation
+                    return;
+                }
+            }
+
+            query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
+
+            String countQuery = "SELECT COUNT(*) FROM FRIENDSHIPS WHERE USERID = ? AND FRIENDID = ?";
+
+            if (oppositeDirection == false) {
+                //insert in both directions
+                //Create the prepared statement
+                prepStatement = connection.prepareStatement(query);
+                prepStatement.setInt(1, userID);
+                prepStatement.setInt(2, friendID);
+                prepStatement.executeUpdate();
+
+                prepStatement = connection.prepareStatement(countQuery);
+                prepStatement.setInt(1, friendID);
+                prepStatement.setInt(2, userID);
+                resultSet = prepStatement.executeQuery();
+                if (resultSet.next()) {
+                    if (resultSet.getInt(1) == 0) {
+                        prepStatement = connection.prepareStatement(query);
+                        prepStatement.setInt(1, friendID);
+                        prepStatement.setInt(2, userID);
+                        prepStatement.executeUpdate();
+                    }
+                }
+
+            } else {
+                //insert in only the opposite direction of the
+                prepStatement = connection.prepareStatement(query);
+                prepStatement.setInt(1, friendID);
+                prepStatement.setInt(2, userID);
+                prepStatement.executeUpdate();
+            }
+
+            //just a query to show that the row was inserted
+            query = "SELECT U.FNAME, U.LNAME, U.EMAIL, F.APPROVED, F.DATEAPPROVED\n"
+                    + "FROM FRIENDSHIPS F, USERS U\n"
+                    + "WHERE ((F.USERID = ? AND F.FRIENDID = ?)\n"
+                    + "OR (F.USERID = ? AND F.FRIENDID = ?))\n"
+                    + "AND F.USERID = U.ID";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, friendID);
+            prepStatement.setInt(3, userID);
+            prepStatement.setInt(4, friendID);
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nAfter successful insert, data is...\n"
+                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+       } catch (SQLException e) {
+            int errorCode = e.getErrorCode();
+            switch (errorCode) {
+                case 20001:
+                    System.out.println("Friendship already pending");
+                    break;
+                case 20002:
+                    System.out.println("Friendship already established");
+                    break;
+                default:
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+                    break;
+            }
+       } catch (Exception e) {
+
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+       } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+       }
+    }
+
+    /**
      * Creates a pending friendship from one user to another inside the
      * database.
      */
@@ -1065,6 +1906,152 @@ public class DatabaseConnection {
             }
         }
     }
+
+    /**
+     * Testing Method
+     * Creates a pending friendship from one user to another inside the
+     * database.
+     */
+    public void initiateFriendshipTest(String userEmail, String friendEmail) {
+       try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+
+            int friendID = 0;
+
+
+            /**
+            * GET THE EMAIL OF THE USER INITIATING A FRIENDSHIP
+            *
+            */
+            //check validity of user email
+            if (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)){
+                 System.out.println("Invalid user email");
+                 return;
+            }
+            userEmail = userEmail.trim().toLowerCase();
+
+            // query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            // check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("The email entered does not exist");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            /**
+            * GET THE EMAIL OF THE USER TO FRIEND
+            *
+            */
+            //check validity of friend email
+            if (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail)){
+                 System.out.println("Invalid user email");
+                 return;
+            }
+            friendEmail = friendEmail.trim().toLowerCase();
+
+            if (friendEmail.equals(userEmail)) {
+                throw new Exception("You cannot friend yourself!");
+            }
+
+            // query to make sure friend exists and get their ID
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, friendEmail);
+            resultSet = prepStatement.executeQuery();
+
+            // check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("The friend name entered does not exist");
+            } else {
+                friendID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", userID, friendID));
+
+            /**
+            * USE THE USER_ID AND FRIEND_ID TO CREATE A "FRIENDSHIP". THIS
+            * DEPENDS ON THE TRIGGER THAT WAS BUILT, WHICH WILL DO ONE OF TWO
+            * THINGS:
+            *
+            * 1) Create a "Pending Friendship" 2) Create a "Friendship"
+            *
+            */
+            // insert statement for establishing pending friendship
+            query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, friendID);
+            prepStatement.executeUpdate();
+
+            /**
+            * GRAB THE INSERTED ROW FROM THE DB AND DISPLAY TO USER.
+            *
+            */
+            // query to show that the row was inserted
+            query = "SELECT U.FNAME, U.LNAME, U.EMAIL, F.APPROVED, F.DATEAPPROVED\n"
+                    + "FROM FRIENDSHIPS F, USERS U\n"
+                    + "WHERE ((F.USERID = ? AND F.FRIENDID = ?)\n"
+                    + "OR (F.USERID = ? AND F.FRIENDID = ?))\n"
+                    + "AND F.USERID = U.ID";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, friendID);
+            prepStatement.setInt(3, userID);
+            prepStatement.setInt(4, friendID);
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nAfter successful insert, data is...\n"
+                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+       } catch (SQLException e) {
+            int errorCode = e.getErrorCode();
+            switch (errorCode) {
+                case 20001:
+                    System.out.println("Friendship already pending");
+                    break;
+                case 20002:
+                    System.out.println("Friendship already established");
+                    break;
+                default:
+                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+                    break;
+            }
+
+       } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+
+       } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+       }
+    }
+
 
     /**
      * Lists all the groups in the database
@@ -1234,6 +2221,89 @@ public class DatabaseConnection {
             }
         }
     }
+
+    /**
+     * Testing Method
+     * Logs in the user by updating their last login to the current timestamp.
+     */
+    public void logInUser(String userEmail) {
+       try {
+            //initialize input variables for User and Friend info
+            int userID = 0;
+
+            // check validity of user email
+            if (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail)) {
+                 System.out.println("Invalid user email address");
+                 return;
+            }
+            userEmail = userEmail.trim().toLowerCase();
+            //query to make sure user exists and get their ID
+            query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, userEmail);
+            resultSet = prepStatement.executeQuery();
+
+            //check if result set is empty and alert user, otherwise get the ID of the user
+            if (!resultSet.next()) {
+                throw new Exception("No User Found");
+            } else {
+                userID = resultSet.getInt(1);
+            }
+
+            // show user input (in form of ID's)
+            System.out.println(String.format("ID of user: {%d}", userID));
+
+            //Insert statement for establishing pending friendship
+            query = "UPDATE USERS \n"
+                    + "SET LASTLOGIN = CURRENT_TIMESTAMP\n"
+                    + "WHERE ID = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            prepStatement.executeUpdate();
+
+            //just a query to show that the row was inserted
+            query = "select id, fname, lname, email, lastlogin\n"
+                    + "from users\n"
+                    + "where id = ?";
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            resultSet = prepStatement.executeQuery();
+
+            System.out.println("\nAfter successful update, data is...\n"
+                    + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[LASTLOGIN]");
+            int counter = 1;
+            while (resultSet.next()) {
+                System.out.println("Record " + counter + ": "
+                        + resultSet.getString(1) + ", "
+                        + resultSet.getString(2) + ", "
+                        + resultSet.getString(3) + ", "
+                        + resultSet.getString(4) + ", "
+                        + resultSet.getString(5));
+                counter++;
+            }
+       } catch (Exception e) {
+            if (e.getMessage().equals("No User Found")) {
+                System.out.println("The user name you entered does not exist");
+            } else {
+                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+            }
+       } finally {
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (prepStatement != null) {
+                    prepStatement.close();
+                }
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+       }
+    }
+
 
     /**
      * Searches firstname, lastname, and email as applicable search fields.
