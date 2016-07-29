@@ -3097,6 +3097,11 @@ public class DatabaseConnection {
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", startID, endID));
 
+            if(startID == endID){
+                 System.out.println("Cannot do three degree check for the same user");
+                 return;
+            }
+
             //Select statement for establishing pending friendship
             query = "SELECT FRIENDID FROM\n"
                     + "FRIENDSHIPS \n"
@@ -3336,6 +3341,11 @@ public class DatabaseConnection {
 
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", startID, endID));
+
+            if(startID == endID){
+                 System.out.println("Cannot do three degree check for the same user");
+                 return;
+            }
 
             //Select statement for establishing pending friendship
             query = "SELECT FRIENDID FROM\n"
