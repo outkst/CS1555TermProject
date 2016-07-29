@@ -1,4 +1,5 @@
 
+
 import java.sql.*;  //import the file containing definitions for the parts
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -258,18 +259,19 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
 
             // display the new list of users
-            System.out.println("\nAfter successful insert, data is...\n"
-                    + "[RECORD#] [GROUPNAME],[FNAME],[LNAME],[EMAIL],[DATEJOINED]");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5));
-                counter++;
-            }
+//            System.out.println("\nAfter successful insert, data is...\n"
+//                    + "[RECORD#] [GROUPNAME],[FNAME],[LNAME],[EMAIL],[DATEJOINED]");
+//            int counter = 1;
+//            while (resultSet.next()) {
+//                System.out.println("Record " + counter + ": "
+//                        + resultSet.getString(1) + ", "
+//                        + resultSet.getString(2) + ", "
+//                        + resultSet.getString(3) + ", "
+//                        + resultSet.getString(4) + ", "
+//                        + resultSet.getString(5));
+//                counter++;
+//            }
+            System.out.println("\nSUCCESS!");
         } catch (SQLException e) {
             int errorCode = e.getErrorCode();
             switch (errorCode) {
@@ -449,18 +451,19 @@ public class DatabaseConnection {
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
-            System.out.println("\nAfter successful insert, data is...\n"
-                    + "[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5));
-                counter++;
-            }
+//            System.out.println("\nAfter successful insert, data is...\n"
+//                    + "[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]");
+//            int counter = 1;
+//            while (resultSet.next()) {
+//                System.out.println("Record " + counter + ": "
+//                        + resultSet.getString(1) + ", "
+//                        + resultSet.getString(2) + ", "
+//                        + resultSet.getString(3) + ", "
+//                        + resultSet.getString(4) + ", "
+//                        + resultSet.getString(5));
+//                counter++;
+//            }
+            System.out.println("\nSUCCESS!");
         } catch (Exception e) {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
         } finally {
@@ -628,19 +631,19 @@ public class DatabaseConnection {
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
-            System.out.println("\nQuery success, data is...\n"
-                    + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[BIRTHDATE],[DATECREATED]");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5) + ", "
-                        + resultSet.getString(7));
-                counter++;
-            }
+//            System.out.println("\nQuery success, data is...\n"
+//                    + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[BIRTHDATE],[DATECREATED]");
+//            int counter = 1;
+//            while (resultSet.next()) {
+//                System.out.println("Record " + counter + ": "
+//                        + resultSet.getString(1) + ", "
+//                        + resultSet.getString(2) + ", "
+//                        + resultSet.getString(3) + ", "
+//                        + resultSet.getString(4) + ", "
+//                        + resultSet.getString(5) + ", "
+//                        + resultSet.getString(7));
+//                counter++;
+//            }
 
             System.out.println("\nSUCCESS!");
         } catch (SQLException e) {
@@ -1711,18 +1714,19 @@ public class DatabaseConnection {
             prepStatement.setInt(4, friendID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n"
-                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5));
-                counter++;
-            }
+//            System.out.println("\nAfter successful insert, data is...\n"
+//                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
+//            int counter = 1;
+//            while (resultSet.next()) {
+//                System.out.println("Record " + counter + ": "
+//                        + resultSet.getString(1) + ", "
+//                        + resultSet.getString(2) + ", "
+//                        + resultSet.getString(3) + ", "
+//                        + resultSet.getString(4) + ", "
+//                        + resultSet.getString(5));
+//                counter++;
+//            }
+            System.out.println("\nSUCCESS!");
        } catch (SQLException e) {
             int errorCode = e.getErrorCode();
             switch (errorCode) {
@@ -2006,18 +2010,19 @@ public class DatabaseConnection {
             prepStatement.setInt(4, friendID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n"
-                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5));
-                counter++;
-            }
+//            System.out.println("\nAfter successful insert, data is...\n"
+//                    + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
+//            int counter = 1;
+//            while (resultSet.next()) {
+//                System.out.println("Record " + counter + ": "
+//                        + resultSet.getString(1) + ", "
+//                        + resultSet.getString(2) + ", "
+//                        + resultSet.getString(3) + ", "
+//                        + resultSet.getString(4) + ", "
+//                        + resultSet.getString(5));
+//                counter++;
+//            }
+            System.out.println("\nSUCCESS!");
        } catch (SQLException e) {
             int errorCode = e.getErrorCode();
             switch (errorCode) {
@@ -2874,21 +2879,22 @@ public class DatabaseConnection {
             prepStatement.setInt(2, recipID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n"
-                    + "[RECORD#] [ID],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5) + ", "
-                        + resultSet.getString(6) + ", "
-                        + resultSet.getString(7) + ", "
-                        + resultSet.getString(8));
-                counter++;
-            }
+//            System.out.println("\nAfter successful insert, data is...\n"
+//                    + "[RECORD#] [ID],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
+//            int counter = 1;
+//            while (resultSet.next()) {
+//                System.out.println("Record " + counter + ": "
+//                        + resultSet.getString(1) + ", "
+//                        + resultSet.getString(2) + ", "
+//                        + resultSet.getString(3) + ", "
+//                        + resultSet.getString(4) + ", "
+//                        + resultSet.getString(5) + ", "
+//                        + resultSet.getString(6) + ", "
+//                        + resultSet.getString(7) + ", "
+//                        + resultSet.getString(8));
+//                counter++;
+//            }
+            System.out.println("\nSUCCESS!");
         } catch (Exception e) {
 
             if (e.getMessage().equals("No User Found")) {
@@ -3001,21 +3007,22 @@ public class DatabaseConnection {
             prepStatement.setInt(2, recipID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n"
-                    + "[RECORD#] [ID],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
-            int counter = 1;
-            while (resultSet.next()) {
-                System.out.println("Record " + counter + ": "
-                        + resultSet.getString(1) + ", "
-                        + resultSet.getString(2) + ", "
-                        + resultSet.getString(3) + ", "
-                        + resultSet.getString(4) + ", "
-                        + resultSet.getString(5) + ", "
-                        + resultSet.getString(6) + ", "
-                        + resultSet.getString(7) + ", "
-                        + resultSet.getString(8));
-                counter++;
-            }
+//            System.out.println("\nAfter successful insert, data is...\n"
+//                    + "[RECORD#] [ID],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
+//            int counter = 1;
+//            while (resultSet.next()) {
+//                System.out.println("Record " + counter + ": "
+//                        + resultSet.getString(1) + ", "
+//                        + resultSet.getString(2) + ", "
+//                        + resultSet.getString(3) + ", "
+//                        + resultSet.getString(4) + ", "
+//                        + resultSet.getString(5) + ", "
+//                        + resultSet.getString(6) + ", "
+//                        + resultSet.getString(7) + ", "
+//                        + resultSet.getString(8));
+//                counter++;
+//            }
+            System.out.println("\nSUCCESS!");
        } catch (Exception e) {
 
             if (e.getMessage().equals("No User Found")) {
