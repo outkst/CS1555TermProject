@@ -150,64 +150,78 @@ public class FaceSpace {
 
     private static void testingFunction(DatabaseConnection db) {
         //testing createUser
-        System.out.println("Creating 50 new users");
+        System.out.println("\n*******************************************************\n"
+                + "[CREATING 50 NEW USERS]");
         //general case
         createNewUsersTest(db);
-        System.out.println("Displaying all users");
+        System.out.println("\n*******************************************************\n"
+                + "[DISPLAYING ALL USERS]");
         db.listAllUsers();
         //edge cases
         //create user that already exists
-        System.out.println("Creating user that already exists");
+        System.out.println("\n*******************************************************\n"
+                + "[CREATING USER THAT ALREADY EXISTS]");
         db.createUserTest("JASON", "TOMEI", "jtomei@cs1555.com", "08-MAY-1995");
 
         //testing initiate friendship
-        System.out.println("Initiating 10 friendships");
+        System.out.println("\n*******************************************************\n"
+                + "[INITIATING 10 FRIENDSHIPS]");
         //general case
         initiateFriendships(db);
         //edge cases
         //initiate the same friendship
-        System.out.println("Trying to initiate friendship that already is pending");
+        System.out.println("\n*******************************************************\n"
+                + "[TRYING TO INITIATE FRIENDSHIP THAT ALREADY IS PENDING]");
         db.initiateFriendshipTest("esheeran@cs1555.com", "saguillon@cs1555.com");
         //initiate friendship with self
-        System.out.println("Trying to initiate friendship with self");
+        System.out.println("\n*******************************************************\n"
+                + "[TRYING TO INITIATE FRIENDSHIP WITH SELF]");
         db.initiateFriendshipTest("esheeran@cs1555.com", "esheeran@cs1555.com");
         //later try to initiate an established friendship
 
         //testing establish friendship
-        System.out.println("Establishing 10 friendships");
+        System.out.println("\n*******************************************************\n"
+                + "[ESTABLISHING 10 FRIENDSHIPS]");
         //general case
         establishFriendship(db);
         //edge cases
         //establish a friendship that already exists
-        System.out.println("Trying to establish friendship that already is established");
+        System.out.println("\n*******************************************************\n"
+                + "[TRYING TO ESTABLISH FRIENDSHIP THAT ALREADY IS ESTABLISHED]");
         db.establishFriendshipTest("saguillon@cs1555.com", "esheeran@cs1555.com");
         //establish friendship with self
-        System.out.println("Trying to establish friendship with self");
+        System.out.println("\n*******************************************************\n"
+                + "[TRYING TO ESTABLISH FRIENDSHIP WITH SELF]");
         db.initiateFriendshipTest("esheeran@cs1555.com", "esheeran@cs1555.com");
 
         //testing display friends
         //general case
-        System.out.println("Displaying friends for JASON TOMEI");
+        System.out.println("\n*******************************************************\n"
+                + "[DISPLAYING FRIENDS FOR JASON TOMEI]");
         db.displayFriendsTest("jtomei@cs1555.com");
 
         //testing create group
         //general case
-        System.out.println("Creating 5 groups");
+        System.out.println("\n*******************************************************\n"
+                + "[CREATING 5 GROUPS]");
         createGroups(db);
         db.listAllGroups();
         //edge case
         //create group that already exists
-        System.out.println("Creating group that already exists");
+        System.out.println("\n*******************************************************\n"
+                + "[CREATING GROUP THAT ALREADY EXISTS]");
         db.createGroupTest("GROUP1", "DESCRIPTION1", "1");
         //create group with negative or zero membership
-        System.out.println("Creating group with invalid membership limit");
+        System.out.println("\n*******************************************************\n"
+                + "[CREATING GROUP WITH INVALID MEMBERSHIP LIMIT]");
         db.createGroupTest("GROUP6", "DESCRIPTION6", "-6");
         //add users to capacity of group
 
         //testing addToGroup
         //general case
         //add 10 users to group
-        System.out.println("Adding 10 users to groups");
+        System.out.println("\n*******************************************************\n"
+                + "[ADDING 10 USERS TO GROUPS]");
         usersToGroups(db);
         //max out membership limit
         db.addToGroupTest("saguillon@cs1555.com", "GROUP1");
@@ -215,18 +229,21 @@ public class FaceSpace {
         //testing sendMessageToUser
         //general case
         //send 15 messages
-        System.out.println("Sending 15 messages user-to-user");
+        System.out.println("\n*******************************************************\n"
+                + "[SENDING 15 MESSAGES USER-TO-USER]");
         sendMessagesUser(db);
         //edge cases
 
         //testing sendMessageToGroup
         //general case
-        System.out.println("Sending 5 messages user-to-group");
+        System.out.println("\n*******************************************************\n"
+                + "[SENDING 5 MESSAGES USER-TO-GROUP]");
         sendMessagesGroup(db);
         //edge cases
 
         //testing displayMessages
-        System.out.println("Displaying messages for Elaine Sheeran");
+        System.out.println("\n*******************************************************\n"
+                + "[DISPLAYING MESSAGES FOR ELAINE SHEERAN]");
         db.displayMessagesTest("esheeran@cs1555.com");
 
         //login elaine sheeran
@@ -235,17 +252,48 @@ public class FaceSpace {
         db.sendMessageToUserTest("saguillon@cs1555.com", "esheeran@cs1555.com", "NEW MESSAGE", "New message since you logged in");
 
         //testing displayNewMessages
-        System.out.println("Displaying new messages for Elaine Sheeran");
+        System.out.println("\n*******************************************************\n"
+                + "[DISPLAYING NEW MESSAGES FOR ELAINE SHEERAN]");
         db.displayNewMessagesTest("esheeran@cs1555.com");
 
         //testing searchForUser
-
+        System.out.println("\n*******************************************************\n"
+                + "[SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'Joe Meszar']");
+        db.searchForUserTest("Joe Meszar");
+        
+        System.out.println("\n*******************************************************\n"
+                + "[SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'joe@joe.com']");
+        db.searchForUserTest("joe@joe.com");
+        
+        System.out.println("\n*******************************************************\n"
+                + "[SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'Bruce Lee']");
+        db.searchForUserTest("Bruce Lee");
+        
+        System.out.println("\n*******************************************************\n"
+                + "[SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'brucelee@jeetkune.do']");
+        db.searchForUserTest("brucelee@jeetkune.do");
         
         
         //testing threeDegrees
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND HIMSELF]");
+        db.threeDegreesTest("joe@joe.com", "joe@joe.com");
+        
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND Kyle Monto]");
+        db.threeDegreesTest("joe@joe.com", "kyle@kyle.com");
+        
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND MELISA FINCHUM]");
+        db.threeDegreesTest("joe@joe.com", "mfinchum@cs1555.com");
 
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND Jason Tomei]");
+        db.threeDegreesTest("joe@joe.com", "jtomei@cs1555.com");
         
-        
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION THREEDEGREES WITH UNKNOWN LINK BETWEEN Joe Meszar AND Shelton Sgro]");
+        db.threeDegreesTest("joe@joe.com", "ssgro@cs1555.com");
         //testing topMessagers
 
         
@@ -255,6 +303,59 @@ public class FaceSpace {
     }
 
     private static void createNewUsersTest(DatabaseConnection db) {
+        db.createUserTest("Elaine", "Sheeran", "esheeran@cs1555.com", "10-JAN-1994");
+        db.createUserTest("Sharri", "Aguillon", "saguillon@cs1555.com", "11-JAN-1994");
+        db.createUserTest("Coy", "Kitts", "ckitts@cs1555.com", "12-JAN-1994");
+        db.createUserTest("Reid", "Salerno", "rsalerno@cs1555.com", "13-JAN-1994");
+        db.createUserTest("Omar", "Desousa", "odesousa@cs1555.com", "14-JAN-1994");
+        db.createUserTest("Max", "Niday", "mniday@cs1555.com", "15-JAN-1994");
+        db.createUserTest("Josie", "Hugo", "jhugo@cs1555.com", "16-JAN-1994");
+        db.createUserTest("Tera", "Gayhart", "tgayhart@cs1555.com", "17-JAN-1994");
+        db.createUserTest("Tiana", "Heimer", "theimer@cs1555.com", "18-JAN-1994");
+        db.createUserTest("Keely", "Cypher", "kcypher@cs1555.com", "19-JAN-1994");
+        db.createUserTest("Dorris", "Tegeler", "dtegeler@cs1555.com", "20-JAN-1994");
+        db.createUserTest("Joeann", "Cutshaw", "jcutshaw@cs1555.com", "21-JAN-1994");
+        db.createUserTest("Alaina", "Authement", "aauthement@cs1555.com", "22-JAN-1994");
+        db.createUserTest("Natasha", "Fick", "nfick@cs1555.com", "23-JAN-1994");
+        db.createUserTest("Ingrid", "Pettus", "ipettus@cs1555.com", "24-JAN-1994");
+        db.createUserTest("Marchelle", "Mccardell", "mmccardell@cs1555.com", "25-JAN-1994");
+        db.createUserTest("Sabina", "Tengan", "stengan@cs1555.com", "26-JAN-1994");
+        db.createUserTest("Sara", "Eckhoff", "seckhoff@cs1555.com", "27-JAN-1994");
+        db.createUserTest("Marquerite", "Goolsby", "mgoolsby@cs1555.com", "28-FEB-1994");
+        db.createUserTest("Carlton", "Drone", "cdrone@cs1555.com", "10-FEB-1994");
+        db.createUserTest("Britney", "Whitmer", "bwhitmer@cs1555.com", "11-FEB-1994");
+        db.createUserTest("Zita", "Castello", "zcastello@cs1555.com", "12-FEB-1994");
+        db.createUserTest("Sharon", "Adam", "sadam@cs1555.com", "13-FEB-1994");
+        db.createUserTest("Rubin", "Lodi", "rlodi@cs1555.com", "14-FEB-1994");
+        db.createUserTest("Theodora", "Conigliaro", "tconigliaro@cs1555.com", "15-FEB-1994");
+        db.createUserTest("Nia", "Roesler", "nroesler@cs1555.com", "16-FEB-1994");
+        db.createUserTest("Charlotte", "Marotta", "cmarotta@cs1555.com", "17-FEB-1994");
+        db.createUserTest("Valentina", "Cervone", "vcervone@cs1555.com", "18-FEB-1994");
+        db.createUserTest("Thomasena", "Bible", "tbible@cs1555.com", "19-FEB-1994");
+        db.createUserTest("Pamela", "You", "pyou@cs1555.com", "20-FEB-1994");
+        db.createUserTest("Heide", "Lang", "hlang@cs1555.com", "21-FEB-1994");
+        db.createUserTest("Audria", "Dorfman", "adorfman@cs1555.com", "22-FEB-1994");
+        db.createUserTest("Jon", "Rawlins", "jrawlins@cs1555.com", "23-FEB-1994");
+        db.createUserTest("Cristal", "Mcpartland", "cmcpartland@cs1555.com", "24-FEB-1994");
+        db.createUserTest("Kazuko", "Shortridge", "kshortridge@cs1555.com", "25-FEB-1994");
+        db.createUserTest("Ida", "Chilcott", "ichilcott@cs1555.com", "26-FEB-1994");
+        db.createUserTest("Niesha", "Andino", "nandino@cs1555.com", "27-FEB-1994");
+        db.createUserTest("Tam", "Molder", "tmolder@cs1555.com", "10-MAR-1994");
+        db.createUserTest("Lavina", "Duncan", "lduncan@cs1555.com", "11-MAR-1994");
+        db.createUserTest("Celestine", "Juneau", "cjuneau@cs1555.com", "12-MAR-1994");
+        db.createUserTest("Emilee", "Simonson", "esimonson@cs1555.com", "13-MAR-1994");
+        db.createUserTest("Gabriel", "Esters", "gesters@cs1555.com", "14-MAR-1994");
+        db.createUserTest("Brittaney", "Hirt", "bhirt@cs1555.com", "15-MAR-1994");
+        db.createUserTest("Jeanett", "Mclellan", "jmclellan@cs1555.com", "16-MAR-1994");
+        db.createUserTest("Bobbi", "Vallarta", "bvallarta@cs1555.com", "17-MAR-1994");
+        db.createUserTest("Drucilla", "Rodrigue", "drodrigue@cs1555.com", "18-MAR-1994");
+        db.createUserTest("Latonia", "Mounce", "lmounce@cs1555.com", "19-MAR-1994");
+        db.createUserTest("Gary", "Sundstrom", "gsundstrom@cs1555.com", "20-MAR-1994");
+        db.createUserTest("Michelina", "Garrick", "mgarrick@cs1555.com", "21-MAR-1994");
+        db.createUserTest("Sheilah", "Sarkis", "ssarkis@cs1555.com", "22-MAR-1994");
+    }
+    
+    private static void dropUsersTest(DatabaseConnection db) {
         db.createUserTest("Elaine", "Sheeran", "esheeran@cs1555.com", "10-JAN-1994");
         db.createUserTest("Sharri", "Aguillon", "saguillon@cs1555.com", "11-JAN-1994");
         db.createUserTest("Coy", "Kitts", "ckitts@cs1555.com", "12-JAN-1994");

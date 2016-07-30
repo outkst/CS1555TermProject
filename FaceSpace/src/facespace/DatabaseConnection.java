@@ -27,17 +27,20 @@ public class DatabaseConnection {
         Scanner keyIn = new Scanner(System.in);
 
         // get the username and password
-        System.out.print("Please enter DB username: ");
-        username = keyIn.nextLine().toLowerCase();
-        System.out.print("Please enter DB password: ");
-        password = keyIn.nextLine();
+//        System.out.print("Please enter DB username: ");
+//        username = keyIn.nextLine().toLowerCase();
+//        System.out.print("Please enter DB password: ");
+//        password = keyIn.nextLine();
         try {
             // Register the oracle driver.
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
             //This is the location of the database.
-            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
-            //String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
+            //String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
+            
+            username = "system";
+            password = "poiu0987";
+            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
 
             //create the database connection
             connection = DriverManager.getConnection(url, username, password);
@@ -3244,15 +3247,22 @@ public class DatabaseConnection {
                 query = "select FNAME, LNAME from users WHERE ID = ?";
 
                 System.out.println("\nPath for three degrees is ... ");
+                int x=0;
                 for (int i = 0; i < currentPath.size(); i++) {
                     prepStatement = connection.prepareStatement(query);
                     prepStatement.setInt(1, (Integer) currentPath.get(i));
                     resultSet = prepStatement.executeQuery();
                     while(resultSet.next()){
-                        System.out.print(resultSet.getString(1) + " "
-                        + resultSet.getString(2) + " -> ");
+                        if (x==0) {
+                            System.out.print(resultSet.getString(1) + " " + resultSet.getString(2));
+                            x++;
+                        } else {
+                            System.out.print(" -> " + resultSet.getString(1) + " "
+                                + resultSet.getString(2));
+                        }
                     }
                 }
+                System.out.println("\n");
             } else {
                 System.out.println("No successful 3 degree matching could be made");
             }
@@ -3489,15 +3499,22 @@ public class DatabaseConnection {
                 query = "select FNAME, LNAME from users WHERE ID = ?";
 
                 System.out.println("\nPath for three degrees is ... ");
+                int x=0;
                 for (int i = 0; i < currentPath.size(); i++) {
                     prepStatement = connection.prepareStatement(query);
                     prepStatement.setInt(1, (Integer) currentPath.get(i));
                     resultSet = prepStatement.executeQuery();
                     while(resultSet.next()){
-                        System.out.print(resultSet.getString(1) + " "
-                        + resultSet.getString(2) + " -> ");
+                        if (x==0) {
+                            System.out.print(resultSet.getString(1) + " " + resultSet.getString(2));
+                            x++;
+                        } else {
+                            System.out.print(" -> " + resultSet.getString(1) + " "
+                                + resultSet.getString(2));
+                        }
                     }
                 }
+                System.out.println("\n");
             } else {
                 System.out.println("No successful 3 degree matching could be made");
             }
