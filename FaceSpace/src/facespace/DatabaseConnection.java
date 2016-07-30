@@ -2926,7 +2926,7 @@ public class DatabaseConnection {
      * Testing method
      * Send a message to an individual user.
      */
-    public void sendMessageToUserTest(String userEmail, String recipEmail, String messageSubject, String messageBody) {
+    public void sendMessageToUserTest(String userEmail, String recipEmail, String messageSubject, String messageBody, java.util.Date timestamp) {
        try {
             //initialize input variables for User and Friend info
             int senderID = 0;
@@ -2990,7 +2990,7 @@ public class DatabaseConnection {
             messageBody = messageBody.trim();
 
             //Insert statement for establishing pending friendship
-            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, current_timestamp)";
+            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, ?)";
 
             //Create the prepared statement
             prepStatement = connection.prepareStatement(query);
@@ -2998,6 +2998,7 @@ public class DatabaseConnection {
             prepStatement.setString(2, messageSubject);
             prepStatement.setString(3, messageBody);
             prepStatement.setInt(4, recipID);
+            prepStatement.setDate(5, new java.sql.Date(timestamp.getTime()));
             prepStatement.executeUpdate();
 
             //just a query to show that the row was inserted
@@ -3632,6 +3633,7 @@ public class DatabaseConnection {
             }
         } catch (SQLException e) {
             System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+            
         } catch (Exception e) {
             if (e.getMessage().equals("No User Found")) {
                 System.out.println("\nThe user name you entered does not exist");
