@@ -34,6 +34,9 @@ public class FaceSpace {
             url = keyIn.nextLine().toLowerCase();
             if (url.equals("")) { url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; }
             
+            // DEBUG URL
+            url = "jdbc:oracle:thin:@localhost:1521:xe";
+            
             // get the username
             System.out.print("Please enter the DB username: ");
             username = keyIn.nextLine();
@@ -44,7 +47,6 @@ public class FaceSpace {
             
             // create the database connection instance.
             try {
-                url = "jdbc:oracle:thin:@localhost:1521:xe";
                 db = new DatabaseConnection(url, username, password);
             } catch (SQLException e) {
                 printSQLException(e);
