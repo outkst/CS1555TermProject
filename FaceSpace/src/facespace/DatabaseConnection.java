@@ -3622,7 +3622,6 @@ public class DatabaseConnection {
             System.out.println("\nQuery success, data is...\n"
                     + "[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]");
             int counter = 1;
-            System.out.println("[FNAME],[LNAME],[NUM MESSAGES]");
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
@@ -3720,7 +3719,6 @@ public class DatabaseConnection {
             System.out.println("\nQuery success, data is...\n"
                     + "[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]");
             int counter = 1;
-            System.out.println("[FNAME],[LNAME],[NUM MESSAGES]");
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
