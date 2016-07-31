@@ -1181,7 +1181,86 @@ public class DatabaseConnection {
             }
         }
     }
+    
+    /**
+     * Removes a group and all of the group member data.
+     */
+    public void dropGroup() {
+        String groupName = null;
+        
+        try {
+            // create a scanner to get user input
+            Scanner keyIn = new Scanner(System.in);
 
+            // get the groupName and normalize (uppercase with no leading/trailing spaces)
+            do {
+                System.out.print("Please enter a group name: ");
+                groupName = keyIn.nextLine().trim().toUpperCase();
+            } while (groupName == null || groupName.equalsIgnoreCase(""));
+
+            //Insert query statement
+            query = "DELETE FROM GROUPS WHERE NAME = ?";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, groupName);
+            prepStatement.executeUpdate();
+            
+            System.out.println("\nSUCCESS!");
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+
+        } finally {
+            try {
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+    
+    /**
+     * Testing Method
+     * Removes a group and all of the group member data.
+     */
+    public void dropGroupTest(String groupName) {        
+        try {
+            // get the groupName and normalize (uppercase with no leading/trailing spaces)
+            if (groupName == null || groupName.equalsIgnoreCase("")) {
+               System.out.println("Invalid email address");
+               return;
+            }
+            groupName = groupName.trim().toUpperCase();
+
+            //Insert query statement
+            query = "DELETE FROM GROUPS WHERE NAME = ?";
+
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setString(1, groupName);
+            prepStatement.executeUpdate();
+            
+            System.out.println("\nSUCCESS!");
+        } catch (SQLException e) {
+            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
+
+        } catch (Exception e) {
+            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
+
+        } finally {
+            try {
+                if (prepStatement != null) { prepStatement.close(); }
+                if (resultSet != null) { resultSet.close(); }
+            } catch (SQLException e) {
+                System.out.println(String.format("!! Cannot close object. Error: %s", e.getMessage()));
+            }
+        }
+    }
+    
     /**
      * Remove a user and all of their information from the system.
      */

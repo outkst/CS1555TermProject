@@ -356,7 +356,7 @@ public class FaceSpace {
         
         System.out.println("\n*******************************************************\n"
                 + "[REMOVING ALL TEST GROUPS]");
-        //removeGroups();
+        dropGroupsTest(db);
     }
 
     private static void createNewUsersTest(DatabaseConnection db) {
@@ -499,6 +499,14 @@ public class FaceSpace {
         db.createGroupTest("GROUP3", "DESCRIPTION3", "3");
         db.createGroupTest("GROUP4", "DESCRIPTION4", "4");
         db.createGroupTest("GROUP5", "DESCRIPTION5", "5");
+    }
+     
+    private static void dropGroupsTest(DatabaseConnection db) {
+        db.dropGroupTest("GROUP1");
+        db.dropGroupTest("GROUP2");
+        db.dropGroupTest("GROUP3");
+        db.dropGroupTest("GROUP4");
+        db.dropGroupTest("GROUP5");
     }
 
     private static void usersToGroups(DatabaseConnection db) {
