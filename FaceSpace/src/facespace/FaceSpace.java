@@ -521,11 +521,11 @@ public class FaceSpace {
         db.addToGroupTest("nfick@cs1555.com", "GROUP4");
         db.addToGroupTest("mmccardell@cs1555.com", "GROUP4");
         db.addToGroupTest("seckhoff@cs1555.com", "GROUP4");
-        db.addToGroupTest("twotton@cs1555.com", "GROUP5");
-        db.addToGroupTest("kvanhooser@cs1555.com", "GROUP5");
-        db.addToGroupTest("joe@joe.com", "GROUP5");
-        db.addToGroupTest("kyle@kyle.com", "GROUP5");
-        db.addToGroupTest("sally@sally.com", "GROUP5");
+        db.addToGroupTest("kshortridge@cs1555.com", "GROUP5");
+        db.addToGroupTest("ichilcott@cs1555.com", "GROUP5");
+        db.addToGroupTest("nandino@cs1555.com", "GROUP5");
+        db.addToGroupTest("tmolder@cs1555.com", "GROUP5");
+        db.addToGroupTest("lduncan@cs1555.com", "GROUP5");
     }
 
     private static void sendMessagesUser(DatabaseConnection db) throws ParseException {
@@ -553,7 +553,6 @@ public class FaceSpace {
         db.sendMessageToGroupTest("odesousa@cs1555.com", "GROUP2", "TEST2", "This is the TEST2 message");
         db.sendMessageToGroupTest("kcypher@cs1555.com", "GROUP3", "TEST3", "This is the TEST3 message");
         db.sendMessageToGroupTest("mmccardell@cs1555.com", "GROUP4", "TEST4", "This is the TEST4 message");
-        db.sendMessageToGroupTest("joe@joe.com", "GROUP5", "TEST5", "This is the TEST5 message");
+        db.sendMessageToGroupTest("odesousa@cs1555.com", "GROUP5", "TEST5", "This is the TEST5 message");
     }
-
 }
