@@ -2,7 +2,6 @@ package facespace;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 /**
@@ -350,8 +349,6 @@ public class FaceSpace {
         db.displayMessagesTest("esheeran@cs1555.com");
         System.out.println("\n!! DISPLAYING MESSAGES FOR USER THAT SENT MESSAGE TO Elaine Sheeran !!");
         db.displayMessagesTest("saguillon@cs1555.com");
-        
-        
     }
 
     private static void createNewUsersTest(DatabaseConnection db) {

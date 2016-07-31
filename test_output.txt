@@ -1,0 +1,914 @@
+run:
+Welcome to FaceSpaces!
+testing
+
+*******************************************************
+[TESTING FUNCTION createUser CREATING 50 NEW USERS]
+
+First Name: {ELAINE} LastName: {SHEERAN} Email: {esheeran@cs1555.com} DOB: {10-JAN-1994}
+
+SUCCESS!
+
+First Name: {SHARRI} LastName: {AGUILLON} Email: {saguillon@cs1555.com} DOB: {11-JAN-1994}
+
+SUCCESS!
+
+First Name: {COY} LastName: {KITTS} Email: {ckitts@cs1555.com} DOB: {12-JAN-1994}
+
+SUCCESS!
+
+First Name: {REID} LastName: {SALERNO} Email: {rsalerno@cs1555.com} DOB: {13-JAN-1994}
+
+SUCCESS!
+
+First Name: {OMAR} LastName: {DESOUSA} Email: {odesousa@cs1555.com} DOB: {14-JAN-1994}
+
+SUCCESS!
+
+First Name: {MAX} LastName: {NIDAY} Email: {mniday@cs1555.com} DOB: {15-JAN-1994}
+
+SUCCESS!
+
+First Name: {JOSIE} LastName: {HUGO} Email: {jhugo@cs1555.com} DOB: {16-JAN-1994}
+
+SUCCESS!
+
+First Name: {TERA} LastName: {GAYHART} Email: {tgayhart@cs1555.com} DOB: {17-JAN-1994}
+
+SUCCESS!
+
+First Name: {TIANA} LastName: {HEIMER} Email: {theimer@cs1555.com} DOB: {18-JAN-1994}
+
+SUCCESS!
+
+First Name: {KEELY} LastName: {CYPHER} Email: {kcypher@cs1555.com} DOB: {19-JAN-1994}
+
+SUCCESS!
+
+First Name: {DORRIS} LastName: {TEGELER} Email: {dtegeler@cs1555.com} DOB: {20-JAN-1994}
+
+SUCCESS!
+
+First Name: {JOEANN} LastName: {CUTSHAW} Email: {jcutshaw@cs1555.com} DOB: {21-JAN-1994}
+
+SUCCESS!
+
+First Name: {ALAINA} LastName: {AUTHEMENT} Email: {aauthement@cs1555.com} DOB: {22-JAN-1994}
+
+SUCCESS!
+
+First Name: {NATASHA} LastName: {FICK} Email: {nfick@cs1555.com} DOB: {23-JAN-1994}
+
+SUCCESS!
+
+First Name: {INGRID} LastName: {PETTUS} Email: {ipettus@cs1555.com} DOB: {24-JAN-1994}
+
+SUCCESS!
+
+First Name: {MARCHELLE} LastName: {MCCARDELL} Email: {mmccardell@cs1555.com} DOB: {25-JAN-1994}
+
+SUCCESS!
+
+First Name: {SABINA} LastName: {TENGAN} Email: {stengan@cs1555.com} DOB: {26-JAN-1994}
+
+SUCCESS!
+
+First Name: {SARA} LastName: {ECKHOFF} Email: {seckhoff@cs1555.com} DOB: {27-JAN-1994}
+
+SUCCESS!
+
+First Name: {MARQUERITE} LastName: {GOOLSBY} Email: {mgoolsby@cs1555.com} DOB: {28-FEB-1994}
+
+SUCCESS!
+
+First Name: {CARLTON} LastName: {DRONE} Email: {cdrone@cs1555.com} DOB: {10-FEB-1994}
+
+SUCCESS!
+
+First Name: {BRITNEY} LastName: {WHITMER} Email: {bwhitmer@cs1555.com} DOB: {11-FEB-1994}
+
+SUCCESS!
+
+First Name: {ZITA} LastName: {CASTELLO} Email: {zcastello@cs1555.com} DOB: {12-FEB-1994}
+
+SUCCESS!
+
+First Name: {SHARON} LastName: {ADAM} Email: {sadam@cs1555.com} DOB: {13-FEB-1994}
+
+SUCCESS!
+
+First Name: {RUBIN} LastName: {LODI} Email: {rlodi@cs1555.com} DOB: {14-FEB-1994}
+
+SUCCESS!
+
+First Name: {THEODORA} LastName: {CONIGLIARO} Email: {tconigliaro@cs1555.com} DOB: {15-FEB-1994}
+
+SUCCESS!
+
+First Name: {NIA} LastName: {ROESLER} Email: {nroesler@cs1555.com} DOB: {16-FEB-1994}
+
+SUCCESS!
+
+First Name: {CHARLOTTE} LastName: {MAROTTA} Email: {cmarotta@cs1555.com} DOB: {17-FEB-1994}
+
+SUCCESS!
+
+First Name: {VALENTINA} LastName: {CERVONE} Email: {vcervone@cs1555.com} DOB: {18-FEB-1994}
+
+SUCCESS!
+
+First Name: {THOMASENA} LastName: {BIBLE} Email: {tbible@cs1555.com} DOB: {19-FEB-1994}
+
+SUCCESS!
+
+First Name: {PAMELA} LastName: {YOU} Email: {pyou@cs1555.com} DOB: {20-FEB-1994}
+
+SUCCESS!
+
+First Name: {HEIDE} LastName: {LANG} Email: {hlang@cs1555.com} DOB: {21-FEB-1994}
+
+SUCCESS!
+
+First Name: {AUDRIA} LastName: {DORFMAN} Email: {adorfman@cs1555.com} DOB: {22-FEB-1994}
+
+SUCCESS!
+
+First Name: {JON} LastName: {RAWLINS} Email: {jrawlins@cs1555.com} DOB: {23-FEB-1994}
+
+SUCCESS!
+
+First Name: {CRISTAL} LastName: {MCPARTLAND} Email: {cmcpartland@cs1555.com} DOB: {24-FEB-1994}
+
+SUCCESS!
+
+First Name: {KAZUKO} LastName: {SHORTRIDGE} Email: {kshortridge@cs1555.com} DOB: {25-FEB-1994}
+
+SUCCESS!
+
+First Name: {IDA} LastName: {CHILCOTT} Email: {ichilcott@cs1555.com} DOB: {26-FEB-1994}
+
+SUCCESS!
+
+First Name: {NIESHA} LastName: {ANDINO} Email: {nandino@cs1555.com} DOB: {27-FEB-1994}
+
+SUCCESS!
+
+First Name: {TAM} LastName: {MOLDER} Email: {tmolder@cs1555.com} DOB: {10-MAR-1994}
+
+SUCCESS!
+
+First Name: {LAVINA} LastName: {DUNCAN} Email: {lduncan@cs1555.com} DOB: {11-MAR-1994}
+
+SUCCESS!
+
+First Name: {CELESTINE} LastName: {JUNEAU} Email: {cjuneau@cs1555.com} DOB: {12-MAR-1994}
+
+SUCCESS!
+
+First Name: {EMILEE} LastName: {SIMONSON} Email: {esimonson@cs1555.com} DOB: {13-MAR-1994}
+
+SUCCESS!
+
+First Name: {GABRIEL} LastName: {ESTERS} Email: {gesters@cs1555.com} DOB: {14-MAR-1994}
+
+SUCCESS!
+
+First Name: {BRITTANEY} LastName: {HIRT} Email: {bhirt@cs1555.com} DOB: {15-MAR-1994}
+
+SUCCESS!
+
+First Name: {JEANETT} LastName: {MCLELLAN} Email: {jmclellan@cs1555.com} DOB: {16-MAR-1994}
+
+SUCCESS!
+
+First Name: {BOBBI} LastName: {VALLARTA} Email: {bvallarta@cs1555.com} DOB: {17-MAR-1994}
+
+SUCCESS!
+
+First Name: {DRUCILLA} LastName: {RODRIGUE} Email: {drodrigue@cs1555.com} DOB: {18-MAR-1994}
+
+SUCCESS!
+
+First Name: {LATONIA} LastName: {MOUNCE} Email: {lmounce@cs1555.com} DOB: {19-MAR-1994}
+
+SUCCESS!
+
+First Name: {GARY} LastName: {SUNDSTROM} Email: {gsundstrom@cs1555.com} DOB: {20-MAR-1994}
+
+SUCCESS!
+
+First Name: {MICHELINA} LastName: {GARRICK} Email: {mgarrick@cs1555.com} DOB: {21-MAR-1994}
+
+SUCCESS!
+
+First Name: {SHEILAH} LastName: {SARKIS} Email: {ssarkis@cs1555.com} DOB: {22-MAR-1994}
+
+SUCCESS!
+
+*******************************************************
+[TESTING FUNCTION listAllUsers DISPLAYING ALL USERS]
+
+[RECORD#] [FNAME],[LNAME],[EMAIL],[DOB],[LASTLOGIN],[DATECREATED]
+Record 1: JASON, TOMEI, jtomei@cs1555.com, 1995-05-08 00:00:00.0, null, 2016-06-01 09:39:56.147
+Record 2: GARRETT, NORRELL, gnorrell@cs1555.com, 1995-04-16 00:00:00.0, null, 2016-06-02 03:45:23.872
+Record 3: JAMIE, MEWBORN, jmewborn@cs1555.com, 1995-06-15 00:00:00.0, null, 2016-06-02 09:18:57.366
+Record 4: LANDON, AMBRIZ, lambriz@cs1555.com, 1995-05-13 00:00:00.0, null, 2016-06-03 00:27:03.515
+Record 5: MONROE, MIDGETT, mmidgett@cs1555.com, 1995-05-22 00:00:00.0, null, 2016-06-03 14:08:50.997
+Record 6: PERRY, PENDERGRAFT, ppendergraft@cs1555.com, 1995-01-01 00:00:00.0, null, 2016-06-03 16:38:03.704
+Record 7: SID, MCMULLAN, smcmullan@cs1555.com, 1995-03-11 00:00:00.0, null, 2016-06-03 20:47:19.599
+Record 8: RALEIGH, BACOTE, rbacote@cs1555.com, 1995-06-13 00:00:00.0, null, 2016-06-03 21:12:43.938
+Record 9: HUGH, FOSTER, hfoster@cs1555.com, 1995-01-31 00:00:00.0, null, 2016-06-03 23:01:01.979
+Record 10: DARELL, FOREE, dforee@cs1555.com, 1995-04-27 00:00:00.0, null, 2016-06-03 23:56:34.906
+Record 11: IKE, KEEBLER, ikeebler@cs1555.com, 1995-05-28 00:00:00.0, null, 2016-06-04 00:09:36.236
+Record 12: RONNIE, YU, ryu@cs1555.com, 1995-04-13 00:00:00.0, null, 2016-06-04 03:14:51.65
+Record 13: DARWIN, RICKS, dricks@cs1555.com, 1995-06-13 00:00:00.0, null, 2016-06-04 04:07:43.338
+Record 14: NICKOLAS, STAYER, nstayer@cs1555.com, 1995-06-22 00:00:00.0, null, 2016-06-04 09:04:06.442
+Record 15: BERT, PARKISON, bparkison@cs1555.com, 1995-05-16 00:00:00.0, null, 2016-06-05 00:03:07.548
+Record 16: VAUGHN, SETSER, vsetser@cs1555.com, 1995-05-23 00:00:00.0, null, 2016-06-05 12:21:33.308
+Record 17: DION, SOUDER, dsouder@cs1555.com, 1995-04-18 00:00:00.0, null, 2016-06-05 20:07:26.534
+Record 18: SHELTON, SGRO, ssgro@cs1555.com, 1995-05-30 00:00:00.0, null, 2016-06-05 22:50:07.674
+Record 19: JAMISON, JURY, jjury@cs1555.com, 1995-02-13 00:00:00.0, null, 2016-06-06 18:52:49.329
+Record 20: LUCIO, WATWOOD, lwatwood@cs1555.com, 1995-05-06 00:00:00.0, null, 2016-06-06 19:30:09.901
+Record 21: NATHANAEL, DOWN, ndown@cs1555.com, 1995-05-07 00:00:00.0, null, 2016-06-07 01:03:18.961
+Record 22: DARRYL, MENARD, dmenard@cs1555.com, 1995-03-18 00:00:00.0, null, 2016-06-07 15:08:37.55
+Record 23: BARNEY, CLOW, bclow@cs1555.com, 1995-06-24 00:00:00.0, null, 2016-06-07 18:07:38.626
+Record 24: LOYD, MONTROSE, lmontrose@cs1555.com, 1995-06-02 00:00:00.0, null, 2016-06-07 18:40:05.378
+Record 25: EDISON, GREENWALD, egreenwald@cs1555.com, 1995-04-20 00:00:00.0, null, 2016-06-07 21:14:01.654
+Record 26: BRUCE, JIMINEZ, bjiminez@cs1555.com, 1995-03-25 00:00:00.0, null, 2016-06-07 21:35:58.662
+Record 27: RAPHAEL, KAUR, rkaur@cs1555.com, 1995-01-25 00:00:00.0, null, 2016-06-08 22:17:32.925
+Record 28: REYNALDO, GILHAM, rgilham@cs1555.com, 1995-02-04 00:00:00.0, null, 2016-06-09 17:04:25.485
+Record 29: TONY, BYRNS, tbyrns@cs1555.com, 1995-03-19 00:00:00.0, null, 2016-06-10 02:51:00.219
+Record 30: CAMERON, LLANOS, cllanos@cs1555.com, 1995-02-27 00:00:00.0, null, 2016-06-10 09:12:57.313
+Record 31: LYNN, GILLISON, lgillison@cs1555.com, 1995-04-06 00:00:00.0, null, 2016-06-10 22:19:41.335
+Record 32: FOREST, RAIMONDI, fraimondi@cs1555.com, 1995-03-30 00:00:00.0, null, 2016-06-11 06:43:56.65
+Record 33: EFREN, DOMINA, edomina@cs1555.com, 1995-01-13 00:00:00.0, null, 2016-06-11 11:31:20.973
+Record 34: SHANE, NADEL, snadel@cs1555.com, 1995-03-04 00:00:00.0, null, 2016-06-11 22:04:12.901
+Record 35: DARREL, LUBY, dluby@cs1555.com, 1995-02-28 00:00:00.0, null, 2016-06-12 22:38:42.311
+Record 36: STANTON, DIXON, sdixon@cs1555.com, 1995-01-28 00:00:00.0, null, 2016-06-13 04:31:07.212
+Record 37: JOHNATHON, KEMMERER, jkemmerer@cs1555.com, 1995-05-06 00:00:00.0, null, 2016-06-13 05:35:53.876
+Record 38: DEWEY, ALDERSON, dalderson@cs1555.com, 1995-04-18 00:00:00.0, null, 2016-06-13 21:30:17.797
+Record 39: CHRISTOPER, ACKERSON, cackerson@cs1555.com, 1995-06-09 00:00:00.0, null, 2016-06-14 01:24:07.975
+Record 40: DINO, ANTUNEZ, dantunez@cs1555.com, 1995-01-12 00:00:00.0, null, 2016-06-14 03:14:13.697
+Record 41: DWAYNE, PLUMMER, dplummer@cs1555.com, 1995-05-10 00:00:00.0, null, 2016-06-14 22:22:07.388
+Record 42: SHAUN, LARABEE, slarabee@cs1555.com, 1995-04-09 00:00:00.0, null, 2016-06-15 00:22:35.437
+Record 43: LINCOLN, FAIRMAN, lfairman@cs1555.com, 1995-04-24 00:00:00.0, null, 2016-06-15 04:13:32.93
+Record 44: DEMARCUS, VANNATTA, dvannatta@cs1555.com, 1995-03-26 00:00:00.0, null, 2016-06-15 09:49:18.653
+Record 45: CARY, HILTS, chilts@cs1555.com, 1995-02-08 00:00:00.0, null, 2016-06-15 14:16:09.759
+Record 46: MAURICIO, VANVALKENBURG, mvanvalkenburg@cs1555.com, 1995-01-07 00:00:00.0, null, 2016-06-15 18:47:40.696
+Record 47: LYNWOOD, CANADA, lcanada@cs1555.com, 1995-02-22 00:00:00.0, null, 2016-06-16 05:17:22.68
+Record 48: WHITNEY, RABALAIS, wrabalais@cs1555.com, 1995-02-14 00:00:00.0, null, 2016-06-16 20:16:41.812
+Record 49: EUSEBIO, HOFMANN, ehofmann@cs1555.com, 1995-04-20 00:00:00.0, null, 2016-06-17 23:20:48.566
+Record 50: HARVEY, DENVER, hdenver@cs1555.com, 1995-02-13 00:00:00.0, null, 2016-06-17 23:38:33.41
+Record 51: ROXANE, SELBY, rselby@cs1555.com, 1995-01-09 00:00:00.0, null, 2016-06-18 04:43:26.428
+Record 52: NYLA, HILLEBRAND, nhillebrand@cs1555.com, 1995-02-03 00:00:00.0, null, 2016-06-18 22:57:40.62
+Record 53: LUCIANA, NELLUM, lnellum@cs1555.com, 1995-01-20 00:00:00.0, null, 2016-06-19 13:51:00.431
+Record 54: YOLANDO, CIENFUEGOS, ycienfuegos@cs1555.com, 1995-04-23 00:00:00.0, null, 2016-06-19 22:25:33.222
+Record 55: SHAREN, NEGRON, snegron@cs1555.com, 1995-03-24 00:00:00.0, null, 2016-06-20 04:23:15.126
+Record 56: MAMIE, CLUKEY, mclukey@cs1555.com, 1995-01-07 00:00:00.0, null, 2016-06-20 05:36:58.969
+Record 57: LASHON, GLICKMAN, lglickman@cs1555.com, 1995-02-06 00:00:00.0, null, 2016-06-20 07:44:54.926
+Record 58: ADRIANNE, LOE, aloe@cs1555.com, 1995-04-21 00:00:00.0, null, 2016-06-21 13:34:44.105
+Record 59: OPHELIA, EISENBERG, oeisenberg@cs1555.com, 1995-05-31 00:00:00.0, null, 2016-06-22 01:18:32.502
+Record 60: KACIE, CALLAHAN, kcallahan@cs1555.com, 1995-01-25 00:00:00.0, null, 2016-06-23 05:01:39.9
+Record 61: CHANTE, GALLMAN, cgallman@cs1555.com, 1995-01-09 00:00:00.0, null, 2016-06-23 08:40:19.195
+Record 62: FRANCOISE, BARKS, fbarks@cs1555.com, 1995-01-30 00:00:00.0, null, 2016-06-23 13:33:48.276
+Record 63: TRINH, PATRICIO, tpatricio@cs1555.com, 1995-05-27 00:00:00.0, null, 2016-06-23 19:26:17.154
+Record 64: MIMI, FLINT, mflint@cs1555.com, 1995-01-28 00:00:00.0, null, 2016-06-24 17:26:00.659
+Record 65: LUCILA, LAPLANTE, llaplante@cs1555.com, 1995-02-08 00:00:00.0, null, 2016-06-24 19:00:37.116
+Record 66: VICTORIA, MASSINGALE, vmassingale@cs1555.com, 1995-06-04 00:00:00.0, null, 2016-06-24 22:47:24.965
+Record 67: ZOFIA, HUFNAGEL, zhufnagel@cs1555.com, 1995-04-22 00:00:00.0, null, 2016-06-25 06:26:57.3
+Record 68: ELIDA, TOWNSEL, etownsel@cs1555.com, 1995-04-24 00:00:00.0, null, 2016-06-25 08:29:55.216
+Record 69: DENEEN, HEGARTY, dhegarty@cs1555.com, 1995-04-29 00:00:00.0, null, 2016-06-25 19:37:57.503
+Record 70: ALYCE, MASDEN, amasden@cs1555.com, 1995-03-15 00:00:00.0, null, 2016-06-25 20:15:03.454
+Record 71: CASIMIRA, VOGELSANG, cvogelsang@cs1555.com, 1995-05-15 00:00:00.0, null, 2016-06-25 22:21:32.313
+Record 72: HERMINA, WAKEMAN, hwakeman@cs1555.com, 1995-04-11 00:00:00.0, null, 2016-06-26 07:52:00.551
+Record 73: MAYRA, TOWELL, mtowell@cs1555.com, 1995-06-30 00:00:00.0, null, 2016-06-26 10:59:54.549
+Record 74: LYNDA, BARBE, lbarbe@cs1555.com, 1995-01-09 00:00:00.0, null, 2016-06-26 14:05:57.596
+Record 75: LEZLIE, BAXLEY, lbaxley@cs1555.com, 1995-04-14 00:00:00.0, null, 2016-06-27 04:05:25.567
+Record 76: WILLA, MOIR, wmoir@cs1555.com, 1995-04-28 00:00:00.0, null, 2016-06-27 08:47:19.283
+Record 77: DEETTA, WISDOM, dwisdom@cs1555.com, 1995-06-02 00:00:00.0, null, 2016-06-27 15:51:43.947
+Record 78: SHAKIRA, KLEIBER, skleiber@cs1555.com, 1995-03-16 00:00:00.0, null, 2016-06-28 01:26:16.754
+Record 79: STACEE, PON, spon@cs1555.com, 1995-05-02 00:00:00.0, null, 2016-06-28 21:55:24.231
+Record 80: KAREEN, CHAPUT, kchaput@cs1555.com, 1995-01-17 00:00:00.0, null, 2016-06-29 23:43:02.834
+Record 81: CHARA, BONFIGLIO, cbonfiglio@cs1555.com, 1995-01-04 00:00:00.0, null, 2016-06-30 03:16:18.41
+Record 82: TALIA, CHALOUX, tchaloux@cs1555.com, 1995-05-11 00:00:00.0, null, 2016-06-30 03:47:29.586
+Record 83: GRACIELA, RIDINGS, gridings@cs1555.com, 1995-01-04 00:00:00.0, null, 2016-07-01 02:36:31.333
+Record 84: SOFIA, BEAUPRE, sbeaupre@cs1555.com, 1995-04-16 00:00:00.0, null, 2016-07-01 15:21:46.809
+Record 85: SADYE, HUGHEY, shughey@cs1555.com, 1995-03-05 00:00:00.0, null, 2016-07-01 16:19:23.18
+Record 86: YETTA, GRUNEWALD, ygrunewald@cs1555.com, 1995-02-02 00:00:00.0, null, 2016-07-01 17:43:15.455
+Record 87: TEMIKA, MCQUISTON, tmcquiston@cs1555.com, 1995-02-12 00:00:00.0, null, 2016-07-01 20:19:12.663
+Record 88: ZENOBIA, NUTTALL, znuttall@cs1555.com, 1995-04-28 00:00:00.0, null, 2016-01-02 02:02:26.171
+Record 89: MEAGAN, TYER, mtyer@cs1555.com, 1995-06-29 00:00:00.0, null, 2016-01-02 14:23:17.487
+Record 90: EUSEBIA, LAUTERBACH, elauterbach@cs1555.com, 1995-02-25 00:00:00.0, null, 2016-01-02 22:11:55.807
+Record 91: FERNE, HAFFEY, fhaffey@cs1555.com, 1995-02-23 00:00:00.0, null, 2016-07-03 00:25:53.405
+Record 92: MELISA, FINCHUM, mfinchum@cs1555.com, 1995-02-22 00:00:00.0, null, 2016-07-03 00:58:42.512
+Record 93: DESTINY, DURNEY, ddurney@cs1555.com, 1995-02-09 00:00:00.0, null, 2016-07-03 12:51:25.541
+Record 94: LAVON, DYER, ldyer@cs1555.com, 1995-06-15 00:00:00.0, null, 2016-07-03 18:27:39.259
+Record 95: ARLETTE, STMARIE, astmarie@cs1555.com, 1995-06-08 00:00:00.0, null, 2016-07-03 22:22:07.325
+Record 96: NATIVIDAD, DEESE, ndeese@cs1555.com, 1995-06-21 00:00:00.0, null, 2016-07-04 10:15:41.335
+Record 97: TOCCARA, MEAS, tmeas@cs1555.com, 1995-04-24 00:00:00.0, null, 2016-07-04 22:09:41.881
+Record 98: DORETHEA, CURLIN, dcurlin@cs1555.com, 1995-06-23 00:00:00.0, null, 2016-06-05 00:08:24.545
+Record 99: TANGELA, WOTTON, twotton@cs1555.com, 1995-01-30 00:00:00.0, null, 2016-06-05 02:19:58.245
+Record 100: KATERINE, VANHOOSER, kvanhooser@cs1555.com, 1995-06-09 00:00:00.0, null, 2016-07-06 14:09:59.173
+Record 101: JOE, MESZAR, joe@joe.com, 1986-04-06 00:00:00.0, null, 2016-07-07 11:11:59.123
+Record 102: KYLE, MONTO, kyle@kyle.com, 1995-01-02 00:00:00.0, null, 2016-07-08 20:32:01.832
+Record 103: SALLY, WIGGINS, sally@sally.com, 1963-11-13 00:00:00.0, null, 2016-07-09 03:43:12.331
+Record 104: ELAINE, SHEERAN, esheeran@cs1555.com, 1994-01-10 00:00:00.0, null, 2016-07-30 23:11:48.903
+Record 105: SHARRI, AGUILLON, saguillon@cs1555.com, 1994-01-11 00:00:00.0, null, 2016-07-30 23:11:48.934
+Record 106: COY, KITTS, ckitts@cs1555.com, 1994-01-12 00:00:00.0, null, 2016-07-30 23:11:48.939
+Record 107: REID, SALERNO, rsalerno@cs1555.com, 1994-01-13 00:00:00.0, null, 2016-07-30 23:11:48.944
+Record 108: OMAR, DESOUSA, odesousa@cs1555.com, 1994-01-14 00:00:00.0, null, 2016-07-30 23:11:48.947
+Record 109: MAX, NIDAY, mniday@cs1555.com, 1994-01-15 00:00:00.0, null, 2016-07-30 23:11:48.952
+Record 110: JOSIE, HUGO, jhugo@cs1555.com, 1994-01-16 00:00:00.0, null, 2016-07-30 23:11:48.958
+Record 111: TERA, GAYHART, tgayhart@cs1555.com, 1994-01-17 00:00:00.0, null, 2016-07-30 23:11:48.962
+Record 112: TIANA, HEIMER, theimer@cs1555.com, 1994-01-18 00:00:00.0, null, 2016-07-30 23:11:48.966
+Record 113: KEELY, CYPHER, kcypher@cs1555.com, 1994-01-19 00:00:00.0, null, 2016-07-30 23:11:48.97
+Record 114: DORRIS, TEGELER, dtegeler@cs1555.com, 1994-01-20 00:00:00.0, null, 2016-07-30 23:11:48.975
+Record 115: JOEANN, CUTSHAW, jcutshaw@cs1555.com, 1994-01-21 00:00:00.0, null, 2016-07-30 23:11:48.98
+Record 116: ALAINA, AUTHEMENT, aauthement@cs1555.com, 1994-01-22 00:00:00.0, null, 2016-07-30 23:11:48.985
+Record 117: NATASHA, FICK, nfick@cs1555.com, 1994-01-23 00:00:00.0, null, 2016-07-30 23:11:48.997
+Record 118: INGRID, PETTUS, ipettus@cs1555.com, 1994-01-24 00:00:00.0, null, 2016-07-30 23:11:49.001
+Record 119: MARCHELLE, MCCARDELL, mmccardell@cs1555.com, 1994-01-25 00:00:00.0, null, 2016-07-30 23:11:49.007
+Record 120: SABINA, TENGAN, stengan@cs1555.com, 1994-01-26 00:00:00.0, null, 2016-07-30 23:11:49.011
+Record 121: SARA, ECKHOFF, seckhoff@cs1555.com, 1994-01-27 00:00:00.0, null, 2016-07-30 23:11:49.015
+Record 122: MARQUERITE, GOOLSBY, mgoolsby@cs1555.com, 1994-02-28 00:00:00.0, null, 2016-07-30 23:11:49.019
+Record 123: CARLTON, DRONE, cdrone@cs1555.com, 1994-02-10 00:00:00.0, null, 2016-07-30 23:11:49.022
+Record 124: BRITNEY, WHITMER, bwhitmer@cs1555.com, 1994-02-11 00:00:00.0, null, 2016-07-30 23:11:49.026
+Record 125: ZITA, CASTELLO, zcastello@cs1555.com, 1994-02-12 00:00:00.0, null, 2016-07-30 23:11:49.03
+Record 126: SHARON, ADAM, sadam@cs1555.com, 1994-02-13 00:00:00.0, null, 2016-07-30 23:11:49.034
+Record 127: RUBIN, LODI, rlodi@cs1555.com, 1994-02-14 00:00:00.0, null, 2016-07-30 23:11:49.037
+Record 128: THEODORA, CONIGLIARO, tconigliaro@cs1555.com, 1994-02-15 00:00:00.0, null, 2016-07-30 23:11:49.042
+Record 129: NIA, ROESLER, nroesler@cs1555.com, 1994-02-16 00:00:00.0, null, 2016-07-30 23:11:49.047
+Record 130: CHARLOTTE, MAROTTA, cmarotta@cs1555.com, 1994-02-17 00:00:00.0, null, 2016-07-30 23:11:49.052
+Record 131: VALENTINA, CERVONE, vcervone@cs1555.com, 1994-02-18 00:00:00.0, null, 2016-07-30 23:11:49.055
+Record 132: THOMASENA, BIBLE, tbible@cs1555.com, 1994-02-19 00:00:00.0, null, 2016-07-30 23:11:49.059
+Record 133: PAMELA, YOU, pyou@cs1555.com, 1994-02-20 00:00:00.0, null, 2016-07-30 23:11:49.064
+Record 134: HEIDE, LANG, hlang@cs1555.com, 1994-02-21 00:00:00.0, null, 2016-07-30 23:11:49.068
+Record 135: AUDRIA, DORFMAN, adorfman@cs1555.com, 1994-02-22 00:00:00.0, null, 2016-07-30 23:11:49.071
+Record 136: JON, RAWLINS, jrawlins@cs1555.com, 1994-02-23 00:00:00.0, null, 2016-07-30 23:11:49.075
+Record 137: CRISTAL, MCPARTLAND, cmcpartland@cs1555.com, 1994-02-24 00:00:00.0, null, 2016-07-30 23:11:49.08
+Record 138: KAZUKO, SHORTRIDGE, kshortridge@cs1555.com, 1994-02-25 00:00:00.0, null, 2016-07-30 23:11:49.084
+Record 139: IDA, CHILCOTT, ichilcott@cs1555.com, 1994-02-26 00:00:00.0, null, 2016-07-30 23:11:49.089
+Record 140: NIESHA, ANDINO, nandino@cs1555.com, 1994-02-27 00:00:00.0, null, 2016-07-30 23:11:49.094
+Record 141: TAM, MOLDER, tmolder@cs1555.com, 1994-03-10 00:00:00.0, null, 2016-07-30 23:11:49.098
+Record 142: LAVINA, DUNCAN, lduncan@cs1555.com, 1994-03-11 00:00:00.0, null, 2016-07-30 23:11:49.107
+Record 143: CELESTINE, JUNEAU, cjuneau@cs1555.com, 1994-03-12 00:00:00.0, null, 2016-07-30 23:11:49.116
+Record 144: EMILEE, SIMONSON, esimonson@cs1555.com, 1994-03-13 00:00:00.0, null, 2016-07-30 23:11:49.12
+Record 145: GABRIEL, ESTERS, gesters@cs1555.com, 1994-03-14 00:00:00.0, null, 2016-07-30 23:11:49.123
+Record 146: BRITTANEY, HIRT, bhirt@cs1555.com, 1994-03-15 00:00:00.0, null, 2016-07-30 23:11:49.126
+Record 147: JEANETT, MCLELLAN, jmclellan@cs1555.com, 1994-03-16 00:00:00.0, null, 2016-07-30 23:11:49.131
+Record 148: BOBBI, VALLARTA, bvallarta@cs1555.com, 1994-03-17 00:00:00.0, null, 2016-07-30 23:11:49.137
+Record 149: DRUCILLA, RODRIGUE, drodrigue@cs1555.com, 1994-03-18 00:00:00.0, null, 2016-07-30 23:11:49.141
+Record 150: LATONIA, MOUNCE, lmounce@cs1555.com, 1994-03-19 00:00:00.0, null, 2016-07-30 23:11:49.146
+Record 151: GARY, SUNDSTROM, gsundstrom@cs1555.com, 1994-03-20 00:00:00.0, null, 2016-07-30 23:11:49.149
+Record 152: MICHELINA, GARRICK, mgarrick@cs1555.com, 1994-03-21 00:00:00.0, null, 2016-07-30 23:11:49.153
+Record 153: SHEILAH, SARKIS, ssarkis@cs1555.com, 1994-03-22 00:00:00.0, null, 2016-07-30 23:11:49.156
+
+*******************************************************
+[TESTING FUNCTION createUser CREATING USER THAT ALREADY EXISTS]
+
+First Name: {JASON} LastName: {TOMEI} Email: {jtomei@cs1555.com} DOB: {08-MAY-1995}
+
+!! SQL Error: ORA-00001: unique constraint (SYSTEM.USERS_UNIQUE_EMAIL) violated
+
+
+*******************************************************
+[TESTING FUNCTION initiateFriendship INITIATING 10 FRIENDSHIPS]
+ID of user: {104} ID of friend: {105}
+
+SUCCESS!
+ID of user: {106} ID of friend: {107}
+
+SUCCESS!
+ID of user: {108} ID of friend: {109}
+
+SUCCESS!
+ID of user: {109} ID of friend: {110}
+
+SUCCESS!
+ID of user: {111} ID of friend: {112}
+
+SUCCESS!
+ID of user: {113} ID of friend: {114}
+
+SUCCESS!
+ID of user: {115} ID of friend: {116}
+
+SUCCESS!
+ID of user: {117} ID of friend: {118}
+
+SUCCESS!
+ID of user: {119} ID of friend: {120}
+
+SUCCESS!
+ID of user: {121} ID of friend: {122}
+
+SUCCESS!
+
+*******************************************************
+[TESTING FUNCTION initiateFriendship TRYING TO INITIATE FRIENDSHIP THAT ALREADY IS PENDING]
+ID of user: {104} ID of friend: {105}
+Friendship already pending
+
+*******************************************************
+[TESTING FUNCTION initiateFriendship TRYING TO INITIATE FRIENDSHIP WITH SELF]
+
+!! Error: You cannot friend yourself!
+
+*******************************************************
+[TESTING FUNCTION establishFriendship ESTABLISHING 10 FRIENDSHIPS]
+
+ID of user: {105} ID of friend: {104}
+
+SUCCESS!
+
+ID of user: {107} ID of friend: {106}
+
+SUCCESS!
+
+ID of user: {109} ID of friend: {108}
+
+SUCCESS!
+
+ID of user: {110} ID of friend: {109}
+
+SUCCESS!
+
+ID of user: {112} ID of friend: {111}
+
+SUCCESS!
+
+ID of user: {114} ID of friend: {113}
+
+SUCCESS!
+
+ID of user: {116} ID of friend: {115}
+
+SUCCESS!
+
+ID of user: {118} ID of friend: {117}
+
+SUCCESS!
+
+ID of user: {120} ID of friend: {119}
+
+SUCCESS!
+
+ID of user: {122} ID of friend: {121}
+
+SUCCESS!
+
+*******************************************************
+[TESTING FUNCTION establishFriendship TRYING TO ESTABLISH FRIENDSHIP THAT ALREADY IS ESTABLISHED]
+
+ID of user: {105} ID of friend: {104}
+Friendship is already established
+
+*******************************************************
+[TESTING FUNCTION initiateFriendship TRYING TO ESTABLISH FRIENDSHIP WITH SELF]
+
+!! Error: You cannot friend yourself!
+
+*******************************************************
+[TESTING FUNCTION displayFriends DISPLAYING FRIENDS FOR Jason Tomei]
+ID of user: {1}
+
+Query success, data is...
+[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]
+Record 1: GARRETT, NORRELL, gnorrell@cs1555.com, 1, 2016-07-30 23:11:15.723
+Record 2: JAMIE, MEWBORN, jmewborn@cs1555.com, 1, 2016-07-30 23:11:15.802
+Record 3: LANDON, AMBRIZ, lambriz@cs1555.com, 1, 2016-07-30 23:11:15.649
+Record 4: PERRY, PENDERGRAFT, ppendergraft@cs1555.com, 1, 2016-07-30 23:11:15.726
+Record 5: SID, MCMULLAN, smcmullan@cs1555.com, 0, null
+Record 6: DARELL, FOREE, dforee@cs1555.com, 1, 2016-07-30 23:11:15.73
+Record 7: JOE, MESZAR, joe@joe.com, 0, null
+Record 8: KYLE, MONTO, kyle@kyle.com, 0, null
+
+*******************************************************
+[TESTING FUNCTION createGroup CREATING 5 GROUPS]
+Group Name: {GROUP1} description: {DESCRIPTION1} limit: {1}
+
+SUCCESS!
+Group Name: {GROUP2} description: {DESCRIPTION2} limit: {2}
+
+SUCCESS!
+Group Name: {GROUP3} description: {DESCRIPTION3} limit: {3}
+
+SUCCESS!
+Group Name: {GROUP4} description: {DESCRIPTION4} limit: {4}
+
+SUCCESS!
+Group Name: {GROUP5} description: {DESCRIPTION5} limit: {5}
+
+SUCCESS!
+
+[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]
+Record 1: CIVIL AND ENVIRONMENTAL ENGINEERING, I love civil and environmental engineering, 4993, 2016-06-01 16:24:54.318
+Record 2: MECHANICAL ENGINEERING, I love mechanical engineering, 423, 2016-06-02 00:51:16.566
+Record 3: MATERIALS SCIENCE AND ENGINEERING, I love materials science and engineering, 7853, 2016-06-02 17:18:19.313
+Record 4: ARCHITECTURE, I love architecture, 2273, 2016-06-03 03:16:22.738
+Record 5: CHEMISTRY, I love chemistry, 2382, 2016-06-03 22:39:45.741
+Record 6: ELECTRICAL ENGINEERING AND COMPUTER SCIENCE, I love electrical engineering and computer science, 6, 2016-06-04 02:01:01.624
+Record 7: BIOLOGY, I love biology, 8650, 2016-06-04 06:49:33.813
+Record 8: PHYSICS, I love physics, 5259, 2016-06-05 07:30:42.885
+Record 9: BRAIN AND COGNITIVE SCIENCES, I love brain and cognitive sciences, 1500, 2016-06-05 22:20:56.993
+Record 10: CHEMICAL ENGINEERING, I love chemical engineering, 8525, 2016-06-06 18:17:55.432
+Record 11: URBAN STUDIES AND PLANNING, I love urban studies and planning, 2543, 2016-06-06 23:48:32.422
+Record 12: EARTH, ATMOSPHERIC, AND Planetary Sciences, null, 4695, 2016-06-07 00:34:49.63
+Record 13: ECONOMICS, I love economics, 4456, 2016-06-07 02:04:01.795
+Record 14: MANAGEMENT, I love management, 186, 2016-06-07 04:18:55.106
+Record 15: AERONAUTICS AND ASTRONAUTICS, I love aeronautics and astronautics, 669, 2016-06-07 07:38:08.334
+Record 16: POLITICAL SCIENCE, I love political science, 8983, 2016-06-07 19:34:22.267
+Record 17: MATHEMATICS, I love mathematics, 5681, 2016-06-08 00:48:38.988
+Record 18: BIOLOGICAL ENGINEERING, I love biological engineering, 507, 2016-06-08 12:11:54.215
+Record 19: HUMANITIES, I love humanities, 6227, 2016-06-09 21:02:21.115
+Record 20: ANTHROPOLOGY, I love anthropology, 6054, 2016-06-10 02:33:14.104
+Record 21: GLOBAL STUDIES AND LANGUAGES, I love global studies and languages, 4086, 2016-06-10 10:07:04.817
+Record 22: HISTORY, I love history, 7861, 2016-06-10 12:55:59.292
+Record 23: LITERATURE, I love literature, 1093, 2016-06-10 20:41:27.477
+Record 24: MUSIC AND THEATER ARTS, I love music and theater arts, 4265, 2016-06-10 21:13:35.538
+Record 25: WRITING, I love writing, 7239, 2016-06-10 22:55:05.97
+Record 26: NUCLEAR SCIENCE AND ENGINEERING, I love nuclear science and engineering, 6469, 2016-06-11 03:25:13.879
+Record 27: LINGUISTICS AND PHILOSOPHY, I love linguistics and philosophy, 9780, 2016-06-11 12:22:08.999
+Record 28: COMPARATIVE MEDIA STUDIES, I love comparative media studies, 4693, 2016-06-11 12:43:47.899
+Record 29: COMPUTATIONAL AND SYSTEMS BIOLOGY, I love computational and systems biology, 7668, 2016-06-11 13:39:05.489
+Record 30: ENGINEERING SYSTEMS, I love engineering systems, 3347, 2016-06-12 04:51:53.209
+Record 31: HEALTH SCIENCES AND TECHNOLOGY, I love health sciences and technology, 896, 2016-06-12 18:30:15.334
+Record 32: MEDIA ARTS AND SCIENCES, I love media arts and sciences, 6066, 2016-06-13 12:56:41.266
+Record 33: SCIENCE, TECHNOLOGY, AND Society, null, 2797, 2016-06-13 19:20:58.978
+Record 34: CONCOURSE PROGRAM, I love concourse program, 3928, 2016-06-14 05:45:59.34
+Record 35: EDGERTON CENTER, I love edgerton center, 6910, 2016-06-14 18:01:28.668
+Record 36: EXPERIMENTAL STUDY GROUP, I love experimental study group, 5370, 2016-06-14 18:15:31.962
+Record 37: AEROSPACE STUDIES, I love aerospace studies, 53, 2016-06-15 08:52:13.522
+Record 38: MILITARY SCIENCE, I love military science, 958, 2016-06-15 19:12:59.926
+Record 39: NAVAL SCIENCE, I love naval science, 9598, 2016-06-15 20:32:26.487
+Record 40: SPECIAL PROGRAMS, I love special programs, 4301, 2016-06-16 12:59:21.551
+Record 41: ENGINEERING SCHOOL-WIDE ELECTIVES, I love engineering school-wide electives, 2414, 2016-06-17 00:33:20.753
+Record 42: WOMEN'S AND GENDER STUDIES, I love women's and gender studies, 9174, 2016-06-17 01:10:44.503
+Record 43: GROUP1, DESCRIPTION1, 1, 2016-07-30 23:11:49.454
+Record 44: GROUP2, DESCRIPTION2, 2, 2016-07-30 23:11:49.459
+Record 45: GROUP3, DESCRIPTION3, 3, 2016-07-30 23:11:49.462
+Record 46: GROUP4, DESCRIPTION4, 4, 2016-07-30 23:11:49.465
+Record 47: GROUP5, DESCRIPTION5, 5, 2016-07-30 23:11:49.468
+
+*******************************************************
+[TESTING FUNCTION createGroup CREATING GROUP THAT ALREADY EXISTS]
+Group Name: {GROUP1} description: {DESCRIPTION1} limit: {1}
+
+!! Error: ORA-00001: unique constraint (SYSTEM.GROUPS_UNIQUE_NAME) violated
+
+
+*******************************************************
+[TESTING FUNCTION createGroup CREATING GROUP WITH INVALID MEMBERSHIP LIMIT '-1']
+Invalid limit
+
+[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]
+Record 1: CIVIL AND ENVIRONMENTAL ENGINEERING, I love civil and environmental engineering, 4993, 2016-06-01 16:24:54.318
+Record 2: MECHANICAL ENGINEERING, I love mechanical engineering, 423, 2016-06-02 00:51:16.566
+Record 3: MATERIALS SCIENCE AND ENGINEERING, I love materials science and engineering, 7853, 2016-06-02 17:18:19.313
+Record 4: ARCHITECTURE, I love architecture, 2273, 2016-06-03 03:16:22.738
+Record 5: CHEMISTRY, I love chemistry, 2382, 2016-06-03 22:39:45.741
+Record 6: ELECTRICAL ENGINEERING AND COMPUTER SCIENCE, I love electrical engineering and computer science, 6, 2016-06-04 02:01:01.624
+Record 7: BIOLOGY, I love biology, 8650, 2016-06-04 06:49:33.813
+Record 8: PHYSICS, I love physics, 5259, 2016-06-05 07:30:42.885
+Record 9: BRAIN AND COGNITIVE SCIENCES, I love brain and cognitive sciences, 1500, 2016-06-05 22:20:56.993
+Record 10: CHEMICAL ENGINEERING, I love chemical engineering, 8525, 2016-06-06 18:17:55.432
+Record 11: URBAN STUDIES AND PLANNING, I love urban studies and planning, 2543, 2016-06-06 23:48:32.422
+Record 12: EARTH, ATMOSPHERIC, AND Planetary Sciences, null, 4695, 2016-06-07 00:34:49.63
+Record 13: ECONOMICS, I love economics, 4456, 2016-06-07 02:04:01.795
+Record 14: MANAGEMENT, I love management, 186, 2016-06-07 04:18:55.106
+Record 15: AERONAUTICS AND ASTRONAUTICS, I love aeronautics and astronautics, 669, 2016-06-07 07:38:08.334
+Record 16: POLITICAL SCIENCE, I love political science, 8983, 2016-06-07 19:34:22.267
+Record 17: MATHEMATICS, I love mathematics, 5681, 2016-06-08 00:48:38.988
+Record 18: BIOLOGICAL ENGINEERING, I love biological engineering, 507, 2016-06-08 12:11:54.215
+Record 19: HUMANITIES, I love humanities, 6227, 2016-06-09 21:02:21.115
+Record 20: ANTHROPOLOGY, I love anthropology, 6054, 2016-06-10 02:33:14.104
+Record 21: GLOBAL STUDIES AND LANGUAGES, I love global studies and languages, 4086, 2016-06-10 10:07:04.817
+Record 22: HISTORY, I love history, 7861, 2016-06-10 12:55:59.292
+Record 23: LITERATURE, I love literature, 1093, 2016-06-10 20:41:27.477
+Record 24: MUSIC AND THEATER ARTS, I love music and theater arts, 4265, 2016-06-10 21:13:35.538
+Record 25: WRITING, I love writing, 7239, 2016-06-10 22:55:05.97
+Record 26: NUCLEAR SCIENCE AND ENGINEERING, I love nuclear science and engineering, 6469, 2016-06-11 03:25:13.879
+Record 27: LINGUISTICS AND PHILOSOPHY, I love linguistics and philosophy, 9780, 2016-06-11 12:22:08.999
+Record 28: COMPARATIVE MEDIA STUDIES, I love comparative media studies, 4693, 2016-06-11 12:43:47.899
+Record 29: COMPUTATIONAL AND SYSTEMS BIOLOGY, I love computational and systems biology, 7668, 2016-06-11 13:39:05.489
+Record 30: ENGINEERING SYSTEMS, I love engineering systems, 3347, 2016-06-12 04:51:53.209
+Record 31: HEALTH SCIENCES AND TECHNOLOGY, I love health sciences and technology, 896, 2016-06-12 18:30:15.334
+Record 32: MEDIA ARTS AND SCIENCES, I love media arts and sciences, 6066, 2016-06-13 12:56:41.266
+Record 33: SCIENCE, TECHNOLOGY, AND Society, null, 2797, 2016-06-13 19:20:58.978
+Record 34: CONCOURSE PROGRAM, I love concourse program, 3928, 2016-06-14 05:45:59.34
+Record 35: EDGERTON CENTER, I love edgerton center, 6910, 2016-06-14 18:01:28.668
+Record 36: EXPERIMENTAL STUDY GROUP, I love experimental study group, 5370, 2016-06-14 18:15:31.962
+Record 37: AEROSPACE STUDIES, I love aerospace studies, 53, 2016-06-15 08:52:13.522
+Record 38: MILITARY SCIENCE, I love military science, 958, 2016-06-15 19:12:59.926
+Record 39: NAVAL SCIENCE, I love naval science, 9598, 2016-06-15 20:32:26.487
+Record 40: SPECIAL PROGRAMS, I love special programs, 4301, 2016-06-16 12:59:21.551
+Record 41: ENGINEERING SCHOOL-WIDE ELECTIVES, I love engineering school-wide electives, 2414, 2016-06-17 00:33:20.753
+Record 42: WOMEN'S AND GENDER STUDIES, I love women's and gender studies, 9174, 2016-06-17 01:10:44.503
+Record 43: GROUP1, DESCRIPTION1, 1, 2016-07-30 23:11:49.454
+Record 44: GROUP2, DESCRIPTION2, 2, 2016-07-30 23:11:49.459
+Record 45: GROUP3, DESCRIPTION3, 3, 2016-07-30 23:11:49.462
+Record 46: GROUP4, DESCRIPTION4, 4, 2016-07-30 23:11:49.465
+Record 47: GROUP5, DESCRIPTION5, 5, 2016-07-30 23:11:49.468
+
+*******************************************************
+[TESTING FUNCTION addUserToGroup ADDING 10 USERS TO GROUPS]
+User ID: {104} Group ID: {43}
+
+SUCCESS!
+User ID: {106} Group ID: {44}
+
+SUCCESS!
+User ID: {108} Group ID: {44}
+
+SUCCESS!
+User ID: {109} Group ID: {45}
+
+SUCCESS!
+User ID: {111} Group ID: {45}
+
+SUCCESS!
+User ID: {113} Group ID: {45}
+
+SUCCESS!
+User ID: {115} Group ID: {46}
+
+SUCCESS!
+User ID: {117} Group ID: {46}
+
+SUCCESS!
+User ID: {119} Group ID: {46}
+
+SUCCESS!
+User ID: {121} Group ID: {46}
+
+SUCCESS!
+User ID: {99} Group ID: {47}
+
+SUCCESS!
+User ID: {100} Group ID: {47}
+
+SUCCESS!
+User ID: {101} Group ID: {47}
+
+SUCCESS!
+User ID: {102} Group ID: {47}
+
+SUCCESS!
+User ID: {103} Group ID: {47}
+
+SUCCESS!
+
+*******************************************************
+[TESTING FUNCTION addUserToGroup ATTEMPT TO ADD USER TO FULL GROUP]
+User ID: {105} Group ID: {43}
+Group Membership limit is already met
+
+*******************************************************
+[TESTING FUNCTION sendMessageToUser SENDING 15 MESSAGES USER-TO-USER]
+ID of sender: {105} ID of recipient: {104}
+
+SUCCESS!
+ID of sender: {107} ID of recipient: {106}
+
+SUCCESS!
+ID of sender: {109} ID of recipient: {108}
+
+SUCCESS!
+ID of sender: {110} ID of recipient: {109}
+
+SUCCESS!
+ID of sender: {112} ID of recipient: {111}
+
+SUCCESS!
+ID of sender: {114} ID of recipient: {113}
+
+SUCCESS!
+ID of sender: {116} ID of recipient: {115}
+
+SUCCESS!
+ID of sender: {118} ID of recipient: {117}
+
+SUCCESS!
+ID of sender: {120} ID of recipient: {119}
+
+SUCCESS!
+ID of sender: {122} ID of recipient: {121}
+
+SUCCESS!
+ID of sender: {104} ID of recipient: {105}
+
+SUCCESS!
+ID of sender: {106} ID of recipient: {107}
+
+SUCCESS!
+ID of sender: {108} ID of recipient: {109}
+
+SUCCESS!
+ID of sender: {109} ID of recipient: {110}
+
+SUCCESS!
+ID of sender: {111} ID of recipient: {112}
+
+SUCCESS!
+
+*******************************************************
+[TESTING FUNCTION sendMessageToUser SENDING 1 MESSAGE USER-TO-USER TO NON-EXISTENT USER]
+The user name you entered does not exist
+
+*******************************************************
+[TESTING FUNCTION sendMessageToGroup SENDING 5 MESSAGES USER-TO-GROUP]
+
+After successful insert, data is...
+[RECORD#] [ID],[GROUP],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECFNAME],[RECLNAME],[DATECREATED]
+Record 1: 524, GROUP1, ELAINE, SHEERAN, TEST1, This is the TEST1 message, ELAINE, SHEERAN, 2016-07-30 23:11:49.735
+
+After successful insert, data is...
+[RECORD#] [ID],[GROUP],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECFNAME],[RECLNAME],[DATECREATED]
+Record 1: 525, GROUP2, OMAR, DESOUSA, TEST2, This is the TEST2 message, COY, KITTS, 2016-07-30 23:11:49.759
+Record 2: 526, GROUP2, OMAR, DESOUSA, TEST2, This is the TEST2 message, OMAR, DESOUSA, 2016-07-30 23:11:49.761
+
+After successful insert, data is...
+[RECORD#] [ID],[GROUP],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECFNAME],[RECLNAME],[DATECREATED]
+Record 1: 527, GROUP3, KEELY, CYPHER, TEST3, This is the TEST3 message, MAX, NIDAY, 2016-07-30 23:11:49.776
+Record 2: 528, GROUP3, KEELY, CYPHER, TEST3, This is the TEST3 message, TERA, GAYHART, 2016-07-30 23:11:49.778
+Record 3: 529, GROUP3, KEELY, CYPHER, TEST3, This is the TEST3 message, KEELY, CYPHER, 2016-07-30 23:11:49.781
+
+After successful insert, data is...
+[RECORD#] [ID],[GROUP],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECFNAME],[RECLNAME],[DATECREATED]
+Record 1: 530, GROUP4, MARCHELLE, MCCARDELL, TEST4, This is the TEST4 message, JOEANN, CUTSHAW, 2016-07-30 23:11:49.791
+Record 2: 531, GROUP4, MARCHELLE, MCCARDELL, TEST4, This is the TEST4 message, NATASHA, FICK, 2016-07-30 23:11:49.793
+Record 3: 532, GROUP4, MARCHELLE, MCCARDELL, TEST4, This is the TEST4 message, MARCHELLE, MCCARDELL, 2016-07-30 23:11:49.795
+Record 4: 533, GROUP4, MARCHELLE, MCCARDELL, TEST4, This is the TEST4 message, SARA, ECKHOFF, 2016-07-30 23:11:49.797
+
+After successful insert, data is...
+[RECORD#] [ID],[GROUP],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECFNAME],[RECLNAME],[DATECREATED]
+Record 1: 534, GROUP5, JOE, MESZAR, TEST5, This is the TEST5 message, TANGELA, WOTTON, 2016-07-30 23:11:49.808
+Record 2: 535, GROUP5, JOE, MESZAR, TEST5, This is the TEST5 message, KATERINE, VANHOOSER, 2016-07-30 23:11:49.809
+Record 3: 536, GROUP5, JOE, MESZAR, TEST5, This is the TEST5 message, JOE, MESZAR, 2016-07-30 23:11:49.811
+Record 4: 537, GROUP5, JOE, MESZAR, TEST5, This is the TEST5 message, KYLE, MONTO, 2016-07-30 23:11:49.812
+Record 5: 538, GROUP5, JOE, MESZAR, TEST5, This is the TEST5 message, SALLY, WIGGINS, 2016-07-30 23:11:49.815
+
+*******************************************************
+[TESTING FUNCTION displayMessages DISPLAYING MESSAGES FOR 'Elaine Sheeran']
+ID of user: {104}
+
+Messages for the user are...
+[RECORD#] [SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]
+Record 1: ELAINE, SHEERAN, TEST1, This is the TEST1 message, SHEERAN, 2016-07-30 23:11:49.735, ELAINE
+Record 2: SHARRI, AGUILLON, AM, Am if number no up period regard sudden better, SHEERAN, 2016-07-30 23:11:49.627, ELAINE
+
+*******************************************************
+[TESTING FUNCTION logInUser LOGGING IN USER 'Elaine Sheeran']
+ID of user: {104}
+
+After successful update, data is...
+[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[LASTLOGIN]
+Record 1: 104, ELAINE, SHEERAN, esheeran@cs1555.com, 2016-07-30 23:11:49.87
+ID of sender: {105} ID of recipient: {104}
+
+SUCCESS!
+
+*******************************************************
+[TESTING FUNCTION displayNewMessages DISPLAYING NEW MESSAGES FOR 'Elaine Sheeran']
+ID of user: {104}
+
+New messages for the user are...
+[RECORD#] [FNAME],[LNAME],[EMAIL],[SUBJECT],[BODY],[DATECREATED]
+Record 1: SHARRI, AGUILLON, saguillon@cs1555.com, NEW MESSAGE, New message since you logged in, 2016-07-30 23:11:49.877
+
+*******************************************************
+[TESTING FUNCTION searchForUser SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'Joe Meszar']
+searchItems length = 2
+
+Search results looking for matching Firstname, Lastname, OR Email...
+[RECORD#] [ID],[FNAME],[LNAME],[EMAIL]
+Record 1: 101, JOE, MESZAR, joe@joe.com
+Record 2: 115, JOEANN, CUTSHAW, jcutshaw@cs1555.com
+
+*******************************************************
+[TESTING FUNCTION searchForUser SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'joe@joe.com']
+searchItems length = 1
+
+Search results looking for matching Firstname, Lastname, OR Email...
+[RECORD#] [ID],[FNAME],[LNAME],[EMAIL]
+Record 1: 101, JOE, MESZAR, joe@joe.com
+
+*******************************************************
+[TESTING FUNCTION searchForUser SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'Bruce Lee']
+searchItems length = 2
+
+Search results looking for matching Firstname, Lastname, OR Email...
+[RECORD#] [ID],[FNAME],[LNAME],[EMAIL]
+Record 1: 26, BRUCE, JIMINEZ, bjiminez@cs1555.com
+Record 2: 144, EMILEE, SIMONSON, esimonson@cs1555.com
+
+*******************************************************
+[TESTING FUNCTION searchForUser SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'brucelee@jeetkune.do']
+searchItems length = 1
+
+Search results looking for matching Firstname, Lastname, OR Email...
+[RECORD#] [ID],[FNAME],[LNAME],[EMAIL]
+
+*******************************************************
+[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND HIMSELF]
+ID of user: {101} ID of friend: {101}
+Cannot do three degree check for the same user
+
+*******************************************************
+[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND Kyle Monto]
+ID of user: {101} ID of friend: {102}
+
+Path for three degrees is ... 
+JOE MESZAR -> KYLE MONTO
+
+
+*******************************************************
+[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND Melisa Finchum]
+ID of user: {101} ID of friend: {92}
+
+Path for three degrees is ... 
+JOE MESZAR -> TANGELA WOTTON -> MELISA FINCHUM
+
+
+*******************************************************
+[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND Jason Tomei]
+ID of user: {101} ID of friend: {1}
+
+Path for three degrees is ... 
+JOE MESZAR -> KYLE MONTO -> LANDON AMBRIZ -> JASON TOMEI
+
+
+*******************************************************
+[TESTING FUNCTION threeDegrees WITH UNKNOWN LINK BETWEEN Joe Meszar AND Shelton Sgro]
+ID of user: {101} ID of friend: {18}
+No successful 3 degree matching could be made
+
+*******************************************************
+[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '1' AND RESULTS '3']
+
+!! SQL Error: ORA-01839: date not valid for month specified
+
+
+*******************************************************
+[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '3' AND RESULTS '5']
+
+!! SQL Error: ORA-01839: date not valid for month specified
+
+
+*******************************************************
+[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '7' AND RESULTS '7']
+
+Query success, data is...
+[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]
+Record 1: 7, JASON, TOMEI, jtomei@cs1555.com
+Record 2: 7, GARRETT, NORRELL, gnorrell@cs1555.com
+Record 3: 6, JAMIE, MEWBORN, jmewborn@cs1555.com
+Record 4: 4, LANDON, AMBRIZ, lambriz@cs1555.com
+Record 5: 7, MONROE, MIDGETT, mmidgett@cs1555.com
+Record 6: 11, PERRY, PENDERGRAFT, ppendergraft@cs1555.com
+Record 7: 12, SID, MCMULLAN, smcmullan@cs1555.com
+
+*******************************************************
+[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '9' AND RESULTS '10']
+
+Query success, data is...
+[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]
+Record 1: 19, BERT, PARKISON, bparkison@cs1555.com
+Record 2: 18, STACEE, PON, spon@cs1555.com
+Record 3: 16, DEWEY, ALDERSON, dalderson@cs1555.com
+Record 4: 16, DESTINY, DURNEY, ddurney@cs1555.com
+Record 5: 16, HUGH, FOSTER, hfoster@cs1555.com
+Record 6: 15, DENEEN, HEGARTY, dhegarty@cs1555.com
+Record 7: 15, CAMERON, LLANOS, cllanos@cs1555.com
+Record 8: 15, DARREL, LUBY, dluby@cs1555.com
+Record 9: 15, SHAKIRA, KLEIBER, skleiber@cs1555.com
+Record 10: 14, SHAREN, NEGRON, snegron@cs1555.com
+
+*******************************************************
+[TESTING FUNCTION dropUser REMOVING USER Elaine Sheeran]
+
+SUCCESS!
+
+!! SEARCHING FOR NEWLY REMOVED USER Elaine Sheeran !!
+searchItems length = 1
+
+Search results looking for matching Firstname, Lastname, OR Email...
+[RECORD#] [ID],[FNAME],[LNAME],[EMAIL]
+
+!! DISPLAYING FRIENDS FOR NEWLY REMOVED USER Elaine Sheeran !!
+The user name you entered does not exist
+
+!! DISPLAYING MESSAGES FOR NEWLY REMOVED USER Elaine Sheeran !!
+The user name you entered does not exist
+
+!! DISPLAYING MESSAGES FOR USER THAT SENT MESSAGE TO Elaine Sheeran !!
+ID of user: {105}
+
+Messages for the user are...
+[RECORD#] [SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]
+Record 1: (DELETED), (DELETED), IF, If as increasing contrasted entreaties be, AGUILLON, 2016-07-30 23:11:49.702, SHARRI
+
+Closing connection...
+
+Goodbye!
+BUILD SUCCESSFUL (total time: 2 seconds)

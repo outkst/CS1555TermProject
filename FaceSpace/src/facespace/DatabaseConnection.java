@@ -877,8 +877,7 @@ public class DatabaseConnection {
 
             //query to display friends
             query = "SELECT DISTINCT NVL(SU.FNAME, '(DELETED)') AS SENDERFNAME, NVL(SU.LNAME, '(DELETED)') AS SENDERLNAME, "
-                    + "M.SUBJECT, M.BODY, M.DATECREATED, "
-                    + "RU.FNAME AS RECIPFNAME, RU.LNAME AS RECIPLNAME\n"
+                    + "M.SUBJECT, M.BODY, RU.FNAME AS RECIPFNAME, RU.LNAME AS RECIPLNAME, M.DATECREATED\n"
                     + "FROM MESSAGES M\n"
                     + "LEFT JOIN USERS SU ON SU.ID = M.SENDERID\n"
                     + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID\n"
@@ -962,15 +961,13 @@ public class DatabaseConnection {
 
             //query to display friends
             query = "SELECT DISTINCT NVL(SU.FNAME, '(DELETED)') AS SENDERFNAME, NVL(SU.LNAME, '(DELETED)') AS SENDERLNAME, "
-                    + "M.SUBJECT, M.BODY, M.DATECREATED, "
-                    + "RU.FNAME AS RECIPFNAME, RU.LNAME AS RECIPLNAME\n"
+                    + "M.SUBJECT, M.BODY, RU.FNAME AS RECIPFNAME, RU.LNAME AS RECIPLNAME, M.DATECREATED\n"
                     + "FROM MESSAGES M\n"
                     + "LEFT JOIN USERS SU ON SU.ID = M.SENDERID\n"
                     + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID\n"
                     + "WHERE RECIPIENTID=?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
-            prepStatement.setInt(2, userID);
             resultSet = prepStatement.executeQuery();
 
             System.out.println("\nMessages for the user are...\n"
