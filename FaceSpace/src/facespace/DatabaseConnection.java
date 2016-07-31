@@ -876,21 +876,19 @@ public class DatabaseConnection {
             System.out.println(String.format("ID of user: {%d}", userID));
 
             //query to display friends
-            query = "SELECT U.FNAME AS FIRSTNAME,\n"
-                    + "  U.LNAME AS LASTNAME,\n"
-                    + "  M.SUBJECT AS SUBJECT,\n"
-                    + "  M.BODY AS BODY,\n"
-                    + "  M.DATECREATED AS DATE_RECEIVED\n"
-                    + "FROM MESSAGES M, USERS U\n"
-                    + "WHERE RECIPIENTID = ? \n"
-                    + "AND U.ID = M.SENDERID\n"
-                    + "ORDER BY DATE_RECEIVED";
+            query = "SELECT DISTINCT NVL(SU.FNAME, '(DELETED)') AS SENDERFNAME, NVL(SU.LNAME, '(DELETED)') AS SENDERLNAME, "
+                    + "M.SUBJECT, M.BODY, M.DATECREATED, "
+                    + "RU.FNAME AS RECIPFNAME, RU.LNAME AS RECIPLNAME\n"
+                    + "FROM MESSAGES M\n"
+                    + "LEFT JOIN USERS SU ON SU.ID = M.SENDERID\n"
+                    + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID\n"
+                    + "WHERE RECIPIENTID=?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are...\n"
-                    + "[RECORD#] [FNAME],[LNAME],[SUBJECT],[BODY],[DATECREATED]");
+            System.out.println("\nMessages for the user are...\n"
+                    + "[RECORD#] [SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -898,6 +896,8 @@ public class DatabaseConnection {
                         + resultSet.getString(2) + ", "
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4) + ", "
+                        + resultSet.getString(6) + ", "
+                        + resultSet.getString(7) + ", "
                         + resultSet.getString(5));
                 counter++;
             }
@@ -961,21 +961,20 @@ public class DatabaseConnection {
             System.out.println(String.format("ID of user: {%d}", userID));
 
             //query to display friends
-            query = "SELECT U.FNAME AS FIRSTNAME,\n"
-                    + "  U.LNAME AS LASTNAME,\n"
-                    + "  M.SUBJECT AS SUBJECT,\n"
-                    + "  M.BODY AS BODY,\n"
-                    + "  M.DATECREATED AS DATE_RECEIVED\n"
-                    + "FROM MESSAGES M, USERS U\n"
-                    + "WHERE RECIPIENTID = ? \n"
-                    + "AND U.ID = M.SENDERID\n"
-                    + "ORDER BY DATE_RECEIVED";
+            query = "SELECT DISTINCT NVL(SU.FNAME, '(DELETED)') AS SENDERFNAME, NVL(SU.LNAME, '(DELETED)') AS SENDERLNAME, "
+                    + "M.SUBJECT, M.BODY, M.DATECREATED, "
+                    + "RU.FNAME AS RECIPFNAME, RU.LNAME AS RECIPLNAME\n"
+                    + "FROM MESSAGES M\n"
+                    + "LEFT JOIN USERS SU ON SU.ID = M.SENDERID\n"
+                    + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID\n"
+                    + "WHERE RECIPIENTID=?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are...\n"
-                    + "[RECORD#] [FNAME],[LNAME],[SUBJECT],[BODY],[DATECREATED]");
+            System.out.println("\nMessages for the user are...\n"
+                    + "[RECORD#] [SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
@@ -983,6 +982,8 @@ public class DatabaseConnection {
                         + resultSet.getString(2) + ", "
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4) + ", "
+                        + resultSet.getString(6) + ", "
+                        + resultSet.getString(7) + ", "
                         + resultSet.getString(5));
                 counter++;
             }
@@ -1102,7 +1103,7 @@ public class DatabaseConnection {
 
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are...\n"
+            System.out.println("\nNew messages for the user are...\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[SUBJECT],[BODY],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -1230,7 +1231,7 @@ public class DatabaseConnection {
 
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are...\n"
+            System.out.println("\nNew messages for the user are...\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[SUBJECT],[BODY],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -2584,10 +2585,11 @@ public class DatabaseConnection {
                     + "LEFT JOIN USERS U ON U.ID = M.SENDERID "
                     + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID "
                     + "LEFT JOIN GROUPS G ON G.ID = M.GROUPID "
-                    + "WHERE M.SENDERID=?";
+                    + "WHERE M.SENDERID=? AND M.GROUPID=?";
             prepStatement = connection.prepareStatement(query);
 
             prepStatement.setInt(1, senderID);
+            prepStatement.setInt(2, groupID);
 
             resultSet = prepStatement.executeQuery();
 
@@ -2743,10 +2745,11 @@ public class DatabaseConnection {
                     + "LEFT JOIN USERS U ON U.ID = M.SENDERID "
                     + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID "
                     + "LEFT JOIN GROUPS G ON G.ID = M.GROUPID "
-                    + "WHERE M.SENDERID=?";
+                    + "WHERE M.SENDERID=? AND M.GROUPID=?";
             prepStatement = connection.prepareStatement(query);
 
             prepStatement.setInt(1, senderID);
+            prepStatement.setInt(2, groupID);
 
             resultSet = prepStatement.executeQuery();
 
@@ -2926,7 +2929,7 @@ public class DatabaseConnection {
      * Testing method
      * Send a message to an individual user.
      */
-    public void sendMessageToUserTest(String userEmail, String recipEmail, String messageSubject, String messageBody, java.util.Date timestamp) {
+    public void sendMessageToUserTest(String userEmail, String recipEmail, String messageSubject, String messageBody) {
        try {
             //initialize input variables for User and Friend info
             int senderID = 0;
@@ -2990,7 +2993,7 @@ public class DatabaseConnection {
             messageBody = messageBody.trim();
 
             //Insert statement for establishing pending friendship
-            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, ?)";
+            query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, current_timestamp)";
 
             //Create the prepared statement
             prepStatement = connection.prepareStatement(query);
@@ -2998,7 +3001,6 @@ public class DatabaseConnection {
             prepStatement.setString(2, messageSubject);
             prepStatement.setString(3, messageBody);
             prepStatement.setInt(4, recipID);
-            prepStatement.setDate(5, new java.sql.Date(timestamp.getTime()));
             prepStatement.executeUpdate();
 
             //just a query to show that the row was inserted

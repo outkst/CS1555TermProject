@@ -153,84 +153,88 @@ public class FaceSpace {
     private static void testingFunction(DatabaseConnection db) throws ParseException {
         //testing createUser
         System.out.println("\n*******************************************************\n"
-                + "[CREATING 50 NEW USERS]");
+                + "[TESTING FUNCTION createUser CREATING 50 NEW USERS]");
         //general case
         createNewUsersTest(db);
         System.out.println("\n*******************************************************\n"
-                + "[DISPLAYING ALL USERS]");
+                + "[TESTING FUNCTION listAllUsers DISPLAYING ALL USERS]\n");
         db.listAllUsers();
         //edge cases
         //create user that already exists
         System.out.println("\n*******************************************************\n"
-                + "[CREATING USER THAT ALREADY EXISTS]");
+                + "[TESTING FUNCTION createUser CREATING USER THAT ALREADY EXISTS]");
         db.createUserTest("JASON", "TOMEI", "jtomei@cs1555.com", "08-MAY-1995");
 
         
         //testing initiate friendship
         System.out.println("\n*******************************************************\n"
-                + "[INITIATING 10 FRIENDSHIPS]");
+                + "[TESTING FUNCTION initiateFriendship INITIATING 10 FRIENDSHIPS]");
         //general case
         initiateFriendships(db);
         //edge cases
         //initiate the same friendship
         System.out.println("\n*******************************************************\n"
-                + "[TRYING TO INITIATE FRIENDSHIP THAT ALREADY IS PENDING]");
+                + "[TESTING FUNCTION initiateFriendship TRYING TO INITIATE FRIENDSHIP THAT ALREADY IS PENDING]");
         db.initiateFriendshipTest("esheeran@cs1555.com", "saguillon@cs1555.com");
         //initiate friendship with self
         System.out.println("\n*******************************************************\n"
-                + "[TRYING TO INITIATE FRIENDSHIP WITH SELF]");
+                + "[TESTING FUNCTION initiateFriendship TRYING TO INITIATE FRIENDSHIP WITH SELF]");
         db.initiateFriendshipTest("esheeran@cs1555.com", "esheeran@cs1555.com");
         //later try to initiate an established friendship
 
         
         //testing establish friendship
         System.out.println("\n*******************************************************\n"
-                + "[ESTABLISHING 10 FRIENDSHIPS]");
+                + "[TESTING FUNCTION establishFriendship ESTABLISHING 10 FRIENDSHIPS]");
         //general case
         establishFriendship(db);
         //edge cases
         //establish a friendship that already exists
         System.out.println("\n*******************************************************\n"
-                + "[TRYING TO ESTABLISH FRIENDSHIP THAT ALREADY IS ESTABLISHED]");
+                + "[TESTING FUNCTION establishFriendship TRYING TO ESTABLISH FRIENDSHIP THAT ALREADY IS ESTABLISHED]");
         db.establishFriendshipTest("saguillon@cs1555.com", "esheeran@cs1555.com");
         //establish friendship with self
         System.out.println("\n*******************************************************\n"
-                + "[TRYING TO ESTABLISH FRIENDSHIP WITH SELF]");
+                + "[TESTING FUNCTION initiateFriendship TRYING TO ESTABLISH FRIENDSHIP WITH SELF]");
         db.initiateFriendshipTest("esheeran@cs1555.com", "esheeran@cs1555.com");
 
         
         //testing display friends
         //general case
         System.out.println("\n*******************************************************\n"
-                + "[DISPLAYING FRIENDS FOR JASON TOMEI]");
+                + "[TESTING FUNCTION displayFriends DISPLAYING FRIENDS FOR Jason Tomei]");
         db.displayFriendsTest("jtomei@cs1555.com");
 
         
         //testing create group
         //general case
         System.out.println("\n*******************************************************\n"
-                + "[CREATING 5 GROUPS]");
+                + "[TESTING FUNCTION createGroup CREATING 5 GROUPS]");
         createGroups(db);
         db.listAllGroups();
         //edge case
         //create group that already exists
         System.out.println("\n*******************************************************\n"
-                + "[CREATING GROUP THAT ALREADY EXISTS]");
+                + "[TESTING FUNCTION createGroup CREATING GROUP THAT ALREADY EXISTS]");
         db.createGroupTest("GROUP1", "DESCRIPTION1", "1");
         //create group with negative or zero membership
         System.out.println("\n*******************************************************\n"
-                + "[CREATING GROUP WITH INVALID MEMBERSHIP LIMIT]");
-        db.createGroupTest("GROUP6", "DESCRIPTION6", "-6");
-        //add users to capacity of group
-
+                + "[TESTING FUNCTION createGroup CREATING GROUP WITH INVALID MEMBERSHIP LIMIT '-1']");
+        db.createGroupTest("GROUP6", "DESCRIPTION6", "-1");
+        db.listAllGroups();
         
+        
+        //add users to capacity of group
         //testing addToGroup
         //general case
         //add 10 users to group
         System.out.println("\n*******************************************************\n"
-                + "[ADDING 10 USERS TO GROUPS]");
+                + "[TESTING FUNCTION addUserToGroup ADDING 10 USERS TO GROUPS]");
         usersToGroups(db);
+        
         //max out membership limit
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION addUserToGroup ATTEMPT TO ADD USER TO FULL GROUP]");
         db.addToGroupTest("saguillon@cs1555.com", "GROUP1");
 
         
@@ -238,74 +242,78 @@ public class FaceSpace {
         //general case
         //send 15 messages
         System.out.println("\n*******************************************************\n"
-                + "[SENDING 15 MESSAGES USER-TO-USER]");
+                + "[TESTING FUNCTION sendMessageToUser SENDING 15 MESSAGES USER-TO-USER]");
         sendMessagesUser(db);
         //edge cases
-
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION sendMessageToUser SENDING 1 MESSAGE USER-TO-USER TO NON-EXISTENT USER]");
+        db.sendMessageToUserTest("joe@joe.com", "nonexistent@noexist.com", "This is a test subject", "This message will not be sent");
         
         //testing sendMessageToGroup
         //general case
         System.out.println("\n*******************************************************\n"
-                + "[SENDING 5 MESSAGES USER-TO-GROUP]");
+                + "[TESTING FUNCTION sendMessageToGroup SENDING 5 MESSAGES USER-TO-GROUP]");
         sendMessagesGroup(db);
         //edge cases
 
         
         //testing displayMessages
         System.out.println("\n*******************************************************\n"
-                + "[DISPLAYING MESSAGES FOR ELAINE SHEERAN]");
+                + "[TESTING FUNCTION displayMessages DISPLAYING MESSAGES FOR 'Elaine Sheeran']");
         db.displayMessagesTest("esheeran@cs1555.com");
 
         //login elaine sheeran
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION logInUser LOGGING IN USER 'Elaine Sheeran']");
         db.logInUserTest("esheeran@cs1555.com");
+        
         //send new message to elaine sheeran
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-        db.sendMessageToUserTest("saguillon@cs1555.com", "esheeran@cs1555.com", "NEW MESSAGE", "New message since you logged in", dateFormat.parse("2016-02-14 03:28:46.140"));
+        db.sendMessageToUserTest("saguillon@cs1555.com", "esheeran@cs1555.com", "NEW MESSAGE", "New message since you logged in");
 
         
         //testing displayNewMessages
         System.out.println("\n*******************************************************\n"
-                + "[DISPLAYING NEW MESSAGES FOR ELAINE SHEERAN]");
+                + "[TESTING FUNCTION displayNewMessages DISPLAYING NEW MESSAGES FOR 'Elaine Sheeran']");
         db.displayNewMessagesTest("esheeran@cs1555.com");
 
         
         //testing searchForUser
         System.out.println("\n*******************************************************\n"
-                + "[SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'Joe Meszar']");
+                + "[TESTING FUNCTION searchForUser SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'Joe Meszar']");
         db.searchForUserTest("Joe Meszar");
         
         System.out.println("\n*******************************************************\n"
-                + "[SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'joe@joe.com']");
+                + "[TESTING FUNCTION searchForUser SEARCHING FOR KNOWN USER JOE MESZAR USING SEARCH TERMS: 'joe@joe.com']");
         db.searchForUserTest("joe@joe.com");
         
         System.out.println("\n*******************************************************\n"
-                + "[SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'Bruce Lee']");
+                + "[TESTING FUNCTION searchForUser SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'Bruce Lee']");
         db.searchForUserTest("Bruce Lee");
         
         System.out.println("\n*******************************************************\n"
-                + "[SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'brucelee@jeetkune.do']");
+                + "[TESTING FUNCTION searchForUser SEARCHING FOR UNKNOWN USER BRUCE LEE USING TERMS: 'brucelee@jeetkune.do']");
         db.searchForUserTest("brucelee@jeetkune.do");
         
         
         //testing threeDegrees
         System.out.println("\n*******************************************************\n"
-                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND HIMSELF]");
+                + "[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND HIMSELF]");
         db.threeDegreesTest("joe@joe.com", "joe@joe.com");
         
         System.out.println("\n*******************************************************\n"
-                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND Kyle Monto]");
+                + "[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND Kyle Monto]");
         db.threeDegreesTest("joe@joe.com", "kyle@kyle.com");
         
         System.out.println("\n*******************************************************\n"
-                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND MELISA FINCHUM]");
+                + "[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND Melisa Finchum]");
         db.threeDegreesTest("joe@joe.com", "mfinchum@cs1555.com");
 
         System.out.println("\n*******************************************************\n"
-                + "[TESTING FUNCTION THREEDEGREES WITH KNOWN LINK BETWEEN Joe Meszar AND Jason Tomei]");
+                + "[TESTING FUNCTION threeDegrees WITH KNOWN LINK BETWEEN Joe Meszar AND Jason Tomei]");
         db.threeDegreesTest("joe@joe.com", "jtomei@cs1555.com");
         
         System.out.println("\n*******************************************************\n"
-                + "[TESTING FUNCTION THREEDEGREES WITH UNKNOWN LINK BETWEEN Joe Meszar AND Shelton Sgro]");
+                + "[TESTING FUNCTION threeDegrees WITH UNKNOWN LINK BETWEEN Joe Meszar AND Shelton Sgro]");
         db.threeDegreesTest("joe@joe.com", "ssgro@cs1555.com");
         
         
@@ -313,15 +321,37 @@ public class FaceSpace {
         System.out.println("\n*******************************************************\n"
                 + "[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '1' AND RESULTS '3']");
         db.topMessagersTest("1", "3");
-        db.topMessagersTest("2", "5");
-        db.topMessagersTest("3", "7");
-        db.topMessagersTest("4", "10");
-        db.topMessagersTest("6", "10");
-        db.topMessagersTest("10", "10");
+        
+        //testing topMessagers
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '3' AND RESULTS '5']");
+        db.topMessagersTest("3", "5");
+        
+        //testing topMessagers
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '7' AND RESULTS '7']");
+        db.topMessagersTest("7", "7");
+        
+        //testing topMessagers
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION topMessagers WITH NUMBEROFMONTHS '9' AND RESULTS '10']");
+        db.topMessagersTest("9", "10");
         
         
         //testing drop users
-
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION dropUser REMOVING USER Elaine Sheeran]");
+        db.dropUserTest("esheeran@cs1555.com");
+        System.out.println("\n!! SEARCHING FOR NEWLY REMOVED USER Elaine Sheeran !!");
+        db.searchForUserTest("esheeran@cs1555.com");
+        System.out.println("\n!! DISPLAYING FRIENDS FOR NEWLY REMOVED USER Elaine Sheeran !!");
+        db.displayFriendsTest("esheeran@cs1555.com");
+        System.out.println("\n!! DISPLAYING MESSAGES FOR NEWLY REMOVED USER Elaine Sheeran !!");
+        db.displayMessagesTest("esheeran@cs1555.com");
+        System.out.println("\n!! DISPLAYING MESSAGES FOR USER THAT SENT MESSAGE TO Elaine Sheeran !!");
+        db.displayMessagesTest("saguillon@cs1555.com");
+        
+        
     }
 
     private static void createNewUsersTest(DatabaseConnection db) {
@@ -479,35 +509,39 @@ public class FaceSpace {
         db.addToGroupTest("nfick@cs1555.com", "GROUP4");
         db.addToGroupTest("mmccardell@cs1555.com", "GROUP4");
         db.addToGroupTest("seckhoff@cs1555.com", "GROUP4");
+        db.addToGroupTest("twotton@cs1555.com", "GROUP5");
+        db.addToGroupTest("kvanhooser@cs1555.com", "GROUP5");
+        db.addToGroupTest("joe@joe.com", "GROUP5");
+        db.addToGroupTest("kyle@kyle.com", "GROUP5");
+        db.addToGroupTest("sally@sally.com", "GROUP5");
     }
 
     private static void sendMessagesUser(DatabaseConnection db) throws ParseException {
         //15 message with users created during testing
         //current_timestamp
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-        db.sendMessageToUserTest("saguillon@cs1555.com", "esheeran@cs1555.com", "AM", "Am if number no up period regard sudden better", dateFormat.parse("2016-03-26 11:38:23.266"));
-        db.sendMessageToUserTest("rsalerno@cs1555.com", "ckitts@cs1555.com", "DECISIVELY", "Decisively surrounded all admiration and not you", dateFormat.parse("2016-02-05 21:48:41.055"));
-        db.sendMessageToUserTest("mniday@cs1555.com", "odesousa@cs1555.com", "OUT", "Out particular sympathize not favourable introduced insipidity but ham", dateFormat.parse("2016-04-21 09:16:24.214"));
-        db.sendMessageToUserTest("jhugo@cs1555.com", "mniday@cs1555.com", "RATHER", "Rather number can and set praise", dateFormat.parse("2016-04-07 06:08:53.074"));
-        db.sendMessageToUserTest("theimer@cs1555.com", "tgayhart@cs1555.com", "DISTRUSTS", "Distrusts an it contented perceived attending oh", dateFormat.parse("2016-04-23 12:25:35.236"));
-        db.sendMessageToUserTest("dtegeler@cs1555.com", "kcypher@cs1555.com", "THOROUGHLY", "Thoroughly estimating introduced stimulated why but motionless", dateFormat.parse("2016-05-21 20:17:35.216"));
-        db.sendMessageToUserTest("aauthement@cs1555.com", "jcutshaw@cs1555.com", "SENTIMENTS", "Sentiments two occasional affronting solicitude travelling and one contrasted", dateFormat.parse("2016-02-17 18:16:31.173"));
-        db.sendMessageToUserTest("ipettus@cs1555.com", "nfick@cs1555.com", "FORTUNE", "Fortune day out married parties", dateFormat.parse("2016-02-14 03:28:46.140"));
-        db.sendMessageToUserTest("stengan@cs1555.com", "mmccardell@cs1555.com", "HAPPINESS", "Happiness remainder joy but earnestly for off", dateFormat.parse("2016-04-27 16:21:06.273"));
-        db.sendMessageToUserTest("mgoolsby@cs1555.com", "seckhoff@cs1555.com", "TOOK", "Took sold add play may none him few", dateFormat.parse("2016-03-10 21:30:54.104"));
-        db.sendMessageToUserTest("esheeran@cs1555.com", "saguillon@cs1555.com", "IF", "If as increasing contrasted entreaties be", dateFormat.parse("2016-05-03 21:02:14.032"));
-        db.sendMessageToUserTest("ckitts@cs1555.com", "rsalerno@cs1555.com", "NOW", "Now summer who day looked our behind moment coming", dateFormat.parse("2016-01-18 07:02:40.181"));
-        db.sendMessageToUserTest("odesousa@cs1555.com", "mniday@cs1555.com", "PAIN", "Pain son rose more park way that", dateFormat.parse("2016-01-07 01:53:47.074"));
-        db.sendMessageToUserTest("mniday@cs1555.com", "jhugo@cs1555.com", "AN", "An stairs as be lovers uneasy", dateFormat.parse("2016-01-20 15:49:11.203"));
-        db.sendMessageToUserTest("tgayhart@cs1555.com", "theimer@cs1555.com", "PASTURE", "Pasture he invited mr company shyness", dateFormat.parse("2016-06-05 21:29:01.050"));
+        db.sendMessageToUserTest("saguillon@cs1555.com", "esheeran@cs1555.com", "AM", "Am if number no up period regard sudden better");
+        db.sendMessageToUserTest("rsalerno@cs1555.com", "ckitts@cs1555.com", "DECISIVELY", "Decisively surrounded all admiration and not you");
+        db.sendMessageToUserTest("mniday@cs1555.com", "odesousa@cs1555.com", "OUT", "Out particular sympathize not favourable introduced insipidity but ham");
+        db.sendMessageToUserTest("jhugo@cs1555.com", "mniday@cs1555.com", "RATHER", "Rather number can and set praise");
+        db.sendMessageToUserTest("theimer@cs1555.com", "tgayhart@cs1555.com", "DISTRUSTS", "Distrusts an it contented perceived attending oh");
+        db.sendMessageToUserTest("dtegeler@cs1555.com", "kcypher@cs1555.com", "THOROUGHLY", "Thoroughly estimating introduced stimulated why but motionless");
+        db.sendMessageToUserTest("aauthement@cs1555.com", "jcutshaw@cs1555.com", "SENTIMENTS", "Sentiments two occasional affronting solicitude travelling and one contrasted");
+        db.sendMessageToUserTest("ipettus@cs1555.com", "nfick@cs1555.com", "FORTUNE", "Fortune day out married parties");
+        db.sendMessageToUserTest("stengan@cs1555.com", "mmccardell@cs1555.com", "HAPPINESS", "Happiness remainder joy but earnestly for off");
+        db.sendMessageToUserTest("mgoolsby@cs1555.com", "seckhoff@cs1555.com", "TOOK", "Took sold add play may none him few");
+        db.sendMessageToUserTest("esheeran@cs1555.com", "saguillon@cs1555.com", "IF", "If as increasing contrasted entreaties be");
+        db.sendMessageToUserTest("ckitts@cs1555.com", "rsalerno@cs1555.com", "NOW", "Now summer who day looked our behind moment coming");
+        db.sendMessageToUserTest("odesousa@cs1555.com", "mniday@cs1555.com", "PAIN", "Pain son rose more park way that");
+        db.sendMessageToUserTest("mniday@cs1555.com", "jhugo@cs1555.com", "AN", "An stairs as be lovers uneasy");
+        db.sendMessageToUserTest("tgayhart@cs1555.com", "theimer@cs1555.com", "PASTURE", "Pasture he invited mr company shyness");
     }
 
-    private static void sendMessagesGroup(DatabaseConnection db) {
-        db.sendMessageToGroupTest("kcypher@cs1555.com", "GROUP1", "BUT", "But when shot real her");
-        db.sendMessageToGroupTest("jcutshaw@cs1555.com", "GROUP2", "CHAMBER", "Chamber her observe visited removal six sending himself boy");
-        db.sendMessageToGroupTest("nfick@cs1555.com", "GROUP3", "AT", "At exquisite existence if an oh dependent excellent");
-        db.sendMessageToGroupTest("mmccardell@cs1555.com", "GROUP4", "ARE", "Are the head need down draw");
-        db.sendMessageToGroupTest("seckhoff@cs1555.com", "GROUP4", "MISERY", "Misery wonder enable mutual get set oppose the uneasy");
+    private static void sendMessagesGroup(DatabaseConnection db) throws ParseException {
+        db.sendMessageToGroupTest("esheeran@cs1555.com", "GROUP1", "TEST1", "This is the TEST1 message");
+        db.sendMessageToGroupTest("odesousa@cs1555.com", "GROUP2", "TEST2", "This is the TEST2 message");
+        db.sendMessageToGroupTest("kcypher@cs1555.com", "GROUP3", "TEST3", "This is the TEST3 message");
+        db.sendMessageToGroupTest("mmccardell@cs1555.com", "GROUP4", "TEST4", "This is the TEST4 message");
+        db.sendMessageToGroupTest("joe@joe.com", "GROUP5", "TEST5", "This is the TEST5 message");
     }
 
 }
