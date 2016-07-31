@@ -257,6 +257,17 @@ BEGIN
 END;
 /
 
+-- Assumption: A group's membership should be removed when the group is removed.
+-- Trigger to remove GroupMembers data when a group is deleted
+CREATE OR REPLACE TRIGGER DROP_GROUP_DATA
+BEFORE DELETE ON GROUPS
+FOR EACH ROW
+BEGIN
+	-- Remove all group entries for this user-to-be-deleted
+	DELETE FROM GROUPMEMBERS WHERE GROUPID=:old.ID;
+END;
+/
+
 -- Assumption: A user's friendships and group membership should be removed from the database when the user record is deleted.
 -- Trigger to remove Friendship and Group Membership data when a user is deleted.
 CREATE OR REPLACE TRIGGER DROP_USER_DATA
