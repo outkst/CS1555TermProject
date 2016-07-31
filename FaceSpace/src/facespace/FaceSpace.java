@@ -349,6 +349,14 @@ public class FaceSpace {
         db.displayMessagesTest("esheeran@cs1555.com");
         System.out.println("\n!! DISPLAYING MESSAGES FOR USER THAT SENT MESSAGE TO Elaine Sheeran !!");
         db.displayMessagesTest("saguillon@cs1555.com");
+        
+        System.out.println("\n*******************************************************\n"
+                + "[TESTING FUNCTION dropUser REMOVING ALL TEST USERS]");
+        dropUsersTest(db);
+        
+        System.out.println("\n*******************************************************\n"
+                + "[REMOVING ALL TEST GROUPS]");
+        //removeGroups();
     }
 
     private static void createNewUsersTest(DatabaseConnection db) {
@@ -405,56 +413,55 @@ public class FaceSpace {
     }
     
     private static void dropUsersTest(DatabaseConnection db) {
-        db.createUserTest("Elaine", "Sheeran", "esheeran@cs1555.com", "10-JAN-1994");
-        db.createUserTest("Sharri", "Aguillon", "saguillon@cs1555.com", "11-JAN-1994");
-        db.createUserTest("Coy", "Kitts", "ckitts@cs1555.com", "12-JAN-1994");
-        db.createUserTest("Reid", "Salerno", "rsalerno@cs1555.com", "13-JAN-1994");
-        db.createUserTest("Omar", "Desousa", "odesousa@cs1555.com", "14-JAN-1994");
-        db.createUserTest("Max", "Niday", "mniday@cs1555.com", "15-JAN-1994");
-        db.createUserTest("Josie", "Hugo", "jhugo@cs1555.com", "16-JAN-1994");
-        db.createUserTest("Tera", "Gayhart", "tgayhart@cs1555.com", "17-JAN-1994");
-        db.createUserTest("Tiana", "Heimer", "theimer@cs1555.com", "18-JAN-1994");
-        db.createUserTest("Keely", "Cypher", "kcypher@cs1555.com", "19-JAN-1994");
-        db.createUserTest("Dorris", "Tegeler", "dtegeler@cs1555.com", "20-JAN-1994");
-        db.createUserTest("Joeann", "Cutshaw", "jcutshaw@cs1555.com", "21-JAN-1994");
-        db.createUserTest("Alaina", "Authement", "aauthement@cs1555.com", "22-JAN-1994");
-        db.createUserTest("Natasha", "Fick", "nfick@cs1555.com", "23-JAN-1994");
-        db.createUserTest("Ingrid", "Pettus", "ipettus@cs1555.com", "24-JAN-1994");
-        db.createUserTest("Marchelle", "Mccardell", "mmccardell@cs1555.com", "25-JAN-1994");
-        db.createUserTest("Sabina", "Tengan", "stengan@cs1555.com", "26-JAN-1994");
-        db.createUserTest("Sara", "Eckhoff", "seckhoff@cs1555.com", "27-JAN-1994");
-        db.createUserTest("Marquerite", "Goolsby", "mgoolsby@cs1555.com", "28-FEB-1994");
-        db.createUserTest("Carlton", "Drone", "cdrone@cs1555.com", "10-FEB-1994");
-        db.createUserTest("Britney", "Whitmer", "bwhitmer@cs1555.com", "11-FEB-1994");
-        db.createUserTest("Zita", "Castello", "zcastello@cs1555.com", "12-FEB-1994");
-        db.createUserTest("Sharon", "Adam", "sadam@cs1555.com", "13-FEB-1994");
-        db.createUserTest("Rubin", "Lodi", "rlodi@cs1555.com", "14-FEB-1994");
-        db.createUserTest("Theodora", "Conigliaro", "tconigliaro@cs1555.com", "15-FEB-1994");
-        db.createUserTest("Nia", "Roesler", "nroesler@cs1555.com", "16-FEB-1994");
-        db.createUserTest("Charlotte", "Marotta", "cmarotta@cs1555.com", "17-FEB-1994");
-        db.createUserTest("Valentina", "Cervone", "vcervone@cs1555.com", "18-FEB-1994");
-        db.createUserTest("Thomasena", "Bible", "tbible@cs1555.com", "19-FEB-1994");
-        db.createUserTest("Pamela", "You", "pyou@cs1555.com", "20-FEB-1994");
-        db.createUserTest("Heide", "Lang", "hlang@cs1555.com", "21-FEB-1994");
-        db.createUserTest("Audria", "Dorfman", "adorfman@cs1555.com", "22-FEB-1994");
-        db.createUserTest("Jon", "Rawlins", "jrawlins@cs1555.com", "23-FEB-1994");
-        db.createUserTest("Cristal", "Mcpartland", "cmcpartland@cs1555.com", "24-FEB-1994");
-        db.createUserTest("Kazuko", "Shortridge", "kshortridge@cs1555.com", "25-FEB-1994");
-        db.createUserTest("Ida", "Chilcott", "ichilcott@cs1555.com", "26-FEB-1994");
-        db.createUserTest("Niesha", "Andino", "nandino@cs1555.com", "27-FEB-1994");
-        db.createUserTest("Tam", "Molder", "tmolder@cs1555.com", "10-MAR-1994");
-        db.createUserTest("Lavina", "Duncan", "lduncan@cs1555.com", "11-MAR-1994");
-        db.createUserTest("Celestine", "Juneau", "cjuneau@cs1555.com", "12-MAR-1994");
-        db.createUserTest("Emilee", "Simonson", "esimonson@cs1555.com", "13-MAR-1994");
-        db.createUserTest("Gabriel", "Esters", "gesters@cs1555.com", "14-MAR-1994");
-        db.createUserTest("Brittaney", "Hirt", "bhirt@cs1555.com", "15-MAR-1994");
-        db.createUserTest("Jeanett", "Mclellan", "jmclellan@cs1555.com", "16-MAR-1994");
-        db.createUserTest("Bobbi", "Vallarta", "bvallarta@cs1555.com", "17-MAR-1994");
-        db.createUserTest("Drucilla", "Rodrigue", "drodrigue@cs1555.com", "18-MAR-1994");
-        db.createUserTest("Latonia", "Mounce", "lmounce@cs1555.com", "19-MAR-1994");
-        db.createUserTest("Gary", "Sundstrom", "gsundstrom@cs1555.com", "20-MAR-1994");
-        db.createUserTest("Michelina", "Garrick", "mgarrick@cs1555.com", "21-MAR-1994");
-        db.createUserTest("Sheilah", "Sarkis", "ssarkis@cs1555.com", "22-MAR-1994");
+        db.dropUserTest("saguillon@cs1555.com");
+        db.dropUserTest("ckitts@cs1555.com");
+        db.dropUserTest("rsalerno@cs1555.com");
+        db.dropUserTest("odesousa@cs1555.com");
+        db.dropUserTest("mniday@cs1555.com");
+        db.dropUserTest("jhugo@cs1555.com");
+        db.dropUserTest("tgayhart@cs1555.com");
+        db.dropUserTest("theimer@cs1555.com");
+        db.dropUserTest("kcypher@cs1555.com");
+        db.dropUserTest("dtegeler@cs1555.com");
+        db.dropUserTest("jcutshaw@cs1555.com");
+        db.dropUserTest("aauthement@cs1555.com");
+        db.dropUserTest("nfick@cs1555.com");
+        db.dropUserTest("ipettus@cs1555.com");
+        db.dropUserTest("mmccardell@cs1555.com");
+        db.dropUserTest("stengan@cs1555.com");
+        db.dropUserTest("seckhoff@cs1555.com");
+        db.dropUserTest("mgoolsby@cs1555.com");
+        db.dropUserTest("cdrone@cs1555.com");
+        db.dropUserTest("bwhitmer@cs1555.com");
+        db.dropUserTest("zcastello@cs1555.com");
+        db.dropUserTest("sadam@cs1555.com");
+        db.dropUserTest("rlodi@cs1555.com");
+        db.dropUserTest("tconigliaro@cs1555.com");
+        db.dropUserTest("nroesler@cs1555.com");
+        db.dropUserTest("cmarotta@cs1555.com");
+        db.dropUserTest("vcervone@cs1555.com");
+        db.dropUserTest("tbible@cs1555.com");
+        db.dropUserTest("pyou@cs1555.com");
+        db.dropUserTest("hlang@cs1555.com");
+        db.dropUserTest("adorfman@cs1555.com");
+        db.dropUserTest("jrawlins@cs1555.com");
+        db.dropUserTest("cmcpartland@cs1555.com");
+        db.dropUserTest("kshortridge@cs1555.com");
+        db.dropUserTest("ichilcott@cs1555.com");
+        db.dropUserTest("nandino@cs1555.com");
+        db.dropUserTest("tmolder@cs1555.com");
+        db.dropUserTest("lduncan@cs1555.com");
+        db.dropUserTest("cjuneau@cs1555.com");
+        db.dropUserTest("esimonson@cs1555.com");
+        db.dropUserTest("gesters@cs1555.com");
+        db.dropUserTest("bhirt@cs1555.com");
+        db.dropUserTest("jmclellan@cs1555.com");
+        db.dropUserTest("bvallarta@cs1555.com");
+        db.dropUserTest("drodrigue@cs1555.com");
+        db.dropUserTest("lmounce@cs1555.com");
+        db.dropUserTest("gsundstrom@cs1555.com");
+        db.dropUserTest("mgarrick@cs1555.com");
+        db.dropUserTest("ssarkis@cs1555.com");
     }
 
     private static void initiateFriendships(DatabaseConnection db) {
