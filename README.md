@@ -116,7 +116,9 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 
 ### Milestone 3: Bringing It All Together (Due: August 4 @ 11:59PM)
 
-1. [ ] Create a Java driver program to demonstrate the FaceSpace database by calling all of the created methods from Milestone 2.
+1. [X] Create a Java driver program to demonstrate the FaceSpace database by calling all of the created methods from Milestone 2.
+  * [ ] Have an "interactive" mode where the user can call each function individually and input custom data.
+  * [ ] Have an "automatic" mode that will perform standard and edge case testing on all of the methods.
 3. [ ] Create a commit labeled "**Milestone 3 submission**" and push it to the repository.  
 4. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
   * [ ] The email title should be "**[CS1555] Project milestone 3 submission**".  
