@@ -18,23 +18,25 @@ public class FaceSpace {
      * @throws java.sql.SQLException
      */
     public static void main(String[] args) throws SQLException {
-        System.out.println("Welcome to FaceSpaces!");
+        System.out.println("Welcome to FaceSpace!\n");
         DatabaseConnection db = null;
         
         if (args.length < 1) {
-            throw new IllegalArgumentException("\n\nPlease provide necessary parameters:\n"
-                    + "\t-user \tRun the program in user mode\n"
-                    + "\t-test \tRun the program in test mode\n"
-                    + "\nEXAMPLE: java facespace.FaceSpace -user\n");
+            throw new IllegalArgumentException("\n\nPLEASE PROVIDE THE NECESSARY PARAMETERS:\n"
+                    + "\t-usermode \tRun the program in an interactive user mode.\n"
+                    + "\t-testmode \tRun the program in automatic test mode. This will begin"
+                                + "\n\t\t\ta standard test of every method along with edge cases.\n"
+                    + "\nEXAMPLE:\n\tjava facespace.FaceSpace -usermode"
+                                + "\n\tjava facespace.FaceSpace -testmode\n");
         }
         
-        if (args[0].equals("-user")) {
-            System.out.println("user");
+        if (args[0].equals("-usermode")) {
+            System.out.println("[INTERACTIVE USER MODE]");
             try {
                 db = new DatabaseConnection();
                 int input = -1;
                 while (input != 0) {
-                    System.out.print("\nWhat would you like to do? (Enter 0 to exit)\n"
+                    System.out.print("\nWhat would you like to do? (Enter '0' to exit)\n"
                             + "1 - Create a User \t\t\t 8 - Send Group a Message \t\t\t 15 - Log in User \n"
                             + "2 - Initiate a friendship \t\t 9 - Display Messages for User \t\t\t 16 - List All Users \n"
                             + "3 - Establish a friendship \t\t 10 - Display New Messages for User \t\t 17 - List All Groups \n"
@@ -129,8 +131,8 @@ public class FaceSpace {
                 }
                 System.out.println("\nGoodbye!");
             }
-        } else if (args[0].equals("-test")) {
-            System.out.println("testing");
+        } else if (args[0].equals("-testmode")) {
+            System.out.println("[AUTOMATIC TEST MODE]");
             
             try {
                 db = new DatabaseConnection();
