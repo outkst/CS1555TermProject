@@ -16,24 +16,29 @@ public class FaceSpace {
     /**
      * @param args the command line arguments (none)
      * @throws java.sql.SQLException
-     */
+     */ 
     public static void main(String[] args) throws SQLException {
         System.out.println("Welcome to FaceSpace!\n");
         DatabaseConnection db = null;
         
-        if (args.length < 1) {
-            throw new IllegalArgumentException("\n\nPLEASE PROVIDE THE NECESSARY PARAMETERS:\n"
-                    + "\t-usermode \tRun the program in an interactive user mode.\n"
-                    + "\t-testmode \tRun the program in automatic test mode. This will begin"
-                                + "\n\t\t\ta standard test of every method along with edge cases.\n"
-                    + "\nEXAMPLE:\n\tjava facespace.FaceSpace -usermode"
-                                + "\n\tjava facespace.FaceSpace -testmode\n");
+        if (args.length < 3) {
+            throw new IllegalArgumentException("\n\nPLEASE PROVIDE THE NECESSARY PARAMETERS:\n\n"
+                    + "-[mode]\t\tThe mode in which to run the program.\n\n"
+                        + "\t\tusermode - Run the program in an interactive user mode.\n"
+                        + "\t\ttestmode - Run the program in automatic test mode. This will begin a\n"
+                        + "\t\t\tstandard test of every method along with edge cases.\n\n"
+                    + "[username]\tThe username required to connect to the database.\n"
+                    + "[password]\tThe password required to connect to the database.\n\n"
+                    + "EXAMPLES:\tjava facespace.FaceSpace -usermode jwm54 mypwd\n"
+                    + "\t\tjava -jar FaceSpace.jar -usermode jwm54 mypwd\n\n"
+                    + "\t\tjava facespace.FaceSpace -testmode jwm54 mypwd\n"
+                    + "\t\tjava -jar FaceSpace.jar -testmode jwm54 mypwd\n");
         }
         
         if (args[0].equals("-usermode")) {
             System.out.println("[INTERACTIVE USER MODE]");
             try {
-                db = new DatabaseConnection();
+                db = new DatabaseConnection(args[1], args[2]);
                 int input = -1;
                 while (input != 0) {
                     System.out.print("\nWhat would you like to do? (Enter '0' to exit)\n"
@@ -135,7 +140,7 @@ public class FaceSpace {
             System.out.println("[AUTOMATIC TEST MODE]");
             
             try {
-                db = new DatabaseConnection();
+                db = new DatabaseConnection(args[1], args[2]);
                 testingFunction(db);
                 
             } catch (Exception e) {

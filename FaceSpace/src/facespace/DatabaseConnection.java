@@ -17,30 +17,17 @@ public class DatabaseConnection {
     private ResultSet resultSet; //used to hold the result of your query (if one exists)
     private String query;  //this will hold the query we are using
 
-    public DatabaseConnection() throws SQLException {
-
-        //to run in netbeans need to add ojbdc6.jar to project libraries
-        String username = "";
-        String password = "";
-
-        // create a scanner to get user input
-        Scanner keyIn = new Scanner(System.in);
-
-        // get the username and password
-//        System.out.print("Please enter DB username: ");
-//        username = keyIn.nextLine().toLowerCase();
-//        System.out.print("Please enter DB password: ");
-//        password = keyIn.nextLine();
+    public DatabaseConnection(String username, String password) throws SQLException {
         try {
             // Register the oracle driver.
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 
             //This is the location of the database.
-            //String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
+            String url = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass"; // school db
             
-            username = "system";
-            password = "poiu0987";
-            String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
+            //username = "system";
+            //password = "poiu0987";
+            //String url = "jdbc:oracle:thin:@localhost:1521:xe"; // localhost db (debug)
 
             //create the database connection
             connection = DriverManager.getConnection(url, username, password);
