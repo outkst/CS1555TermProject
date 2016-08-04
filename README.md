@@ -121,8 +121,8 @@ A full list of this project's requirements can be viewed in **_1555_term_project
   * [X] Have an "automatic" mode that will perform testing on all of the methods.
     * [X] Perform standard and edge-case testing on all of the methods.  
     * [X] The test data should be removed after the testing is complete.  
-3. [ ] Create a commit labeled "**Milestone 3 submission**" and push it to the repository.  
-4. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
-  * [ ] The email title should be "**[CS1555] Project milestone 3 submission**".  
-  * [ ] Insert a link to the repository.  
-  * [ ] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
+3. [X] Create a commit labeled "**Milestone 3 submission**" and push it to the repository.  
+4. [X] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
+  * [X] The email title should be "**[CS1555] Project milestone 3 submission**".  
+  * [X] Insert a link to the repository.  
+  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
