@@ -87,7 +87,16 @@ public class FaceSpace {
                         break;
                         
                     case 2: System.out.println("\n[CREATE GROUP]");
-                        db.createGroup();
+                        try {
+                            String groupName = getUserString("Please enter a group name: ");
+                            String description = getUserString("Please enter a description for the group: ");
+                            int limit = getUserNumber("Please enter a membership limit: ");
+                            
+                            db.createGroup(groupName, description, limit);
+                            
+                        } catch (SQLException e) {
+                            
+                        }
                         break;
                         
                     case 3: System.out.println("\n[CREATE USER]");
