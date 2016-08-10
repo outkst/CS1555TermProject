@@ -131,6 +131,7 @@ public class DatabaseConnection {
     public void createGroup(String groupName, String description, int limit) throws SQLException, Exception {
         try {
             if (limit <= 0) { throw new Exception("Group membership limit must be greater than 0"); }
+            
             // make sure the group name doesn't exist
             query = "SELECT COUNT(*) FROM GROUPS WHERE NAME=?";
             prepStatement = connection.prepareStatement(query);
@@ -174,45 +175,16 @@ public class DatabaseConnection {
 
     /**
      * Adds a new user to the database system.
+     * 
+     * @param firstName The first name of the user.
+     * @param lastName The last name of the user.
+     * @param email The email address of the user.
+     * @param dateOfBirth The date of birth of the user.
+     * 
+     * @throws java.sql.SQLException
      */
-    public void createUser() {
+    public void createUser(String firstName, String lastName, String email, String dateOfBirth) throws SQLException, Exception {
         try {
-            //initialize input variables
-            String firstName = null;
-            String lastName = null;
-            String email = null;
-            String dateOfBirth = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get the firstName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a first name: ");
-                firstName = keyIn.nextLine().trim().toUpperCase();
-            } while (firstName == null || firstName.equalsIgnoreCase(""));
-
-            // get the lastName and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a last name: ");
-                lastName = keyIn.nextLine().trim().toUpperCase();
-            } while (lastName == null || lastName.equalsIgnoreCase(""));
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter a valid email address: ");
-                email = keyIn.nextLine().trim().toLowerCase();
-            } while (email == null || email.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", email));
-
-            // get the date of birth (DOB) and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Enter a valid date of birth (DD-MON-YYYY): ");
-                dateOfBirth = keyIn.nextLine().trim().toUpperCase();
-            } while (dateOfBirth == null || dateOfBirth.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{4}", dateOfBirth));
-
-            // show the user input
-            System.out.println(String.format("\nFirst Name: {%s} LastName: {%s} Email: {%s} DOB: {%s}", firstName, lastName, email, dateOfBirth));
-
             // Create the query and insert
             query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YYYY'), NULL, current_timestamp)";
             prepStatement = connection.prepareStatement(query);
@@ -221,6 +193,7 @@ public class DatabaseConnection {
             prepStatement.setString(3, email);
             prepStatement.setString(4, dateOfBirth);
             prepStatement.executeUpdate();
+            prepStatement.close();
 
             // get the new list of users
             statement = connection.createStatement(); //create an instance
@@ -243,12 +216,6 @@ public class DatabaseConnection {
             }
 
             System.out.println("\nSUCCESS!");
-        } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-
         } finally {
             closeSQLObjects();
         }
