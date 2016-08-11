@@ -113,7 +113,9 @@ public class FaceSpace {
                         break;
                         
                     case 5: System.out.println("\n[DISPLAY MESSAGES]");
-                        db.displayMessages();
+                        userEmail = getUserEmail("Please enter the user's email address: ");
+                    
+                        db.displayMessages(userEmail);
                         break;
                         
                     case 6: System.out.println("\n[DISPLAY NEW MESSAGES]");

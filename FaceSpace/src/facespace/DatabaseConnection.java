@@ -62,7 +62,7 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 userID = resultSet.getInt(1);
-                prepStatement.close();
+                closeSQLObjects();
             }
 
             //make sure group exists
@@ -77,7 +77,7 @@ public class DatabaseConnection {
                 throw new Exception("No Group Found");
             } else {
                 groupID = resultSet.getInt(1);
-                prepStatement.close();
+                closeSQLObjects();
             }
 
             // show the user input
@@ -89,7 +89,7 @@ public class DatabaseConnection {
             prepStatement.setInt(1, groupID);
             prepStatement.setInt(2, userID);
             prepStatement.executeUpdate();
-            prepStatement.close();
+            closeSQLObjects();
 
             // get the updated data
             query = "SELECT G.NAME, U.FNAME, U.LNAME, U.EMAIL, GM.DATEJOINED FROM GROUPS G "
@@ -137,7 +137,7 @@ public class DatabaseConnection {
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, groupName);
             resultSet = prepStatement.executeQuery();
-            prepStatement.close();
+            closeSQLObjects();
             
             //Insert query statement
             query = "INSERT INTO GROUPS (NAME, DESCRIPTION, LIMIT, DATECREATED) VALUES (?, ?, ?, current_timestamp)";
@@ -148,7 +148,7 @@ public class DatabaseConnection {
             prepStatement.setString(2, description);
             prepStatement.setInt(3, limit);
             prepStatement.executeUpdate();
-            prepStatement.close();
+            closeSQLObjects();
 
             // get the new list of users
             statement = connection.createStatement(); //create an instance
@@ -193,7 +193,7 @@ public class DatabaseConnection {
             prepStatement.setString(3, email);
             prepStatement.setString(4, dateOfBirth);
             prepStatement.executeUpdate();
-            prepStatement.close();
+            closeSQLObjects();
 
             // get the new list of users
             statement = connection.createStatement(); //create an instance
@@ -224,7 +224,7 @@ public class DatabaseConnection {
     /**
      * Displays all of a user's pending, and established, friendships.
      * 
-     * @param userEmail
+     * @param userEmail The email address of the user from which to display friends.
      * 
      * @throws java.sql.SQLException
      */
@@ -244,7 +244,7 @@ public class DatabaseConnection {
             } else {
                 userID = resultSet.getInt(1);
             }
-            prepStatement.close();
+            closeSQLObjects();
 
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d}", userID));
@@ -282,21 +282,14 @@ public class DatabaseConnection {
     /**
      * Given a user, look up all of the messages sent to that user (either
      * directly or via a group that they belong to).
+     * 
+     * @param userEmail The email address of the user from which to display friends.
+     * 
+     * @throws java.sql.SQLException
      */
-    public void displayMessages() {
+    public void displayMessages(String userEmail) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int userID = 0;
-            String userEmail = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -310,10 +303,8 @@ public class DatabaseConnection {
             } else {
                 userID = resultSet.getInt(1);
             }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d}", userID));
-
+            closeSQLObjects();
+            
             //query to display friends
             query = "SELECT U.FNAME AS FIRSTNAME,\n"
                     + "  U.LNAME AS LASTNAME,\n"
@@ -339,14 +330,6 @@ public class DatabaseConnection {
                         + resultSet.getString(4) + ", "
                         + resultSet.getString(5));
                 counter++;
-            }
-        } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();
