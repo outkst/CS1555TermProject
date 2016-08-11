@@ -19,14 +19,15 @@ public class FaceSpace {
      * @throws java.sql.SQLException
      */
     public static void main(String[] args) throws SQLException {
-        System.out.println("Welcome to FaceSpaces!");
         DatabaseConnection db = null;
         String url = "", username = "", password = "";
-        String firstName = "", lastName = "", userEmail = "", dateOfBirth = "", groupName = "", groupDescription = "";
-        String friendEmail = "";
+        String firstName = "", lastName = "", userEmail = "", dateOfBirth = "";
+        String friendEmail = "", groupName = "", groupDescription = "";
         int membershipLimit = 0;
         
         try {
+            System.out.println("Welcome to FaceSpaces!");
+            
             // start by getting the username and password
             //      for the database connection
             keyIn = new Scanner(System.in);
