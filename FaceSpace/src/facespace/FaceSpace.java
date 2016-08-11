@@ -131,7 +131,23 @@ public class FaceSpace {
                         break;
                         
                     case 8: System.out.println("\n[ESTABLISH FRIENDSHIP]");
-                        db.establishFriendship();
+                        try {
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+                            friendEmail = getUserEmail("Please enter the friend's email address: ");
+                            
+                            db.establishFriendship(userEmail, friendEmail);
+                        } catch (SQLException e) {
+                            int errorCode = e.getErrorCode();
+                            switch (errorCode) {
+                                case 20001:
+                                    System.out.println("Friendship already pending");
+                                    break;
+                                case 20002:
+                                    System.out.println("Friendship already established");
+                                    break;
+                                default: printSQLException(e);
+                            }
+                        }
                         break;
                     
                     case 9: System.out.println("\n[INITIATE FRIENDSHIP]");

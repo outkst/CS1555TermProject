@@ -283,7 +283,7 @@ public class DatabaseConnection {
      * Given a user, look up all of the messages sent to that user (either
      * directly or via a group that they belong to).
      * 
-     * @param userEmail The email address of the user from which to display friends.
+     * @param userEmail The email address of the user from which to display all messages.
      * 
      * @throws java.sql.SQLException
      */
@@ -340,7 +340,7 @@ public class DatabaseConnection {
      * Given a user, look up all of the messages sent to that user (either
      * directly or via a group that they belong to).
      * 
-     * @param userEmail The email address of the user from which to display friends.
+     * @param userEmail The email address of the user from which to display new messages.
      * 
      * @throws SQLException
      */
@@ -450,7 +450,7 @@ public class DatabaseConnection {
     /**
      * Remove a user and all of their information from the system. 
      * 
-     * @param userEmail The email address of the user from which to display friends.
+     * @param userEmail The email address of the user to remove.
      * 
      * @throws SQLException
      */
@@ -481,7 +481,7 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
             
-            System.out.println("\nSUCCESS!");
+            System.out.println("\nUser successfully removed!");
         } finally {
             closeSQLObjects();
         }
@@ -490,28 +490,17 @@ public class DatabaseConnection {
     
     /**
      * Creates an established friendship from one user to another inside the database.
+     * 
+     * @param userEmail The email address of the user from which to start the friendship.
+     * @param friendEmail The email address of the user from which to establish the friendship with.
+     * 
+     * @throws java.sql.SQLException
      */
-    public void establishFriendship() {
+    public void establishFriendship(String userEmail, String friendEmail) throws SQLException, Exception {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
-            String userEmail = null;
-
             int friendID = 0;
-            String friendEmail = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            /**
-             * GET THE BEFRIENDING USER'S EMAIL
-             * 
-             */
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -521,18 +510,11 @@ public class DatabaseConnection {
 
             //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("No User Found");
+                throw new Exception("No user found matching this userEmail.");
             } else {
                 userID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            /**
-             */
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the friend's email address: ");
-                friendEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail));
 
             if (friendEmail.equals(userEmail)) {
                 throw new Exception("You cannot friend yourself!");
@@ -549,9 +531,6 @@ public class DatabaseConnection {
             } else {
                 friendID = resultSet.getInt(1);
             }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("\nID of user: {%d} ID of friend: {%d}", userID, friendID));
 
             /**
              * GET THE STATUS OF THIS FRIENDSHIP (IF EXISTS), AND EITHER
@@ -584,9 +563,9 @@ public class DatabaseConnection {
                     return;
                 }
             }
+            closeSQLObjects();
 
             query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
-
             String countQuery = "SELECT COUNT(*) FROM FRIENDSHIPS WHERE USERID = ? AND FRIENDID = ?";
 
             if (oppositeDirection == false) {
@@ -617,6 +596,7 @@ public class DatabaseConnection {
                 prepStatement.setInt(2, userID);
                 prepStatement.executeUpdate();
             }
+            closeSQLObjects();
 
             //just a query to show that the row was inserted
             query = "SELECT U.FNAME, U.LNAME, U.EMAIL, F.APPROVED, F.DATEAPPROVED\n"
@@ -631,7 +611,7 @@ public class DatabaseConnection {
             prepStatement.setInt(4, friendID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n"
+            System.out.println("\nQuery success, friendship status:\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -642,26 +622,6 @@ public class DatabaseConnection {
                         + resultSet.getString(4) + ", "
                         + resultSet.getString(5));
                 counter++;
-            }
-        } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            switch (errorCode) {
-                case 20001:
-                    System.out.println("Friendship already pending");
-                    break;
-                case 20002:
-                    System.out.println("Friendship already established");
-                    break;
-                default:
-                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-                    break;
-            }
-        } catch (Exception e) {
-
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();
