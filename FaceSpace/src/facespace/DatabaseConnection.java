@@ -319,7 +319,7 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are...\n"
+            System.out.println("\nMessages for the user are:\n"
                     + "[RECORD#] [FNAME],[LNAME],[SUBJECT],[BODY],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -339,22 +339,17 @@ public class DatabaseConnection {
     /**
      * Given a user, look up all of the messages sent to that user (either
      * directly or via a group that they belong to).
+     * 
+     * @param userEmail The email address of the user from which to display friends.
+     * 
+     * @throws SQLException
      */
-    public void displayNewMessages() {
+    public void displayNewMessages(String userEmail) throws SQLException, Exception {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
-            String userEmail = null;
             Timestamp lastLogin = null;
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
-
+            
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
@@ -366,10 +361,8 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 userID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d}", userID));
 
             query = "SELECT LASTLOGIN FROM USERS WHERE ID = ?";
             prepStatement = connection.prepareStatement(query);
@@ -381,11 +374,12 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 lastLogin = resultSet.getTimestamp(1);
+                closeSQLObjects();
             }
 
             if (lastLogin == null) {
                 //query if last login is null, just display all messages
-                System.out.println("No previous login, displaying all messages");
+                System.out.println("\nNo previous login, displaying all messages:");
                 query = "SELECT U.FNAME AS FIRSTNAME,\n"
                         + "  U.LNAME AS LASTNAME,\n"
                         + "  U.EMAIL AS EMAILADDRESS,\n"
@@ -422,12 +416,11 @@ public class DatabaseConnection {
                 //after the time of last login
                 prepStatement.setInt(1, userID);
                 prepStatement.setTimestamp(2, lastLogin);
-
             }
 
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nMessages for the users are...\n"
+            System.out.println("\nNew Messages for the user are:\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[SUBJECT],[BODY],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -456,21 +449,15 @@ public class DatabaseConnection {
 
     /**
      * Remove a user and all of their information from the system. 
+     * 
+     * @param userEmail The email address of the user from which to display friends.
+     * 
+     * @throws SQLException
      */
-    public void dropUser() {
+    public void dropUser(String userEmail) throws SQLException, Exception {
         try {            
             // intialize input variables for user
-            String userEmail = null;
             int userID = 0;
-            
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-            
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
             
             // build a sql query to get the user's ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -484,6 +471,7 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 userID = resultSet.getInt(1);
+                closeSQLObjects();
             }
             
             // use this ID to delete the user, which will fire a 
@@ -494,12 +482,6 @@ public class DatabaseConnection {
             resultSet = prepStatement.executeQuery();
             
             System.out.println("\nSUCCESS!");
-        } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-            
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            
         } finally {
             closeSQLObjects();
         }

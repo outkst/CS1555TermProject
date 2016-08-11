@@ -119,11 +119,15 @@ public class FaceSpace {
                         break;
                         
                     case 6: System.out.println("\n[DISPLAY NEW MESSAGES]");
-                        db.displayNewMessages();
+                        userEmail = getUserEmail("Please enter the user's email address: ");
+                    
+                        db.displayNewMessages(userEmail);
                         break;
                         
                     case 7: System.out.println("\n[DROP USER]");
-                        db.dropUser();
+                        userEmail = getUserEmail("Please enter the user's email address: ");
+                    
+                        db.dropUser(userEmail);
                         break;
                         
                     case 8: System.out.println("\n[ESTABLISH FRIENDSHIP]");
