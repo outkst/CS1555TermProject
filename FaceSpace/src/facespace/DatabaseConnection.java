@@ -156,7 +156,7 @@ public class DatabaseConnection {
             resultSet = statement.executeQuery(query);
 
             // display a list of the groups
-            System.out.println("\nAfter successful insert, data is...\n"
+            System.out.println("\nQuery success, displaying groups:\n"
                     + "[RECORD#] [NAME],[DESCRIPTION],[LIMIT],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -201,7 +201,7 @@ public class DatabaseConnection {
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
-            System.out.println("\nQuery success, data is...\n"
+            System.out.println("\nQuery success, created user information is:\n"
                     + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[BIRTHDATE],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -222,22 +222,15 @@ public class DatabaseConnection {
     }
 
     /**
-     * Displays all of that user's pending, and established, friendships.
+     * Displays all of a user's pending, and established, friendships.
+     * 
+     * @param userEmail
+     * 
+     * @throws java.sql.SQLException
      */
-    public void displayFriends() {
+    public void displayFriends(String userEmail) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int userID = 0;
-            String userEmail = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -251,6 +244,7 @@ public class DatabaseConnection {
             } else {
                 userID = resultSet.getInt(1);
             }
+            prepStatement.close();
 
             // show user input (in form of ID's)
             System.out.println(String.format("ID of user: {%d}", userID));
@@ -268,7 +262,7 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nQuery success, data is...\n"
+            System.out.println("\nQuery success, friendships are:\n"
                     + "[RECORD#] [FNAME],[LNAME],[EMAIL],[APPROVED?],[DATEAPPROVED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -279,15 +273,6 @@ public class DatabaseConnection {
                         + resultSet.getString(4) + ", "
                         + resultSet.getString(5));
                 counter++;
-            }
-        } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-        } catch (Exception e) {
-
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();

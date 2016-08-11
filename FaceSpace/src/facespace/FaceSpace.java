@@ -22,6 +22,9 @@ public class FaceSpace {
         System.out.println("Welcome to FaceSpaces!");
         DatabaseConnection db = null;
         String url = "", username = "", password = "";
+        String firstName = "", lastName = "", userEmail = "", dateOfBirth = "", groupName = "", groupDescription = "";
+        String friendEmail = "";
+        int membershipLimit = 0;
         
         try {
             // start by getting the username and password
@@ -73,8 +76,8 @@ public class FaceSpace {
                         
                     case 1: System.out.println("\n[ADD TO GROUP]");
                         try {
-                            String userEmail = getUserEmail("Please enter the user's email address: ");
-                            String groupName = getUserString("Please enter the name of the group to join: ");
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+                            groupName = getUserString("Please enter the name of the group to join: ");
 
                             db.addToGroup(userEmail, groupName);
                             
@@ -87,26 +90,26 @@ public class FaceSpace {
                         break;
                         
                     case 2: System.out.println("\n[CREATE GROUP]");
-                        String groupName = getUserString("Please enter a group name: ");
-                        String description = getUserString("Please enter a description for the group: ");
-                        int limit = getUserNumber("Please enter a membership limit: ");
+                        groupName = getUserString("Please enter a group name: ");
+                        groupDescription = getUserString("Please enter a description for the group: ");
+                        membershipLimit = getUserNumber("Please enter a membership limit: ");
 
-                        db.createGroup(groupName, description, limit);
-
+                        db.createGroup(groupName, groupDescription, membershipLimit);
                         break;
                         
                     case 3: System.out.println("\n[CREATE USER]");
-                        String firstName = getUserString("Please enter a first name: ");
-                        String lastName = getUserString("Please enter a last name: ");
-                        String email = getUserEmail("Please enter a valid email address: ");
-                        String dateOfBirth = getUserDate("Enter a valid date of birth (DD-MON-YYYY): ");
+                        firstName = getUserString("Please enter a first name: ");
+                        lastName = getUserString("Please enter a last name: ");
+                        userEmail = getUserEmail("Please enter a valid email address: ");
+                        dateOfBirth = getUserDate("Enter a valid date of birth (DD-MON-YYYY): ");
 
-                        db.createUser(firstName, lastName, email, dateOfBirth);
-                        
+                        db.createUser(firstName, lastName, userEmail, dateOfBirth);
                         break;
                         
                     case 4: System.out.println("\n[DISPLAY FRIENDS]");
-                        db.displayFriends();
+                        userEmail = getUserEmail("Please enter the user's email address: ");
+                        
+                        db.displayFriends(userEmail);
                         break;
                         
                     case 5: System.out.println("\n[DISPLAY MESSAGES]");
@@ -180,6 +183,7 @@ public class FaceSpace {
         }
     }
     
+    
     public static void printSQLException(SQLException e) {
         try {
             while (e != null) {
@@ -210,23 +214,6 @@ public class FaceSpace {
         }
     }
     
-    
-    /**
-     * Gets a string from the user input. Normalized to uppercase.
-     * 
-     * @param message The message to display to the user before getting the input.
-     * @return A non-null, non-empty String value (no leading/trailing spaces).
-     */
-    public static String getUserString(String message) {
-        String userString;
-        do {
-            System.out.print(message);
-            userString = keyIn.nextLine().trim().toUpperCase();
-        } while (userString == null || userString.equalsIgnoreCase(""));
-        
-        return userString;
-    }
-    
 
     /**
      * Gets a valid date from the user input. Normalized to uppercase.
@@ -242,6 +229,23 @@ public class FaceSpace {
         } while (userDate == null || userDate.equalsIgnoreCase("") || !Pattern.matches("[0123]{1}\\d{1}-\\w{3}-\\d{4}", userDate));
         
         return userDate;
+    }
+    
+    
+    /**
+     * Gets a string from the user input. Normalized to uppercase.
+     * 
+     * @param message The message to display to the user before getting the input.
+     * @return A non-null, non-empty String value (no leading/trailing spaces).
+     */
+    public static String getUserString(String message) {
+        String userString;
+        do {
+            System.out.print(message);
+            userString = keyIn.nextLine().trim().toUpperCase();
+        } while (userString == null || userString.equalsIgnoreCase(""));
+        
+        return userString;
     }
     
     
