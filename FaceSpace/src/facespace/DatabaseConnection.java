@@ -631,28 +631,16 @@ public class DatabaseConnection {
     /**
      * Creates a pending friendship from one user to another inside the
      * database.
+     * 
+     * @param userEmail The email address of the user from which to start the friendship.
+     * @param friendEmail The email address of the user from which to establish the friendship with.
+     * 
+     * @throws java.sql.SQLException
      */
-    public void initiateFriendship() {
+    public void initiateFriendship(String userEmail, String friendEmail) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int userID = 0;
-            String userEmail = null;
-
             int friendID = 0;
-            String friendEmail = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            /**
-             * GET THE EMAIL OF THE USER INITIATING A FRIENDSHIP
-             *
-             */
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             // query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -665,18 +653,8 @@ public class DatabaseConnection {
                 throw new Exception("The email entered does not exist");
             } else {
                 userID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            /**
-             * GET THE EMAIL OF THE USER TO FRIEND
-             *
-             */
-            // get the email of the friend and normalize (lowercase with no leading/trailing spaces)
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the email address of the person to friend: ");
-                friendEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (friendEmail == null || friendEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", friendEmail));
 
             if (friendEmail.equals(userEmail)) {
                 throw new Exception("You cannot friend yourself!");
@@ -692,10 +670,8 @@ public class DatabaseConnection {
                 throw new Exception("The friend name entered does not exist");
             } else {
                 friendID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", userID, friendID));
 
             /**
              * USE THE USER_ID AND FRIEND_ID TO CREATE A "FRIENDSHIP". THIS
@@ -711,6 +687,7 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             prepStatement.setInt(2, friendID);
             prepStatement.executeUpdate();
+            closeSQLObjects();
 
             /**
              * GRAB THE INSERTED ROW FROM THE DB AND DISPLAY TO USER.
@@ -741,23 +718,6 @@ public class DatabaseConnection {
                         + resultSet.getString(5));
                 counter++;
             }
-        } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            switch (errorCode) {
-                case 20001:
-                    System.out.println("Friendship already pending");
-                    break;
-                case 20002:
-                    System.out.println("Friendship already established");
-                    break;
-                default:
-                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-                    break;
-            }
-
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-
         } finally {
             closeSQLObjects();
         }

@@ -59,144 +59,164 @@ public class FaceSpace {
             
             int input = -1;
             while (input != 0) {
-                // show menu and get user input
-                System.out.print("\n\nWHAT WOULD YOU LIKE TO DO? (ENTER 0 TO EXIT)\n\n"
-                        + "1 - ADD TO GROUP\t\t7 - DROP USER\t\t\t13 - SEARCH FOR USER\n"
-                        + "2 - CREATE GROUP\t\t8 - ESTABLISH FRIENDSHIP\t14 - SEND MESSAGE TO GROUP\n"
-                        + "3 - CREATE USER\t\t\t9 - INITIATE FRIENDSHIP\t\t15 - SEND MESSAGE TO USER\n"
-                        + "4 - DISPLAY FRIENDS\t\t10 - LIST ALL GROUPS\t\t16 - THREE DEGREES\n"
-                        + "5 - DISPLAY MESSAGES\t\t11 - LIST ALL USERS\t\t17 - TOP MESSAGERS\n"
-                        + "6 - DISPLAY NEW MESSAGES\t12 - LOG IN USER\n"
-                        + "\nEnter command: ");
-                input = tryParseInt(keyIn.nextLine()); // returns -1 if bad input
-                
-                switch (input) {
-                    case 0: System.out.println("\nGOODBYE!");
-                        break;
-                        
-                    case 1: System.out.println("\n[ADD TO GROUP]");
-                        try {
-                            userEmail = getUserEmail("Please enter the user's email address: ");
-                            groupName = getUserString("Please enter the name of the group to join: ");
+                try {
+                    // show menu and get user input
+                    System.out.print("\n\nWHAT WOULD YOU LIKE TO DO? (ENTER 0 TO EXIT)\n\n"
+                            + "1 - ADD TO GROUP\t\t7 - DROP USER\t\t\t13 - SEARCH FOR USER\n"
+                            + "2 - CREATE GROUP\t\t8 - ESTABLISH FRIENDSHIP\t14 - SEND MESSAGE TO GROUP\n"
+                            + "3 - CREATE USER\t\t\t9 - INITIATE FRIENDSHIP\t\t15 - SEND MESSAGE TO USER\n"
+                            + "4 - DISPLAY FRIENDS\t\t10 - LIST ALL GROUPS\t\t16 - THREE DEGREES\n"
+                            + "5 - DISPLAY MESSAGES\t\t11 - LIST ALL USERS\t\t17 - TOP MESSAGERS\n"
+                            + "6 - DISPLAY NEW MESSAGES\t12 - LOG IN USER\n"
+                            + "\nEnter command: ");
+                    input = tryParseInt(keyIn.nextLine()); // returns -1 if bad input
 
-                            db.addToGroup(userEmail, groupName);
-                            
-                        } catch (SQLException e) {
-                            switch (e.getErrorCode()) {
-                                case 20000: System.out.println("Group Membership limit is already met"); break;
-                                default: printSQLException(e);
+                    switch (input) {
+                        case 0: System.out.println("\nGOODBYE!");
+                            break;
+
+                        case 1: System.out.println("\n[ADD TO GROUP]");
+                            try {
+                                userEmail = getUserEmail("Please enter the user's email address: ");
+                                groupName = getUserString("Please enter the name of the group to join: ");
+
+                                db.addToGroup(userEmail, groupName);
+
+                            } catch (SQLException e) {
+                                switch (e.getErrorCode()) {
+                                    case 20000: System.out.println("Group Membership limit is already met"); break;
+                                    default: printSQLException(e);
+                                }
                             }
-                        }
-                        break;
-                        
-                    case 2: System.out.println("\n[CREATE GROUP]");
-                        groupName = getUserString("Please enter a group name: ");
-                        groupDescription = getUserString("Please enter a description for the group: ");
-                        membershipLimit = getUserNumber("Please enter a membership limit: ");
+                            break;
 
-                        db.createGroup(groupName, groupDescription, membershipLimit);
-                        break;
-                        
-                    case 3: System.out.println("\n[CREATE USER]");
-                        firstName = getUserString("Please enter a first name: ");
-                        lastName = getUserString("Please enter a last name: ");
-                        userEmail = getUserEmail("Please enter a valid email address: ");
-                        dateOfBirth = getUserDate("Enter a valid date of birth (DD-MON-YYYY): ");
+                        case 2: System.out.println("\n[CREATE GROUP]");
+                            groupName = getUserString("Please enter a group name: ");
+                            groupDescription = getUserString("Please enter a description for the group: ");
+                            membershipLimit = getUserNumber("Please enter a membership limit: ");
 
-                        db.createUser(firstName, lastName, userEmail, dateOfBirth);
-                        break;
-                        
-                    case 4: System.out.println("\n[DISPLAY FRIENDS]");
-                        userEmail = getUserEmail("Please enter the user's email address: ");
-                        
-                        db.displayFriends(userEmail);
-                        break;
-                        
-                    case 5: System.out.println("\n[DISPLAY MESSAGES]");
-                        userEmail = getUserEmail("Please enter the user's email address: ");
-                    
-                        db.displayMessages(userEmail);
-                        break;
-                        
-                    case 6: System.out.println("\n[DISPLAY NEW MESSAGES]");
-                        userEmail = getUserEmail("Please enter the user's email address: ");
-                    
-                        db.displayNewMessages(userEmail);
-                        break;
-                        
-                    case 7: System.out.println("\n[DROP USER]");
-                        userEmail = getUserEmail("Please enter the user's email address: ");
-                    
-                        db.dropUser(userEmail);
-                        break;
-                        
-                    case 8: System.out.println("\n[ESTABLISH FRIENDSHIP]");
-                        try {
+                            db.createGroup(groupName, groupDescription, membershipLimit);
+                            break;
+
+                        case 3: System.out.println("\n[CREATE USER]");
+                            firstName = getUserString("Please enter a first name: ");
+                            lastName = getUserString("Please enter a last name: ");
+                            userEmail = getUserEmail("Please enter a valid email address: ");
+                            dateOfBirth = getUserDate("Enter a valid date of birth (DD-MON-YYYY): ");
+
+                            db.createUser(firstName, lastName, userEmail, dateOfBirth);
+                            break;
+
+                        case 4: System.out.println("\n[DISPLAY FRIENDS]");
                             userEmail = getUserEmail("Please enter the user's email address: ");
-                            friendEmail = getUserEmail("Please enter the friend's email address: ");
-                            
-                            db.establishFriendship(userEmail, friendEmail);
-                        } catch (SQLException e) {
-                            int errorCode = e.getErrorCode();
-                            switch (errorCode) {
-                                case 20001:
-                                    System.out.println("Friendship already pending");
-                                    break;
-                                case 20002:
-                                    System.out.println("Friendship already established");
-                                    break;
-                                default: printSQLException(e);
+
+                            db.displayFriends(userEmail);
+                            break;
+
+                        case 5: System.out.println("\n[DISPLAY MESSAGES]");
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+
+                            db.displayMessages(userEmail);
+                            break;
+
+                        case 6: System.out.println("\n[DISPLAY NEW MESSAGES]");
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+
+                            db.displayNewMessages(userEmail);
+                            break;
+
+                        case 7: System.out.println("\n[DROP USER]");
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+
+                            db.dropUser(userEmail);
+                            break;
+
+                        case 8: System.out.println("\n[ESTABLISH FRIENDSHIP]");
+                            try {
+                                userEmail = getUserEmail("Please enter the user's email address: ");
+                                friendEmail = getUserEmail("Please enter the friend's email address: ");
+
+                                db.establishFriendship(userEmail, friendEmail);
+                            } catch (SQLException e) {
+                                int errorCode = e.getErrorCode();
+                                switch (errorCode) {
+                                    case 20001:
+                                        System.out.println("Friendship already pending");
+                                        break;
+                                    case 20002:
+                                        System.out.println("Friendship already established");
+                                        break;
+                                    default: printSQLException(e);
+                                }
                             }
-                        }
-                        break;
+                            break;
+
+                        case 9: System.out.println("\n[INITIATE FRIENDSHIP]");
+                            try {
+                                userEmail = getUserEmail("Please enter the user's email address: ");
+                                friendEmail = getUserEmail("Please enter the friend's email address: ");
+
+                                db.initiateFriendship(userEmail, friendEmail);
+                            } catch (SQLException e) {
+                                int errorCode = e.getErrorCode();
+                                switch (errorCode) {
+                                    case 20001:
+                                        System.out.println("Friendship already pending");
+                                        break;
+                                    case 20002:
+                                        System.out.println("Friendship already established");
+                                        break;
+                                    default: printSQLException(e);
+                                }
+                            }
+                            break;
+
+                        case 10: System.out.println("\n[LIST ALL GROUPS]");
+                            db.listAllGroups();
+                            break;
+
+                        case 11: System.out.println("\n[LIST ALL USERS]");
+                            db.listAllUsers();
+                            break;
+
+                        case 12: System.out.println("\n[LOG IN USER]");
+                            db.logInUser();
+                            break;
+
+                        case 13: System.out.println("\n[SEARCH FOR USER]");
+                            db.searchForUser();
+                            break;
+
+                        case 14: System.out.println("\n[SEND MESSAGE TO GROUP]");
+                            db.sendMessageToGroup();
+                            break;
+
+                        case 15: System.out.println("\n[SEND MESSAGE TO USER]");
+                            db.sendMessageToUser();
+                            break;
+
+                        case 16: System.out.println("\n[THREE DEGREES]");
+                            db.threeDegrees();
+                            break;
+
+                        case 17: System.out.println("\n[TOP MESSAGERS]");
+                            db.topMessagers();
+                            break;
+
+                        default: System.out.println("INVALID INPUT");
+                    }
+                } catch (SQLException e) {
+                    printSQLException(e);
                     
-                    case 9: System.out.println("\n[INITIATE FRIENDSHIP]");
-                        db.initiateFriendship();
-                        break;
-                        
-                    case 10: System.out.println("\n[LIST ALL GROUPS]");
-                        db.listAllGroups();
-                        break;
-                        
-                    case 11: System.out.println("\n[LIST ALL USERS]");
-                        db.listAllUsers();
-                        break;
-                        
-                    case 12: System.out.println("\n[LOG IN USER]");
-                        db.logInUser();
-                        break;
-                        
-                    case 13: System.out.println("\n[SEARCH FOR USER]");
-                        db.searchForUser();
-                        break;
-                        
-                    case 14: System.out.println("\n[SEND MESSAGE TO GROUP]");
-                        db.sendMessageToGroup();
-                        break;
-                        
-                    case 15: System.out.println("\n[SEND MESSAGE TO USER]");
-                        db.sendMessageToUser();
-                        break;
-                        
-                    case 16: System.out.println("\n[THREE DEGREES]");
-                        db.threeDegrees();
-                        break;
-                        
-                    case 17: System.out.println("\n[TOP MESSAGERS]");
-                        db.topMessagers();
-                        break;
-                        
-                    default: System.out.println("INVALID INPUT");
+                } catch (Exception e) {
+                    System.out.println(String.format("\n!! Error: %s", e.getMessage()));
                 }
             }
-        } catch (SQLException e) {
-            printSQLException(e);
-            
         } catch (Exception e) {
             System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             
         } finally {
-            if (db != null) { 
+            if (db != null) {
                 try {
                     System.out.println("\nClosing connection...");
                     db.closeConnection();    
