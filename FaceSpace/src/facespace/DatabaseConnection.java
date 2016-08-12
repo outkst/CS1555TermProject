@@ -724,7 +724,7 @@ public class DatabaseConnection {
     }
 
     /**
-     * Lists all the groups in the database
+     * Lists all the groups in the database.
      * 
      * @throws SQLException
      */
@@ -749,9 +749,11 @@ public class DatabaseConnection {
     }
 
     /**
-     * Lists all the users in the database
+     * Lists all the users in the database.
+     * 
+     * @throws SQLException
      */
-    public void listAllUsers() {
+    public void listAllUsers() throws SQLException, Exception {
         try {
             query = "SELECT FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED FROM USERS";
             prepStatement = connection.prepareStatement(query);
@@ -768,12 +770,6 @@ public class DatabaseConnection {
                         + resultSet.getString(5) + ", "
                         + resultSet.getString(6));
             }
-        } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-
         } finally {
             closeSQLObjects();
         }
