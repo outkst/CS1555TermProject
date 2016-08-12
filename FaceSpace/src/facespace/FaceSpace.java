@@ -182,7 +182,9 @@ public class FaceSpace {
                             break;
 
                         case 12: System.out.println("\n[LOG IN USER]");
-                            db.logInUser();
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+                        
+                            db.logInUser(userEmail);
                             break;
 
                         case 13: System.out.println("\n[SEARCH FOR USER]");

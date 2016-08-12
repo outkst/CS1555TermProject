@@ -777,22 +777,15 @@ public class DatabaseConnection {
 
     /**
      * Logs in the user by updating their last login to the current timestamp.
+     * 
+     * @param userEmail The email address of the user to log in.
+     * 
+     * @throws SQLException
      */
-    public void logInUser() {
+    public void logInUser(String userEmail) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int userID = 0;
-            String userEmail = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
-
+            
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
@@ -801,13 +794,11 @@ public class DatabaseConnection {
 
             //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("No User Found");
+                throw new Exception("The user name entered does not exist");
             } else {
                 userID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d}", userID));
 
             //Insert statement for establishing pending friendship
             query = "UPDATE USERS \n"
@@ -816,6 +807,7 @@ public class DatabaseConnection {
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, userID);
             prepStatement.executeUpdate();
+            closeSQLObjects();
 
             //just a query to show that the row was inserted
             query = "select id, fname, lname, email, lastlogin\n"
@@ -825,7 +817,7 @@ public class DatabaseConnection {
             prepStatement.setInt(1, userID);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful update, data is...\n"
+            System.out.println("\nQuery success, user is now logged-in:\n"
                     + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL],[LASTLOGIN]");
             int counter = 1;
             while (resultSet.next()) {
@@ -836,12 +828,6 @@ public class DatabaseConnection {
                         + resultSet.getString(4) + ", "
                         + resultSet.getString(5));
                 counter++;
-            }
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();
