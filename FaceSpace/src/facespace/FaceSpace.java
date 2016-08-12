@@ -26,7 +26,7 @@ public class FaceSpace {
         int membershipLimit = 0;
         
         try {
-            System.out.println("Welcome to FaceSpaces!");
+            System.out.println("Welcome to FaceSpace!");
             
             // start by getting the username and password
             //      for the database connection
@@ -70,6 +70,7 @@ public class FaceSpace {
                             + "5 - DISPLAY MESSAGES\t\t11 - LIST ALL USERS\t\t17 - TOP MESSAGERS\n"
                             + "6 - DISPLAY NEW MESSAGES\t12 - LOG IN USER\n"
                             + "\nEnter command: ");
+                    
                     input = tryParseInt(keyIn.nextLine()); // returns -1 if bad input
 
                     switch (input) {

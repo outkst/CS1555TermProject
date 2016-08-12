@@ -725,8 +725,10 @@ public class DatabaseConnection {
 
     /**
      * Lists all the groups in the database
+     * 
+     * @throws SQLException
      */
-    public void listAllGroups() {
+    public void listAllGroups() throws SQLException, Exception {
         try {
             query = "SELECT NAME, DESCRIPTION, LIMIT, DATECREATED FROM GROUPS";
             prepStatement = connection.prepareStatement(query);
@@ -741,12 +743,6 @@ public class DatabaseConnection {
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4));
             }
-        } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-
-        } catch (Exception e) {
-            System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-
         } finally {
             closeSQLObjects();
         }
