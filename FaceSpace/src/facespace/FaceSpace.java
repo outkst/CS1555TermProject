@@ -221,8 +221,6 @@ public class FaceSpace {
                             break;
 
                         case 17: System.out.println("\n[TOP MESSAGERS]");
-                            
-                        
                             db.topMessagers();
                             break;
 

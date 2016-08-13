@@ -1257,7 +1257,7 @@ public class DatabaseConnection {
             if (success) {
                 query = "select FNAME, LNAME from users WHERE ID = ?";
                 
-                System.out.println("\nPath for three degrees is ... ");
+                System.out.println("\nQuery success, path for three degrees:");
                 int x=0;
                 for (int i = 0; i < currentPath.size(); i++) {
                     prepStatement = connection.prepareStatement(query);
@@ -1289,8 +1289,10 @@ public class DatabaseConnection {
      * The current query treats all messages equally (aka no special
      * consideration for group messages), so if a user sends 1 message to a
      * group of 10 people, that would count as them sending 10 messages.
+     * 
+     * @throws SQLException
      */
-    public void topMessagers() {
+    public void topMessagers() throws SQLException, Exception {
         try {
             //initialize input variables for User and Friend info
             int numMonths = 0;
@@ -1343,7 +1345,7 @@ public class DatabaseConnection {
             prepStatement.setInt(3, numResults);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nQuery success, data is...\n"
+            System.out.println("\nQuery success, top messages are:\n"
                     + "[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]");
             int counter = 1;
             System.out.println("[FNAME],[LNAME],[NUM MESSAGES]");
@@ -1354,14 +1356,6 @@ public class DatabaseConnection {
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4));
                 counter++;
-            }
-        } catch (SQLException e) {
-            System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("\nThe user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();
