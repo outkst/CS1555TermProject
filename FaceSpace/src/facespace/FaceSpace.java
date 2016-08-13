@@ -23,6 +23,7 @@ public class FaceSpace {
         String url = "", username = "", password = "";
         String firstName = "", lastName = "", userEmail = "", dateOfBirth = "";
         String friendEmail = "", groupName = "", groupDescription = "", searchTerms = "";
+        String messageSubject = "", messageBody = "";
         int membershipLimit = 0;
         
         try {
@@ -195,7 +196,12 @@ public class FaceSpace {
                             break;
 
                         case 14: System.out.println("\n[SEND MESSAGE TO GROUP]");
-                            db.sendMessageToGroup();
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+                            groupName = getUserString("Enter the name of the group you want to send to: ");
+                            messageSubject = getUserString("Enter the subject of the message: ");
+                            messageBody = getUserString("Enter the body of the message: ");
+                        
+                            db.sendMessageToGroup(userEmail, groupName, messageSubject, messageBody);
                             break;
 
                         case 15: System.out.println("\n[SEND MESSAGE TO USER]");

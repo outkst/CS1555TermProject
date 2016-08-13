@@ -846,7 +846,6 @@ public class DatabaseConnection {
      */
     public void searchForUser(String searchTerms) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int userID = 0;
 
             String[] searchItems = searchTerms.split("\\s+");
@@ -889,29 +888,19 @@ public class DatabaseConnection {
 
     /**
      * Send a message to an entire group of users.
+     * 
+     * @param userEmail The email address of the user sending the message.
+     * @param groupName The name of the group to send the message to.
+     * @param messageSubject The subject of the message to send.
+     * @param messageBody The body (content) of the message to send.
+     * 
+     * @throws SQLException
      */
-    public void sendMessageToGroup() {
+    public void sendMessageToGroup(String userEmail, String groupName, String messageSubject, String messageBody) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int senderID = 0;
-            String userEmail = null;
-
             int groupID = 0;
-            String groupName = null;
-
             int recipID = 0;
-
-            String messageSubject = null;
-            String messageBody = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -924,13 +913,8 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 senderID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // get the first name of the friend and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter recipient group name: ");
-                groupName = keyIn.nextLine().trim().toUpperCase();
-            } while (groupName == null || groupName.equalsIgnoreCase(""));
 
             //make sure group exists
             //query to make sure user exists and get their ID
@@ -944,19 +928,8 @@ public class DatabaseConnection {
                 throw new Exception("No Group Found");
             } else {
                 groupID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // get the subject of the message
-            do {
-                System.out.print("Please enter your message subject: ");
-                messageSubject = keyIn.nextLine().trim();
-            } while (messageSubject == null || messageSubject.equalsIgnoreCase(""));
-
-            // get the body of the message
-            do {
-                System.out.print("Please enter your message body: ");
-                messageBody = keyIn.nextLine().trim();
-            } while (messageBody == null || messageBody.equalsIgnoreCase(""));
 
             //query to get the users that are a part of the group 
             query = "SELECT USERID FROM GROUPMEMBERS WHERE GROUPID = ?";
@@ -966,14 +939,6 @@ public class DatabaseConnection {
 
             //Insert statement for establishing pending friendship
             query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, GROUPID, DATECREATED) VALUES (?, ?, ?, ?, ?, current_timestamp)";
-
-            //Create the prepared statement 
-            //I tried to do a batch update, but had conflicts with
-            //the trigger on the messages table when executing the batch of
-            //updates, because the trigger is a before insert, in order to
-            //determine the id for the message
-            //going to do a batch update so turn autocommit off
-            //connection.setAutoCommit(false);
             prepStatement = connection.prepareStatement(query);
 
             boolean groupHasMember = false;
@@ -986,16 +951,11 @@ public class DatabaseConnection {
                 prepStatement.executeUpdate();
                 groupHasMember = true;
             }
-
+            closeSQLObjects();
+            
             //execute the insert
-            if (groupHasMember) {
-//                prepStatement.executeQuery();
-                //prepStatement.executeBatch();
-                //connection.commit();
-                //connection.setAutoCommit(true);
-            } else {
-                System.out.println("The group you entered has no members");
-                return;
+            if (!groupHasMember) {
+                throw new Exception("The group you entered has no members");
             }
 
             //just a query to show that the row was inserted
@@ -1003,14 +963,15 @@ public class DatabaseConnection {
                     + "LEFT JOIN USERS U ON U.ID = M.SENDERID "
                     + "LEFT JOIN USERS RU ON RU.ID = M.RECIPIENTID "
                     + "LEFT JOIN GROUPS G ON G.ID = M.GROUPID "
-                    + "WHERE M.SENDERID=?";
+                    + "WHERE M.SENDERID=? AND G.ID=? AND M.SUBJECT=? AND M.BODY=?";
             prepStatement = connection.prepareStatement(query);
-
             prepStatement.setInt(1, senderID);
-
+            prepStatement.setInt(2, groupID);
+            prepStatement.setString(3, messageSubject);
+            prepStatement.setString(4, messageBody);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n"
+            System.out.println("\nQuery success, messages sent:\n"
                     + "[RECORD#] [ID],[GROUP],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECFNAME],[RECLNAME],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
