@@ -205,7 +205,12 @@ public class FaceSpace {
                             break;
 
                         case 15: System.out.println("\n[SEND MESSAGE TO USER]");
-                            db.sendMessageToUser();
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+                            friendEmail = getUserEmail("Enter the recipient's email address: ");
+                            messageSubject = getUserString("Enter the subject of the message: ");
+                            messageBody = getUserString("Enter the body of the message: ");
+                        
+                            db.sendMessageToUser(userEmail, friendEmail, messageSubject, messageBody);
                             break;
 
                         case 16: System.out.println("\n[THREE DEGREES]");

@@ -987,14 +987,6 @@ public class DatabaseConnection {
                         + resultSet.getString(9));
                 counter++;
             }
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else if (e.getMessage().equals("No Group Found")) {
-                System.out.println("The group name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
         } finally {
             closeSQLObjects();
         }
@@ -1002,27 +994,19 @@ public class DatabaseConnection {
 
     /**
      * Send a message to an individual user.
+     * 
+     * @param userEmail The email address of the user sending the message.
+     * @param recipEmail The email address of the user receiving the message.
+     * @param messageSubject The subject of the message to send.
+     * @param messageBody The body of the message to send.
+     * 
+     * @throws SQLException
      */
-    public void sendMessageToUser() {
+    public void sendMessageToUser(String userEmail, String recipEmail, String messageSubject, String messageBody) throws SQLException, Exception {
         try {
             //initialize input variables for User and Friend info
             int senderID = 0;
-            String userEmail = null;
-
             int recipID = 0;
-            String recipEmail = null;
-
-            String messageSubject = null;
-            String messageBody = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the sender's email address: ");
-                userEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (userEmail == null || userEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", userEmail));
 
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
@@ -1035,13 +1019,8 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 senderID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the recipient's email address: ");
-                recipEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (recipEmail == null || recipEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", recipEmail));
 
             //query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
@@ -1053,22 +1032,8 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 recipID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of sender: {%d} ID of recipient: {%d}", senderID, recipID));
-
-            // get the subject of the message
-            do {
-                System.out.print("Please enter your message subject: ");
-                messageSubject = keyIn.nextLine().trim();
-            } while (messageSubject == null || messageSubject.equalsIgnoreCase(""));
-
-            // get the body of the message
-            do {
-                System.out.print("Please enter your message body: ");
-                messageBody = keyIn.nextLine().trim();
-            } while (messageBody == null || messageBody.equalsIgnoreCase(""));
 
             //Insert statement for establishing pending friendship
             query = "INSERT INTO MESSAGES (SENDERID, SUBJECT, BODY, RECIPIENTID, DATECREATED) VALUES (?, ?, ?, ?, current_timestamp)";
@@ -1080,18 +1045,21 @@ public class DatabaseConnection {
             prepStatement.setString(3, messageBody);
             prepStatement.setInt(4, recipID);
             prepStatement.executeUpdate();
+            closeSQLObjects();
 
             //just a query to show that the row was inserted
             query = "SELECT M.ID, U.FNAME, U.LNAME, M.SUBJECT, M.BODY, RU.FNAME, RU.LNAME, M.DATECREATED FROM MESSAGES M "
                     + "LEFT JOIN USERS U ON U.ID=M.SENDERID "
                     + "LEFT JOIN USERS RU ON RU.ID=M.RECIPIENTID "
-                    + "WHERE M.SENDERID=? AND M.RECIPIENTID=?";
+                    + "WHERE M.SENDERID=? AND M.RECIPIENTID=? AND M.SUBJECT=? AND M.BODY=?";
             prepStatement = connection.prepareStatement(query);
             prepStatement.setInt(1, senderID);
             prepStatement.setInt(2, recipID);
+            prepStatement.setString(3, messageSubject);
+            prepStatement.setString(4, messageBody);
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nAfter successful insert, data is...\n"
+            System.out.println("\nQuery success, message sent:\n"
                     + "[RECORD#] [ID],[SENDERFNAME],[SENDERLNAME],[SUBJECT],[BODY],[RECIPFNAME],[RECIPLNAME],[DATECREATED]");
             int counter = 1;
             while (resultSet.next()) {
@@ -1105,13 +1073,6 @@ public class DatabaseConnection {
                         + resultSet.getString(7) + ", "
                         + resultSet.getString(8));
                 counter++;
-            }
-        } catch (Exception e) {
-
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();
