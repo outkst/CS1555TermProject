@@ -1004,7 +1004,6 @@ public class DatabaseConnection {
      */
     public void sendMessageToUser(String userEmail, String recipEmail, String messageSubject, String messageBody) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int senderID = 0;
             int recipID = 0;
 
@@ -1083,24 +1082,17 @@ public class DatabaseConnection {
      * Given two users (userA and userB), find a path, if one exists, between
      * the userA and the userB with at most 3 hop between them. A hop is defined
      * as a friendship between any two users.
+     * 
+     * @param startEmail The email address of the user to begin with.
+     * @param endEmail The email address of the user to try and get to from the starting email address.
+     * 
+     * @throws SQLException
      */
-    public void threeDegrees() {
+    public void threeDegrees(String startEmail, String endEmail) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
             int startID = 0;
-            String startEmail = null;
             int endID = 0;
-            String endEmail = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                startEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (startEmail == null || startEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", startEmail));
-
+            
             //query to make sure user exists and get their ID
             query = "SELECT ID FROM USERS WHERE LOWER(EMAIL) = ?";
             prepStatement = connection.prepareStatement(query);
@@ -1112,14 +1104,9 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 startID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // get a valid email and normalize (lowercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the user's email address: ");
-                endEmail = keyIn.nextLine().trim().toLowerCase();
-            } while (endEmail == null || endEmail.equalsIgnoreCase("") || !Pattern.matches("^([a-zA-Z0-9]+([\\.+_-][a-zA-Z0-9]+)*)@(([a-zA-Z0-9]+((\\.|[-]{1,2})[a-zA-Z0-9]+)*)\\.[a-zA-Z]{2,6})$", endEmail));
-
+            
             //query to make sure friend exists and get their ID
             prepStatement = connection.prepareStatement(query);
             prepStatement.setString(1, endEmail);
@@ -1130,10 +1117,8 @@ public class DatabaseConnection {
                 throw new Exception("No User Found");
             } else {
                 endID = resultSet.getInt(1);
+                closeSQLObjects();
             }
-
-            // show user input (in form of ID's)
-            System.out.println(String.format("ID of user: {%d} ID of friend: {%d}", startID, endID));
 
             //Select statement for establishing pending friendship
             query = "SELECT FRIENDID FROM\n"
@@ -1156,6 +1141,7 @@ public class DatabaseConnection {
             while (resultSet.next()) {
                 numRows = resultSet.getInt(1);
             }
+            closeSQLObjects();
 
             //Create the prepared statement
             prepStatement = connection.prepareStatement(query);
@@ -1243,7 +1229,9 @@ public class DatabaseConnection {
                     while (resultSet.next()) {
                         numRows = resultSet.getInt(1);
                     }
+                    closeSQLObjects();
                     count = 0;
+                    
                     //get the list of friendIDs for the next user
                     prepStatement = connection.prepareStatement(query);
                     prepStatement.setInt(1, nextSearch);
@@ -1270,38 +1258,23 @@ public class DatabaseConnection {
                 query = "select FNAME, LNAME from users WHERE ID = ?";
                 
                 System.out.println("\nPath for three degrees is ... ");
+                int x=0;
                 for (int i = 0; i < currentPath.size(); i++) {
                     prepStatement = connection.prepareStatement(query);
                     prepStatement.setInt(1, (Integer) currentPath.get(i));
                     resultSet = prepStatement.executeQuery();
                     while(resultSet.next()){
-                        System.out.print(resultSet.getString(1) + " "
-                        + resultSet.getString(2) + " -> ");
+                        if (x==0) {
+                            System.out.print(resultSet.getString(1) + " " + resultSet.getString(2));
+                            x++;
+                        } else {
+                            System.out.print(" -> " + resultSet.getString(1) + " "
+                                + resultSet.getString(2));
+                        }
                     }
                 }
             } else {
                 System.out.println("No successful 3 degree matching could be made");
-            }
-
-        } catch (SQLException e) {
-            int errorCode = e.getErrorCode();
-            switch (errorCode) {
-                case 20001:
-                    System.out.println("\nFriendship already pending");
-                    break;
-                case 20002:
-                    System.out.println("\nFriendship already established");
-                    break;
-                default:
-                    System.out.println(String.format("\n!! SQL Error: %s", e.getMessage()));
-                    break;
-            }
-        } catch (Exception e) {
-
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();

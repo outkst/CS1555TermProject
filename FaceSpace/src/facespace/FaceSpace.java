@@ -214,10 +214,15 @@ public class FaceSpace {
                             break;
 
                         case 16: System.out.println("\n[THREE DEGREES]");
-                            db.threeDegrees();
+                            userEmail = getUserEmail("Please enter the user's email address: ");
+                            friendEmail = getUserEmail("Enter the recipient's email address: ");
+                            
+                            db.threeDegrees(userEmail, friendEmail);
                             break;
 
                         case 17: System.out.println("\n[TOP MESSAGERS]");
+                            
+                        
                             db.topMessagers();
                             break;
 
