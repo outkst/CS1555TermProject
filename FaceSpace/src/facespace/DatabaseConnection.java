@@ -838,23 +838,18 @@ public class DatabaseConnection {
      * Searches firstname, lastname, and email as applicable search fields.
      * breaks up search string by using regular regular expression on
      * whitespace. runs queries for each of the search terms.
+     * 
+     * @param searchTerms The search term(s) to search for. Terms are broken
+     *      down into tokens separated by whitespace.
+     * 
+     * @throws SQLException
      */
-    public void searchForUser() {
+    public void searchForUser(String searchTerms) throws SQLException, Exception {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
-            String searchString = null;
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
 
-            // get the search terms (uppercase with no leading/trailing spaces)
-            //      and separate each term with comma (,)
-            do {
-                System.out.print("Please enter string you would like to search (break up terms with spaces): ");
-                searchString = keyIn.nextLine().trim().toUpperCase();
-            } while (searchString == null || searchString.equalsIgnoreCase(""));
-
-            String[] searchItems = searchString.split("\\s+");
+            String[] searchItems = searchTerms.split("\\s+");
             System.out.println("searchItems length = " + searchItems.length);
 
             //query that looks at firstname, lastname, and email as applicable search fields
@@ -876,7 +871,7 @@ public class DatabaseConnection {
             prepStatement = connection.prepareStatement(queryBuilder.toString());
             resultSet = prepStatement.executeQuery();
 
-            System.out.println("\nSearch results looking for matching Firstname, Lastname, OR Email...\n"
+            System.out.println("\nQuery success, search results:\n"
                     + "[RECORD#] [ID],[FNAME],[LNAME],[EMAIL]");
             int counter = 1;
             while (resultSet.next()) {
@@ -886,14 +881,6 @@ public class DatabaseConnection {
                         + resultSet.getString(3) + ", "
                         + resultSet.getString(4));
                 counter++;
-            }
-        } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
             }
         } finally {
             closeSQLObjects();

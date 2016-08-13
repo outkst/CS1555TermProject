@@ -22,7 +22,7 @@ public class FaceSpace {
         DatabaseConnection db = null;
         String url = "", username = "", password = "";
         String firstName = "", lastName = "", userEmail = "", dateOfBirth = "";
-        String friendEmail = "", groupName = "", groupDescription = "";
+        String friendEmail = "", groupName = "", groupDescription = "", searchTerms = "";
         int membershipLimit = 0;
         
         try {
@@ -188,7 +188,10 @@ public class FaceSpace {
                             break;
 
                         case 13: System.out.println("\n[SEARCH FOR USER]");
-                            db.searchForUser();
+                            searchTerms = getUserString("Please enter a firstname, lastname, or email address to "
+                                    + "search for (break up terms with spaces): ");
+                            
+                            db.searchForUser(searchTerms);
                             break;
 
                         case 14: System.out.println("\n[SEND MESSAGE TO GROUP]");
