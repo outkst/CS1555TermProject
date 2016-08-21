@@ -1348,7 +1348,6 @@ public class DatabaseConnection {
             System.out.println("\nQuery success, top messages are:\n"
                     + "[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]");
             int counter = 1;
-            System.out.println("[FNAME],[LNAME],[NUM MESSAGES]");
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
