@@ -34,8 +34,10 @@ public class DatabaseConnection {
      * Close the database connection.
      * @throws SQLException
      */
-    public void closeConnection() throws SQLException {
+    public boolean closeConnection() throws SQLException {
         connection.close();
+        
+        return true;
     }
 
     /**
@@ -45,7 +47,7 @@ public class DatabaseConnection {
      * 
      * @throws SQLException
      */
-    public void addToGroup(String userEmail, String groupName) throws SQLException, Exception {
+    public boolean addToGroup(String userEmail, String groupName) throws SQLException, Exception {
         try {
             //initialize input variables
             int userID = 0;
@@ -117,6 +119,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**

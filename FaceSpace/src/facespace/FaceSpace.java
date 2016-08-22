@@ -240,7 +240,7 @@ public class FaceSpace {
             if (db != null) {
                 try {
                     System.out.println("\nClosing connection...");
-                    db.closeConnection();    
+                    db.closeConnection();
                 } catch (SQLException e) { printSQLException(e); }
             }
         }

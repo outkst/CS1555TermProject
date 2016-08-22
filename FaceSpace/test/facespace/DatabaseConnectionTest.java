@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facespace;
 
+import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,55 +10,74 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Malsby
+ * @author Joe Meszar (jwm54@pitt.edu)
  */
 public class DatabaseConnectionTest {
+    private static DatabaseConnection db = null;
+    private static final String URL = "jdbc:oracle:thin:@localhost:1521:xe";
+    private static final String USERNAME = "system";
+    private static final String PASSWORD = "poiu0987";
     
     public DatabaseConnectionTest() {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws SQLException {
+        db = new DatabaseConnection(URL, USERNAME, PASSWORD);
     }
     
     @AfterClass
-    public static void tearDownClass() {
+    public static void tearDownClass() throws SQLException {
+        db.closeConnection();
     }
     
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of closeConnection method, of class DatabaseConnection.
-     */
-    @Test
-    public void testCloseConnection() throws Exception {
-        System.out.println("closeConnection");
-        DatabaseConnection instance = null;
-        instance.closeConnection();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
      * Test of addToGroup method, of class DatabaseConnection.
      */
     @Test
-    public void testAddToGroup() throws Exception {
-        System.out.println("addToGroup");
-        String userEmail = "";
-        String groupName = "";
-        DatabaseConnection instance = null;
-        instance.addToGroup(userEmail, groupName);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testAddToGroup_Normal() throws Exception {
+        System.out.println("addToGroup: Testing add 'joe@joe.com' to group 'HISTORY'...");
+        
+        String userEmail = "joe@joe.com";
+        String groupName = "HISTORY";
+        
+        assertTrue(db.addToGroup(userEmail, groupName));
     }
-
+    @Test
+    public void testAddToGroup_Bad_Username() throws Exception {
+        System.out.println("addToGroup: Testing add bad username 'noexist@noexist.com' to group 'HISTORY'...");
+        
+        String userEmail = "noexist@noexist.com";
+        String groupName = "HISTORY";
+        
+        try {
+            db.addToGroup(userEmail, groupName);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
+    }
+    @Test
+    public void testAddToGroup_Bad_Group() throws Exception {
+        System.out.println("addToGroup: Testing add 'joe@joe.com' to group 'NOEXIST'...");
+        
+        String userEmail = "joe@joe.com";
+        String groupName = "NOEXIST";
+        
+        try {
+            db.addToGroup(userEmail, groupName);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No Group Found"));
+        }
+    }
+    
     /**
      * Test of createGroup method, of class DatabaseConnection.
      */
