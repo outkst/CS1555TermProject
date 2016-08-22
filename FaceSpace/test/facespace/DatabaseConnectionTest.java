@@ -41,6 +41,7 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of addToGroup method, of class DatabaseConnection.
+     * @throws java.lang.Exception
      */
     @Test
     public void testAddToGroup_Normal() throws Exception {
