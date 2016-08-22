@@ -81,17 +81,26 @@ public class DatabaseConnectionTest {
     
     /**
      * Test of createGroup method, of class DatabaseConnection.
+     * @throws java.lang.Exception
      */
     @Test
-    public void testCreateGroup() throws Exception {
-        System.out.println("createGroup");
-        String groupName = "";
-        String description = "";
-        int limit = 0;
-        DatabaseConnection instance = null;
-        instance.createGroup(groupName, description, limit);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testCreateGroup_Normal() throws Exception {
+        System.out.println("createGroup: Testing creating group 'TESTING1' with member limit '50'...");
+        
+        String groupName = "TESTING1";
+        String description = "TESTING1 GROUP DESCRIPTION";
+        int limit = 50;
+        
+        assertTrue(db.createGroup(groupName, description, limit));
+    }
+    public void testCreateGroup_Bad_Member_Limit() throws Exception {
+        System.out.println("createGroup: Testing creating group 'TESTING2' with invalid member limit '-1'...");
+        
+        String groupName = "TESTING2";
+        String description = "TESTING2 GROUP DESCRIPTION";
+        int limit = -1;
+        
+        assertTrue(db.createGroup(groupName, description, limit));
     }
 
     /**

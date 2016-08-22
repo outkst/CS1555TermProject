@@ -132,7 +132,7 @@ public class DatabaseConnection {
      * 
      * @throws java.sql.SQLException
      */
-    public void createGroup(String groupName, String description, int limit) throws SQLException, Exception {
+    public boolean createGroup(String groupName, String description, int limit) throws SQLException, Exception {
         try {
             if (limit <= 0) { throw new Exception("Group membership limit must be greater than 0"); }
             
@@ -175,6 +175,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
