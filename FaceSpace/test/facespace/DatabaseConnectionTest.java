@@ -105,20 +105,41 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of createUser method, of class DatabaseConnection.
+     * @throws java.lang.Exception
      */
     @Test
-    public void testCreateUser() throws Exception {
-        System.out.println("createUser");
-        String firstName = "";
-        String lastName = "";
-        String email = "";
-        String dateOfBirth = "";
-        DatabaseConnection instance = null;
-        instance.createUser(firstName, lastName, email, dateOfBirth);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testCreateUser_Normal() throws Exception {
+        System.out.println("createUser: Testing creating user 'TEST' 'USER1', email 'TESTUSER1@CS1555.COM', birthday '04-APR-1986'...");
+        
+        String firstName = "TEST";
+        String lastName = "USER1";
+        String email = "testuser1@cs1555.com";
+        String dateOfBirth = "04-APR-1986";
+        
+        assertTrue(db.createUser(firstName, lastName, email, dateOfBirth));
     }
 
+    /**
+     * Test of createUser method, of class DatabaseConnection.
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testCreateUser_Invalid_Date() throws Exception {
+        System.out.println("createUser: Testing creating user 'TEST' 'USER1', email 'TESTUSER1@CS1555.COM', birthday '32-APR-1986'...");
+        
+        String firstName = "TEST";
+        String lastName = "USER1";
+        String email = "testuser1@cs1555.com";
+        String dateOfBirth = "32-APR-1986";
+        
+        try {
+            db.createUser(firstName, lastName, email, dateOfBirth);
+        } catch (SQLException e) {
+            // ORA-01847: day of month must be between 1 and last day of month 
+            assertTrue(e.getSQLState().equals("22008"));
+        }
+    }
+    
     /**
      * Test of displayFriends method, of class DatabaseConnection.
      */

@@ -20,6 +20,7 @@ public class DatabaseConnection {
      * @param url The URL of the database to connect to. (e.g. jdbc:oracle:thin:@localhost:1521:xe)
      * @param username The username of the database account.
      * @param password The password of the database account.
+     * 
      * @throws SQLException
      */
     public DatabaseConnection(String url, String username, String password) throws SQLException {
@@ -32,6 +33,9 @@ public class DatabaseConnection {
 
     /**
      * Close the database connection.
+     * 
+     * @return true if the function performed successfully; otherwise false.
+     * 
      * @throws SQLException
      */
     public boolean closeConnection() throws SQLException {
@@ -44,6 +48,8 @@ public class DatabaseConnection {
      * Adds a new user to a group in the database system.
      * @param userEmail The user's email address.
      * @param groupName The name of the group to add the user into.
+     * 
+     * @return true if the function performed successfully; otherwise false.
      * 
      * @throws SQLException
      */
@@ -130,6 +136,8 @@ public class DatabaseConnection {
      * @param description A detailed description of the group.
      * @param limit The maximum amount of members the group will allow.
      * 
+     * @return true if the function performed successfully; otherwise false.
+     * 
      * @throws java.sql.SQLException
      */
     public boolean createGroup(String groupName, String description, int limit) throws SQLException, Exception {
@@ -187,9 +195,11 @@ public class DatabaseConnection {
      * @param email The email address of the user.
      * @param dateOfBirth The date of birth of the user.
      * 
+     * @return true if the function performed successfully; otherwise false.
+     * 
      * @throws java.sql.SQLException
      */
-    public void createUser(String firstName, String lastName, String email, String dateOfBirth) throws SQLException, Exception {
+    public boolean createUser(String firstName, String lastName, String email, String dateOfBirth) throws SQLException, Exception {
         try {
             // Create the query and insert
             query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YYYY'), NULL, current_timestamp)";
@@ -203,7 +213,7 @@ public class DatabaseConnection {
 
             // get the new list of users
             statement = connection.createStatement(); //create an instance
-            query = "Select * FROM USERS";
+            query = "SELECT * FROM USERS";
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
@@ -225,6 +235,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
