@@ -118,11 +118,6 @@ public class DatabaseConnectionTest {
         
         assertTrue(db.createUser(firstName, lastName, email, dateOfBirth));
     }
-
-    /**
-     * Test of createUser method, of class DatabaseConnection.
-     * @throws java.lang.Exception
-     */
     @Test
     public void testCreateUser_Invalid_Date() throws Exception {
         System.out.println("createUser: Testing creating user 'TEST' 'USER1', email 'TESTUSER1@CS1555.COM', birthday '32-APR-1986'...");
@@ -142,15 +137,28 @@ public class DatabaseConnectionTest {
     
     /**
      * Test of displayFriends method, of class DatabaseConnection.
+     * 
+     * @throws Exception
      */
     @Test
-    public void testDisplayFriends() throws Exception {
-        System.out.println("displayFriends");
-        String userEmail = "";
-        DatabaseConnection instance = null;
-        instance.displayFriends(userEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDisplayFriends_Normal() throws Exception {
+        System.out.println("displayFriends: Testing display of all friends for user 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        
+        assertTrue(db.displayFriends(userEmail));
+    }
+    @Test
+    public void testDisplayFriends_Invalid_Username() throws Exception {
+        System.out.println("displayFriends: Testing display of all friends for invalid user 'invalid@invalid.com'");
+        
+        String userEmail = "invalid@invalid.com";
+        
+        try {
+            db.displayFriends(userEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
     }
 
     /**

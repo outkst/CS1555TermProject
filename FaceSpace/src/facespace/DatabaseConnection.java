@@ -34,7 +34,7 @@ public class DatabaseConnection {
     /**
      * Close the database connection.
      * 
-     * @return true if the function performed successfully; otherwise false.
+     * @return True if the function performed successfully; otherwise False.
      * 
      * @throws SQLException
      */
@@ -49,7 +49,7 @@ public class DatabaseConnection {
      * @param userEmail The user's email address.
      * @param groupName The name of the group to add the user into.
      * 
-     * @return true if the function performed successfully; otherwise false.
+     * @return True if the function performed successfully; otherwise False.
      * 
      * @throws SQLException
      */
@@ -136,7 +136,7 @@ public class DatabaseConnection {
      * @param description A detailed description of the group.
      * @param limit The maximum amount of members the group will allow.
      * 
-     * @return true if the function performed successfully; otherwise false.
+     * @return True if the function performed successfully; otherwise False.
      * 
      * @throws java.sql.SQLException
      */
@@ -195,7 +195,7 @@ public class DatabaseConnection {
      * @param email The email address of the user.
      * @param dateOfBirth The date of birth of the user.
      * 
-     * @return true if the function performed successfully; otherwise false.
+     * @return True if the function performed successfully; otherwise False.
      * 
      * @throws java.sql.SQLException
      */
@@ -244,9 +244,11 @@ public class DatabaseConnection {
      * 
      * @param userEmail The email address of the user from which to display friends.
      * 
+     * @return True if the function performed successfully; otherwise False.
+     * 
      * @throws java.sql.SQLException
      */
-    public void displayFriends(String userEmail) throws SQLException, Exception {
+    public boolean displayFriends(String userEmail) throws SQLException, Exception {
         try {
             int userID = 0;
 
@@ -295,6 +297,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
