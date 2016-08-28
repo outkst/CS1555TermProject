@@ -142,7 +142,7 @@ public class DatabaseConnectionTest {
      */
     @Test
     public void testDisplayFriends_Normal() throws Exception {
-        System.out.println("displayFriends: Testing display of all friends for user 'joe@joe.com'");
+        System.out.println("displayFriends: Testing display of all friends for user with email 'joe@joe.com'");
         
         String userEmail = "joe@joe.com";
         
@@ -150,7 +150,7 @@ public class DatabaseConnectionTest {
     }
     @Test
     public void testDisplayFriends_Invalid_Username() throws Exception {
-        System.out.println("displayFriends: Testing display of all friends for invalid user 'invalid@invalid.com'");
+        System.out.println("displayFriends: Testing display of all friends for invalid user with email 'invalid@invalid.com'");
         
         String userEmail = "invalid@invalid.com";
         
@@ -163,43 +163,70 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of displayMessages method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
-    public void testDisplayMessages() throws Exception {
-        System.out.println("displayMessages");
-        String userEmail = "";
-        DatabaseConnection instance = null;
-        instance.displayMessages(userEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDisplayMessages_Normal() throws Exception {
+        System.out.println("displayMessages: Testing display of all messages for user with email 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        
+        assertTrue(db.displayMessages(userEmail));
     }
-
+    
     /**
      * Test of displayNewMessages method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testDisplayNewMessages() throws Exception {
-        System.out.println("displayNewMessages");
-        String userEmail = "";
-        DatabaseConnection instance = null;
-        instance.displayNewMessages(userEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("displayNewMessages: Testing display of all messages for user with email 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        
+        assertTrue(db.displayNewMessages(userEmail));
+    }
+    @Test
+    public void testDisplayNewMessages_Invalid_Username() throws Exception {
+        System.out.println("displayNewMessages: Testing display of all messages for invalid user with email 'invalid@invalid.com'");
+        
+        String userEmail = "invalid@invalid.com";
+        
+        try {
+            db.displayNewMessages(userEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
     }
 
     /**
      * Test of dropUser method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
-    public void testDropUser() throws Exception {
-        System.out.println("dropUser");
-        String userEmail = "";
-        DatabaseConnection instance = null;
-        instance.dropUser(userEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDropUser_Normal() throws Exception {
+        System.out.println("dropUser: Testing removal of user with email 'astmarie@cs1555.com'");
+        
+        String userEmail = "astmarie@cs1555.com";
+        
+        assertTrue(db.dropUser(userEmail));
     }
-
+    @Test
+    public void testDropUser_Invalid_Username() throws Exception {
+        System.out.println("dropUser: Testing removal of user with email 'invalid@invalid.com'");
+        
+        String userEmail = "invalid@invalid.com";
+        
+        try {
+            db.dropUser(userEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
+    }
+    
     /**
      * Test of establishFriendship method, of class DatabaseConnection.
      */
