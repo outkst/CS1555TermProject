@@ -232,14 +232,66 @@ public class DatabaseConnectionTest {
      */
     @Test
     public void testEstablishFriendship() throws Exception {
-        System.out.println("establishFriendship");
-        String userEmail = "";
-        String friendEmail = "";
-        DatabaseConnection instance = null;
-        instance.establishFriendship(userEmail, friendEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("establishFriendship: Testing establishing friendship between email 'joe@joe.com' and 'fhaffey@cs1555.com'");
+        
+        String userEmail = "joe@joe.com";
+        String friendEmail = "fhaffey@cs1555.com";
+        
+        assertTrue(db.establishFriendship(userEmail, friendEmail));
     }
+    @Test
+    public void testEstablishFriendship_Invalid_User_Email() throws Exception {
+        System.out.println("establishFriendship: Testing establishing friendship between invalid email 'invalid@invalid.com' and 'kyle@kyle.com'");
+        
+        String userEmail = "invalid@invalid.com";
+        String friendEmail = "kyle@kyle.com";
+        
+        try {
+            db.establishFriendship(userEmail, friendEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No user found matching this userEmail"));
+        }
+    }
+    @Test
+    public void testEstablishFriendship_Invalid_Friend_Email() throws Exception {
+        System.out.println("establishFriendship: Testing establishing friendship between email 'joe@joe.com' and invalid email 'invalid@invalid.com'");
+        
+        String userEmail = "joe@joe.com";
+        String friendEmail = "invalid@invalid.com";
+        
+        try {
+            db.establishFriendship(userEmail, friendEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No user found matching this friendEmail"));
+        }
+    }
+    @Test
+    public void testEstablishFriendship_Friending_Self() throws Exception {
+        System.out.println("establishFriendship: Testing establishing friendship between 'joe@joe.com' and 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        String friendEmail = "joe@joe.com";
+        
+        try {
+            db.establishFriendship(userEmail, friendEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("You cannot friend yourself!"));
+        }
+    }
+    @Test
+    public void testEstablishFriendship_Already_Pending() throws Exception {
+        System.out.println("establishFriendship: Testing establishing friendship between 'joe@joe.com' and 'znuttall@cs1555.com'");
+        
+        String userEmail = "joe@joe.com";
+        String friendEmail = "znuttall@cs1555.com";
+        
+        try {
+            db.establishFriendship(userEmail, friendEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("Friendship is already pending"));
+        }
+    }
+    
 
     /**
      * Test of initiateFriendship method, of class DatabaseConnection.

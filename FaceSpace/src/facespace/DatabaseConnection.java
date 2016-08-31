@@ -528,7 +528,7 @@ public class DatabaseConnection {
 
             //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("No user found matching this userEmail.");
+                throw new Exception("No user found matching this userEmail");
             } else {
                 userID = resultSet.getInt(1);
                 closeSQLObjects();
@@ -545,7 +545,7 @@ public class DatabaseConnection {
 
             //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("No User Found");
+                throw new Exception("No user found matching this friendEmail");
             } else {
                 friendID = resultSet.getInt(1);
             }
@@ -571,7 +571,7 @@ public class DatabaseConnection {
                 //if the result is 0 then its pending
                 int status = resultSet.getInt(3);
                 if (status == 0) {
-                    throw new Exception("Friendship is pending");
+                    throw new Exception("Friendship is already pending");
 
                 } else if (status == 1) {
                     throw new Exception("Friendship is already established");
