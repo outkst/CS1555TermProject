@@ -297,15 +297,50 @@ public class DatabaseConnectionTest {
      * Test of initiateFriendship method, of class DatabaseConnection.
      */
     @Test
-    public void testInitiateFriendship() throws Exception {
-        System.out.println("initiateFriendship");
-        String userEmail = "";
-        String friendEmail = "";
-        DatabaseConnection instance = null;
-        instance.initiateFriendship(userEmail, friendEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testInitiateFriendship_Normal() throws Exception {
+        System.out.println("initiateFriendship: Testing initiating a friendship request between 'joe@joe.com' and 'dhegarty@cs1555.com'");
+        
+        String userEmail = "joe@joe.com";
+        String friendEmail = "dhegarty@cs1555.com";
+        
+        assertTrue(db.initiateFriendship(userEmail, friendEmail));
     }
+    @Test
+    public void testInitiateFriendship_Normal_Create_Friendship() throws Exception {
+        System.out.println("initiateFriendship: Testing initiating a friendship request between 'dhegarty@cs1555.com' and 'joe@joe.com'");
+        
+        String userEmail = "dhegarty@cs1555.com";
+        String friendEmail = "joe@joe.com";
+        
+        assertTrue(db.initiateFriendship(userEmail, friendEmail));
+    }
+    @Test
+    public void testInitiateFriendship_Friend_Self() throws Exception {
+        System.out.println("initiateFriendship: Testing initiating a friendship request between 'joe@joe.com' and 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        String friendEmail = "joe@joe.com";
+        
+        try {
+            db.initiateFriendship(userEmail, friendEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("You cannot friend yourself!"));
+        }
+    }
+    @Test
+    public void testInitiateFriendship_Invalid_User_Email() throws Exception {
+        System.out.println("initiateFriendship: Testing initiating a friendship request between 'joe@joe.com' and 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        String friendEmail = "joe@joe.com";
+        
+        try {
+            db.initiateFriendship(userEmail, friendEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("You cannot friend yourself!"));
+        }
+    }
+    
 
     /**
      * Test of listAllGroups method, of class DatabaseConnection.
