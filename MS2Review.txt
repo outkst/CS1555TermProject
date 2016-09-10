@@ -1,3 +1,0 @@
-1. You code still miss some important parts, such as: A sends a message to B, if B is deleted, the message should be kept since A is still there. Your code deletes the message also.
-
-2. Be sure you include instruction of your code, such as how to run it.

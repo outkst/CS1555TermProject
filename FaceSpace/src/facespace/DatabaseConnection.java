@@ -20,6 +20,7 @@ public class DatabaseConnection {
      * @param url The URL of the database to connect to. (e.g. jdbc:oracle:thin:@localhost:1521:xe)
      * @param username The username of the database account.
      * @param password The password of the database account.
+     * 
      * @throws SQLException
      */
     public DatabaseConnection(String url, String username, String password) throws SQLException {
@@ -32,10 +33,14 @@ public class DatabaseConnection {
 
     /**
      * Close the database connection.
+     * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void closeConnection() throws SQLException {
+    public boolean closeConnection() throws SQLException {
         connection.close();
+        
+        return true;
     }
 
     /**
@@ -43,9 +48,10 @@ public class DatabaseConnection {
      * @param userEmail The user's email address.
      * @param groupName The name of the group to add the user into.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void addToGroup(String userEmail, String groupName) throws SQLException, Exception {
+    public boolean addToGroup(String userEmail, String groupName) throws SQLException, Exception {
         try {
             //initialize input variables
             int userID = 0;
@@ -117,6 +123,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -126,9 +134,10 @@ public class DatabaseConnection {
      * @param description A detailed description of the group.
      * @param limit The maximum amount of members the group will allow.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws java.sql.SQLException
      */
-    public void createGroup(String groupName, String description, int limit) throws SQLException, Exception {
+    public boolean createGroup(String groupName, String description, int limit) throws SQLException, Exception {
         try {
             if (limit <= 0) { throw new Exception("Group membership limit must be greater than 0"); }
             
@@ -171,6 +180,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -181,9 +192,10 @@ public class DatabaseConnection {
      * @param email The email address of the user.
      * @param dateOfBirth The date of birth of the user.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws java.sql.SQLException
      */
-    public void createUser(String firstName, String lastName, String email, String dateOfBirth) throws SQLException, Exception {
+    public boolean createUser(String firstName, String lastName, String email, String dateOfBirth) throws SQLException, Exception {
         try {
             // Create the query and insert
             query = "INSERT INTO USERS(FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED) VALUES (?, ?, ?, TO_DATE(?,'DD-MON-YYYY'), NULL, current_timestamp)";
@@ -197,7 +209,7 @@ public class DatabaseConnection {
 
             // get the new list of users
             statement = connection.createStatement(); //create an instance
-            query = "Select * FROM USERS";
+            query = "SELECT * FROM USERS";
             resultSet = statement.executeQuery(query);
 
             // display the new list of users
@@ -219,6 +231,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -226,9 +240,10 @@ public class DatabaseConnection {
      * 
      * @param userEmail The email address of the user from which to display friends.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws java.sql.SQLException
      */
-    public void displayFriends(String userEmail) throws SQLException, Exception {
+    public boolean displayFriends(String userEmail) throws SQLException, Exception {
         try {
             int userID = 0;
 
@@ -277,6 +292,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -285,9 +302,10 @@ public class DatabaseConnection {
      * 
      * @param userEmail The email address of the user from which to display all messages.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws java.sql.SQLException
      */
-    public void displayMessages(String userEmail) throws SQLException, Exception {
+    public boolean displayMessages(String userEmail) throws SQLException, Exception {
         try {
             int userID = 0;
 
@@ -334,6 +352,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -342,9 +362,10 @@ public class DatabaseConnection {
      * 
      * @param userEmail The email address of the user from which to display new messages.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void displayNewMessages(String userEmail) throws SQLException, Exception {
+    public boolean displayNewMessages(String userEmail) throws SQLException, Exception {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
@@ -433,18 +454,11 @@ public class DatabaseConnection {
                         + resultSet.getString(6));
                 counter++;
             }
-        } catch (SQLException ex) {
-            System.out.println(String.format("\n!! SQL Error: %s", ex.getMessage()));
-
-        } catch (Exception e) {
-            if (e.getMessage().equals("No User Found")) {
-                System.out.println("The user name you entered does not exist");
-            } else {
-                System.out.println(String.format("\n!! Error: %s", e.getMessage()));
-            }
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -452,9 +466,10 @@ public class DatabaseConnection {
      * 
      * @param userEmail The email address of the user to remove.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void dropUser(String userEmail) throws SQLException, Exception {
+    public boolean dropUser(String userEmail) throws SQLException, Exception {
         try {            
             // intialize input variables for user
             int userID = 0;
@@ -485,6 +500,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
     
     
@@ -494,9 +511,10 @@ public class DatabaseConnection {
      * @param userEmail The email address of the user from which to start the friendship.
      * @param friendEmail The email address of the user from which to establish the friendship with.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws java.sql.SQLException
      */
-    public void establishFriendship(String userEmail, String friendEmail) throws SQLException, Exception {
+    public boolean establishFriendship(String userEmail, String friendEmail) throws SQLException, Exception {
         try {
             //initialize input variables for User and Friend info
             int userID = 0;
@@ -510,7 +528,7 @@ public class DatabaseConnection {
 
             //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("No user found matching this userEmail.");
+                throw new Exception("No user found matching this userEmail");
             } else {
                 userID = resultSet.getInt(1);
                 closeSQLObjects();
@@ -527,7 +545,7 @@ public class DatabaseConnection {
 
             //check if result set is empty and alert user, otherwise get the ID of the user
             if (!resultSet.next()) {
-                throw new Exception("No User Found");
+                throw new Exception("No user found matching this friendEmail");
             } else {
                 friendID = resultSet.getInt(1);
             }
@@ -553,14 +571,10 @@ public class DatabaseConnection {
                 //if the result is 0 then its pending
                 int status = resultSet.getInt(3);
                 if (status == 0) {
-                    System.out.println("Friendship is pending");
-                    //carry out from the opposite direction
-                    oppositeDirection = true;
+                    throw new Exception("Friendship is already pending");
 
-                } else if (status == 1) { //otherwise its already established
-                    System.out.println("Friendship is already established");
-                    //quit operation
-                    return;
+                } else if (status == 1) {
+                    throw new Exception("Friendship is already established");
                 }
             }
             closeSQLObjects();
@@ -568,33 +582,24 @@ public class DatabaseConnection {
             query = "INSERT INTO FRIENDSHIPS (USERID, FRIENDID) VALUES (?, ?)";
             String countQuery = "SELECT COUNT(*) FROM FRIENDSHIPS WHERE USERID = ? AND FRIENDID = ?";
 
-            if (oppositeDirection == false) {
-                //insert in both directions
-                //Create the prepared statement
-                prepStatement = connection.prepareStatement(query);
-                prepStatement.setInt(1, userID);
-                prepStatement.setInt(2, friendID);
-                prepStatement.executeUpdate();
+            //insert in both directions
+            //Create the prepared statement
+            prepStatement = connection.prepareStatement(query);
+            prepStatement.setInt(1, userID);
+            prepStatement.setInt(2, friendID);
+            prepStatement.executeUpdate();
 
-                prepStatement = connection.prepareStatement(countQuery);
-                prepStatement.setInt(1, friendID);
-                prepStatement.setInt(2, userID);
-                resultSet = prepStatement.executeQuery();
-                if (resultSet.next()) {
-                    if (resultSet.getInt(1) == 0) {
-                        prepStatement = connection.prepareStatement(query);
-                        prepStatement.setInt(1, friendID);
-                        prepStatement.setInt(2, userID);
-                        prepStatement.executeUpdate();
-                    }
+            prepStatement = connection.prepareStatement(countQuery);
+            prepStatement.setInt(1, friendID);
+            prepStatement.setInt(2, userID);
+            resultSet = prepStatement.executeQuery();
+            if (resultSet.next()) {
+                if (resultSet.getInt(1) == 0) {
+                    prepStatement = connection.prepareStatement(query);
+                    prepStatement.setInt(1, friendID);
+                    prepStatement.setInt(2, userID);
+                    prepStatement.executeUpdate();
                 }
-
-            } else {
-                //insert in only the opposite direction of the 
-                prepStatement = connection.prepareStatement(query);
-                prepStatement.setInt(1, friendID);
-                prepStatement.setInt(2, userID);
-                prepStatement.executeUpdate();
             }
             closeSQLObjects();
 
@@ -626,6 +631,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -635,9 +642,10 @@ public class DatabaseConnection {
      * @param userEmail The email address of the user from which to start the friendship.
      * @param friendEmail The email address of the user from which to establish the friendship with.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws java.sql.SQLException
      */
-    public void initiateFriendship(String userEmail, String friendEmail) throws SQLException, Exception {
+    public boolean initiateFriendship(String userEmail, String friendEmail) throws SQLException, Exception {
         try {
             int userID = 0;
             int friendID = 0;
@@ -721,14 +729,17 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
      * Lists all the groups in the database.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void listAllGroups() throws SQLException, Exception {
+    public boolean listAllGroups() throws SQLException, Exception {
         try {
             query = "SELECT NAME, DESCRIPTION, LIMIT, DATECREATED FROM GROUPS";
             prepStatement = connection.prepareStatement(query);
@@ -746,14 +757,17 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
      * Lists all the users in the database.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void listAllUsers() throws SQLException, Exception {
+    public boolean listAllUsers() throws SQLException, Exception {
         try {
             query = "SELECT FNAME, LNAME, EMAIL, DOB, LASTLOGIN, DATECREATED FROM USERS";
             prepStatement = connection.prepareStatement(query);
@@ -773,6 +787,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -780,9 +796,10 @@ public class DatabaseConnection {
      * 
      * @param userEmail The email address of the user to log in.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void logInUser(String userEmail) throws SQLException, Exception {
+    public boolean logInUser(String userEmail) throws SQLException, Exception {
         try {
             int userID = 0;
             
@@ -832,6 +849,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -842,9 +861,10 @@ public class DatabaseConnection {
      * @param searchTerms The search term(s) to search for. Terms are broken
      *      down into tokens separated by whitespace.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void searchForUser(String searchTerms) throws SQLException, Exception {
+    public boolean searchForUser(String searchTerms) throws SQLException, Exception {
         try {
             int userID = 0;
 
@@ -884,6 +904,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -894,9 +916,10 @@ public class DatabaseConnection {
      * @param messageSubject The subject of the message to send.
      * @param messageBody The body (content) of the message to send.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void sendMessageToGroup(String userEmail, String groupName, String messageSubject, String messageBody) throws SQLException, Exception {
+    public boolean sendMessageToGroup(String userEmail, String groupName, String messageSubject, String messageBody) throws SQLException, Exception {
         try {
             int senderID = 0;
             int groupID = 0;
@@ -990,6 +1013,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -1000,9 +1025,10 @@ public class DatabaseConnection {
      * @param messageSubject The subject of the message to send.
      * @param messageBody The body of the message to send.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void sendMessageToUser(String userEmail, String recipEmail, String messageSubject, String messageBody) throws SQLException, Exception {
+    public boolean sendMessageToUser(String userEmail, String recipEmail, String messageSubject, String messageBody) throws SQLException, Exception {
         try {
             int senderID = 0;
             int recipID = 0;
@@ -1076,6 +1102,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -1086,9 +1114,10 @@ public class DatabaseConnection {
      * @param startEmail The email address of the user to begin with.
      * @param endEmail The email address of the user to try and get to from the starting email address.
      * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void threeDegrees(String startEmail, String endEmail) throws SQLException, Exception {
+    public boolean threeDegrees(String startEmail, String endEmail) throws SQLException, Exception {
         try {
             int startID = 0;
             int endID = 0;
@@ -1279,6 +1308,8 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
     /**
@@ -1290,33 +1321,14 @@ public class DatabaseConnection {
      * consideration for group messages), so if a user sends 1 message to a
      * group of 10 people, that would count as them sending 10 messages.
      * 
+     * @param numMonths The number of months to go back from today's date.
+     * @param numResults The number of results to show.
+     * 
+     * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public void topMessagers() throws SQLException, Exception {
+    public boolean topMessagers(int numMonths, int numResults) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
-            int numMonths = 0;
-            int numResults = 0;
-            String numberOfMonths = null;
-            String numberOfResults = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get the amount of months
-            do {
-                System.out.print("Please enter the number of months: ");
-                numberOfMonths = keyIn.nextLine().trim();
-            } while (numberOfMonths == null || numberOfMonths.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfMonths));
-
-            numMonths = Integer.parseInt(numberOfMonths);
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the number of results you would like to see: ");
-                numberOfResults = keyIn.nextLine().trim().toUpperCase();
-            } while (numberOfResults == null || numberOfResults.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfResults));
-
-            numResults = Integer.parseInt(numberOfResults);
             //query to make sure user exists and get their ID
             query = "SELECT M.MESSAGE_COUNT, U.FNAME, U.LNAME, U.EMAIL FROM\n"
                     + "(SELECT S.USERID AS USER_ID, S.TOTAL_SENT + R.TOTAL_RECEIVED AS MESSAGE_COUNT \n"
@@ -1340,15 +1352,14 @@ public class DatabaseConnection {
                     + "WHERE M.USER_ID = U.ID AND ROWNUM <= ?";
 
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, numberOfMonths);
-            prepStatement.setString(2, numberOfMonths);
+            prepStatement.setInt(1, numMonths);
+            prepStatement.setInt(2, numMonths);
             prepStatement.setInt(3, numResults);
             resultSet = prepStatement.executeQuery();
 
             System.out.println("\nQuery success, top messages are:\n"
                     + "[RECORD#] [MSG_COUNT],[FNAME],[LNAME],[EMAIL]");
             int counter = 1;
-            System.out.println("[FNAME],[LNAME],[NUM MESSAGES]");
             while (resultSet.next()) {
                 System.out.println("Record " + counter + ": "
                         + resultSet.getString(1) + ", "
@@ -1360,8 +1371,13 @@ public class DatabaseConnection {
         } finally {
             closeSQLObjects();
         }
+        
+        return true;
     }
 
+    /**
+     * Forces closure of SQL objects to avoid any gaps in open connections or result sets.
+     */
     private void closeSQLObjects() {
         try {
             if (statement != null) { statement.close(); }
