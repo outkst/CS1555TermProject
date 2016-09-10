@@ -24,7 +24,7 @@ public class FaceSpace {
         String firstName = "", lastName = "", userEmail = "", dateOfBirth = "";
         String friendEmail = "", groupName = "", groupDescription = "", searchTerms = "";
         String messageSubject = "", messageBody = "";
-        int membershipLimit = 0;
+        int membershipLimit = 0, numMonths = 0, numResults = 0;
         
         try {
             System.out.println("Welcome to FaceSpace!");
@@ -221,7 +221,10 @@ public class FaceSpace {
                             break;
 
                         case 17: System.out.println("\n[TOP MESSAGERS]");
-                            db.topMessagers();
+                            numMonths = getUserNumber("Please enter the number of months: ");
+                            numResults = getUserNumber("Please enter the number of results you would like to return: ");
+                        
+                            db.topMessagers(numMonths, numResults);
                             break;
 
                         default: System.out.println("INVALID INPUT");
@@ -240,7 +243,7 @@ public class FaceSpace {
             if (db != null) {
                 try {
                     System.out.println("\nClosing connection...");
-                    db.closeConnection();    
+                    db.closeConnection();
                 } catch (SQLException e) { printSQLException(e); }
             }
         }
