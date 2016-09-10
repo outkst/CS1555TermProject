@@ -536,14 +536,16 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of topMessagers method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testTopMessagers() throws Exception {
-        System.out.println("topMessagers");
-        DatabaseConnection instance = null;
-        instance.topMessagers();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("topMessagers: Testing top messagers with number of months 3 and number of results 10");
+        int numMonths = 3;
+        int numResults = 10;
+        
+        assertTrue(db.topMessagers(numMonths, numResults));
     }
     
 }
