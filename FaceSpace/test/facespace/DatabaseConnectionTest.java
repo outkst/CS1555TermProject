@@ -229,6 +229,8 @@ public class DatabaseConnectionTest {
     
     /**
      * Test of establishFriendship method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testEstablishFriendship() throws Exception {
@@ -295,6 +297,8 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of initiateFriendship method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testInitiateFriendship_Normal() throws Exception {
@@ -341,17 +345,16 @@ public class DatabaseConnectionTest {
         }
     }
     
-
     /**
      * Test of listAllGroups method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testListAllGroups() throws Exception {
-        System.out.println("listAllGroups");
-        DatabaseConnection instance = null;
-        instance.listAllGroups();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("listAllGroups: Testing the listing of all groups...");
+        
+        assertTrue(db.listAllGroups());
     }
 
     /**
