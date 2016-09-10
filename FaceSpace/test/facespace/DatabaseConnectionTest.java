@@ -498,16 +498,40 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of threeDegrees method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
-    public void testThreeDegrees() throws Exception {
-        System.out.println("threeDegrees");
-        String startEmail = "";
-        String endEmail = "";
-        DatabaseConnection instance = null;
-        instance.threeDegrees(startEmail, endEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testThreeDegrees_Normal() throws Exception {
+        System.out.println("threeDegrees: Testing three degress from user with email 'joe@joe.com' to user with email 'kyle@kyle.com'");
+        String startEmail = "joe@joe.com";
+        String endEmail = "kyle@kyle.com";
+        
+        assertTrue(db.threeDegrees(startEmail, endEmail));
+    }
+    @Test
+    public void testThreeDegrees_Invalid_Start_Username() throws Exception {
+        System.out.println("threeDegrees: Testing three degress from user with invalid email 'invalid@invalid.com' to user with email 'kyle@kyle.com'");
+        String startEmail = "invalid@invalid.com";
+        String endEmail = "kyle@kyle.com";
+        
+        try {
+            db.threeDegrees(startEmail, endEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
+    }
+    @Test
+    public void testThreeDegrees_Invalid_End_Username() throws Exception {
+        System.out.println("threeDegrees: Testing three degress from user with email 'joe@joe.com' to user with invalid email 'invalid@invalid.com'");
+        String startEmail = "joe@joe.com";
+        String endEmail = "invalid@invalid.com";
+        
+        try {
+            db.threeDegrees(startEmail, endEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
     }
 
     /**
