@@ -359,14 +359,14 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of listAllUsers method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testListAllUsers() throws Exception {
-        System.out.println("listAllUsers");
-        DatabaseConnection instance = null;
-        instance.listAllUsers();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("listAllUsers: Testing the listing of all users...");
+        
+        assertTrue(db.listAllUsers());
     }
 
     /**
