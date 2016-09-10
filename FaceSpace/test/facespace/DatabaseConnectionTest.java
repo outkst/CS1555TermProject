@@ -452,18 +452,48 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of sendMessageToUser method, of class DatabaseConnection.
+     * @throws java.lang.Exception
      */
     @Test
-    public void testSendMessageToUser() throws Exception {
-        System.out.println("sendMessageToUser");
-        String userEmail = "";
-        String recipEmail = "";
-        String messageSubject = "";
-        String messageBody = "";
-        DatabaseConnection instance = null;
-        instance.sendMessageToUser(userEmail, recipEmail, messageSubject, messageBody);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSendMessageToUser_Normal() throws Exception {
+        System.out.println("sendMessageToUser: Testing sending of message to user with email 'kyle@kyle.com' from user email 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        String recipEmail = "kyle@kyle.com";
+        String messageSubject = "This is a test subject";
+        String messageBody = "This is the test message";
+        
+        assertTrue(db.sendMessageToUser(userEmail, recipEmail, messageSubject, messageBody));
+    }
+    @Test
+    public void testSendMessageToUser_Invalid_Sender() throws Exception {
+        System.out.println("sendMessageToUser: Testing sending of message to user with email 'kyle@kyle.com' from invalid user email 'invalid@invalid.com'");
+        
+        String userEmail = "invalid@invalid.com";
+        String recipEmail = "kyle@kyle.com";
+        String messageSubject = "This is a test subject";
+        String messageBody = "This is the test message";
+        
+        try {
+            db.sendMessageToUser(userEmail, recipEmail, messageSubject, messageBody);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
+    }
+    @Test
+    public void testSendMessageToUser_Invalid_Recipient() throws Exception {
+        System.out.println("sendMessageToUser: Testing sending of message to user with email 'invalid@invalid.com' from user email 'joe@joe.com'");
+        
+        String userEmail = "joe@joe.com";
+        String recipEmail = "invalid@invalid.com";
+        String messageSubject = "This is a test subject";
+        String messageBody = "This is the test message";
+        
+        try {
+            db.sendMessageToUser(userEmail, recipEmail, messageSubject, messageBody);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
     }
 
     /**
