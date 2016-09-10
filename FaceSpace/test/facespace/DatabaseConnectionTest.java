@@ -395,15 +395,15 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of searchForUser method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
     public void testSearchForUser() throws Exception {
-        System.out.println("searchForUser");
-        String searchTerms = "";
-        DatabaseConnection instance = null;
-        instance.searchForUser(searchTerms);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("searchForUser: Testing search of user with email 'joe@joe.com'");
+        String searchTerms = "joe@joe.com";
+        
+        assertTrue(db.searchForUser(searchTerms));
     }
 
     /**
