@@ -1321,34 +1321,14 @@ public class DatabaseConnection {
      * consideration for group messages), so if a user sends 1 message to a
      * group of 10 people, that would count as them sending 10 messages.
      * 
+     * @param numMonths The number of months to go back from today's date.
+     * @param numResults The number of results to show.
+     * 
      * @return True if the function performed successfully; otherwise False.
      * @throws SQLException
      */
-    public boolean topMessagers() throws SQLException, Exception {
+    public boolean topMessagers(int numMonths, int numResults) throws SQLException, Exception {
         try {
-            //initialize input variables for User and Friend info
-            int numMonths = 0;
-            int numResults = 0;
-            String numberOfMonths = null;
-            String numberOfResults = null;
-
-            // create a scanner to get user input
-            Scanner keyIn = new Scanner(System.in);
-
-            // get the amount of months
-            do {
-                System.out.print("Please enter the number of months: ");
-                numberOfMonths = keyIn.nextLine().trim();
-            } while (numberOfMonths == null || numberOfMonths.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfMonths));
-
-            numMonths = Integer.parseInt(numberOfMonths);
-            //get the lastName of User and normalize (uppercase with no leading/trailing spaces)
-            do {
-                System.out.print("Please enter the number of results you would like to see: ");
-                numberOfResults = keyIn.nextLine().trim().toUpperCase();
-            } while (numberOfResults == null || numberOfResults.equalsIgnoreCase("") || !Pattern.matches("\\d+", numberOfResults));
-
-            numResults = Integer.parseInt(numberOfResults);
             //query to make sure user exists and get their ID
             query = "SELECT M.MESSAGE_COUNT, U.FNAME, U.LNAME, U.EMAIL FROM\n"
                     + "(SELECT S.USERID AS USER_ID, S.TOTAL_SENT + R.TOTAL_RECEIVED AS MESSAGE_COUNT \n"
@@ -1372,8 +1352,8 @@ public class DatabaseConnection {
                     + "WHERE M.USER_ID = U.ID AND ROWNUM <= ?";
 
             prepStatement = connection.prepareStatement(query);
-            prepStatement.setString(1, numberOfMonths);
-            prepStatement.setString(2, numberOfMonths);
+            prepStatement.setInt(1, numMonths);
+            prepStatement.setInt(2, numMonths);
             prepStatement.setInt(3, numResults);
             resultSet = prepStatement.executeQuery();
 
@@ -1395,6 +1375,9 @@ public class DatabaseConnection {
         return true;
     }
 
+    /**
+     * Forces closure of SQL objects to avoid any gaps in open connections or result sets.
+     */
     private void closeSQLObjects() {
         try {
             if (statement != null) { statement.close(); }
