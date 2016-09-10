@@ -116,15 +116,21 @@ A full list of this project's requirements can be viewed in **_1555_term_project
 
 ### Milestone 3: Bringing It All Together (Due: August 4 @ 11:59PM)
 
-1. [ ] Create a Java driver program to demonstrate the FaceSpace database by calling all of the created methods from Milestone 2.  
-  * [ ] Rewrite all of the methods to do the following:
-    * [ ] Take input parameters instead of querying for data.  
-    * [ ] Use `@throws SQLException` and remove all exception handling. Let the driver handle the exceptions.  
-  * [ ] Remove the input Scanner object from the methods and place it in the driver program.  
+1. [X] Create a Java driver program to demonstrate the FaceSpace database by calling all of the created methods from Milestone 2.  
+  * [X] Rewrite all of the methods to do the following:
+    * [X] Take input parameters instead of querying for data.  
+    * [X] Use `@throws SQLException` and remove all exception handling. Let the driver handle the exceptions.  
+  * [X] Remove the input Scanner object from the methods and place it in the driver program.  
       * The driver will ask for the input, and pass to the methods.  
-2. [ ] Create at least one JUnit test for each method in DatabaseConnections.java  
-3. [ ] Create a commit labeled "**Milestone 3 submission**" and push it to the repository.  
-4. [ ] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
-  * [ ] The email title should be "**[CS1555] Project milestone 3 submission**".  
-  * [ ] Insert a link to the repository.  
-  * [ ] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
+2. [X] Create a commit labeled "**Milestone 3 submission**" and push it to the repository.  
+3. [X] Send an email to nlf4@pitt.edu and weg21@pitt.edu:  
+  * [X] The email title should be "**[CS1555] Project milestone 3 submission**".  
+  * [X] Insert a link to the repository.  
+  * [X] Insert the GitHub commit ID (40-character string / SHA-1 hash).  
+
+### Milestone 4: JUnit Testing
+
+1. [X] Create at least one JUnit test for each method in DatabaseConnections.java  
+2. [X] Create unit tests for the following conditions:  
+  * [X] Normal cases: Use each method with input returning expected results.  
+  * [X] Edge cases: Use each method with input returning unexpected results.  
