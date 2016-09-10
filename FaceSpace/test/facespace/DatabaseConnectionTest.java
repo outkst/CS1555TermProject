@@ -371,15 +371,26 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of logInUser method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
-    public void testLogInUser() throws Exception {
-        System.out.println("logInUser");
-        String userEmail = "";
-        DatabaseConnection instance = null;
-        instance.logInUser(userEmail);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testLogInUser_Normal() throws Exception {
+        System.out.println("logInUser: Testing the login of user with email 'joe@joe.com'");
+        String userEmail = "joe@joe.com";
+        
+        assertTrue(db.logInUser(userEmail));
+    }
+    @Test
+    public void testLogInUser_Invalid_Username() throws Exception {
+        System.out.println("logInUser: Testing the login of user with invalid email 'invalid@invalid.com'");
+        String userEmail = "invalid@invalid.com";
+        
+        try {
+            db.logInUser(userEmail);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("The user name entered does not exist"));
+        }
     }
 
     /**
