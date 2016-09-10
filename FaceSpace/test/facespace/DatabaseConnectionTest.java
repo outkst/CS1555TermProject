@@ -408,18 +408,46 @@ public class DatabaseConnectionTest {
 
     /**
      * Test of sendMessageToGroup method, of class DatabaseConnection.
+     * 
+     * @throws java.lang.Exception
      */
     @Test
-    public void testSendMessageToGroup() throws Exception {
-        System.out.println("sendMessageToGroup");
-        String userEmail = "";
-        String groupName = "";
-        String messageSubject = "";
-        String messageBody = "";
-        DatabaseConnection instance = null;
-        instance.sendMessageToGroup(userEmail, groupName, messageSubject, messageBody);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testSendMessageToGroup_Normal() throws Exception {
+        System.out.println("sendMessageToGroup: Testing sending of message to group 'HISTORY' from user 'joe@joe.com'");
+        String userEmail = "joe@joe.com";
+        String groupName = "HISTORY";
+        String messageSubject = "This is a test subject";
+        String messageBody = "Here is the test message";
+        
+        assertTrue(db.sendMessageToGroup(userEmail, groupName, messageSubject, messageBody));
+    }
+    @Test
+    public void testSendMessageToGroup_Invalid_Username() throws Exception {
+        System.out.println("sendMessageToGroup: Testing sending of message to group 'HISTORY' from invalid user 'invalid@invalid.com'");
+        String userEmail = "invalid@invalid.com";
+        String groupName = "HISTORY";
+        String messageSubject = "This is a test subject";
+        String messageBody = "Here is the test message";
+        
+        try {
+            db.sendMessageToGroup(userEmail, groupName, messageSubject, messageBody);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No User Found"));
+        }
+    }
+    @Test
+    public void testSendMessageToGroup_Invalid_Group() throws Exception {
+        System.out.println("sendMessageToGroup: Testing sending of message to invalid group 'INVALID' from user 'joe@joe.com'");
+        String userEmail = "joe@joe.com";
+        String groupName = "INVALID";
+        String messageSubject = "This is a test subject";
+        String messageBody = "Here is the test message";
+        
+        try {
+            db.sendMessageToGroup(userEmail, groupName, messageSubject, messageBody);
+        } catch (Exception e) {
+            assertTrue(e.getMessage().equals("No Group Found"));
+        }
     }
 
     /**
